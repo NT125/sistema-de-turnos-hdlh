@@ -35,7 +35,9 @@ export class RegistroComponent implements OnInit{
        
       ],
       nombre: ['',Validators.required],
-      telefono: ['',Validators.required],
+      telefono: ['',Validators.required,Validators.pattern('^[10-15]+$')],
+      uemail: ['',Validators.required],
+      codArea: ['',Validators.required],
       passw1: ['',Validators.required],
       passw2: ['',Validators.required],
       rol:['']
@@ -83,7 +85,9 @@ export class RegistroComponent implements OnInit{
           ],
           nombre: [data.nombre,Validators.required],
           telefono: [data.telefono,Validators.required],
+          uemail: [data.email,Validators.required],
           passw1: ['',Validators.required],
+          codArea:[''],
           passw2: ['',Validators.required],
           rol:[data.rol,Validators.required]
         })
@@ -126,12 +130,14 @@ export class RegistroComponent implements OnInit{
       this.toastr.error("Todos los campos deben estar completos y correctos.");
       return;
     }
+    console.log(this.pacienteForm.get('telefono'))
     const PACIENTE: Paciente ={
       _id:this.idUser,
       dni: Number(this.pacienteForm.get('dni')?.value),
       nombre: this.pacienteForm.get('nombre')?.value,
-      telefono:this.pacienteForm.get('telefono')?.value,
+      telefono:this.pacienteForm.get('codArea')?.value+this.pacienteForm.get('telefono')?.value,
       passw: this.pacienteForm.get('passw1')?.value,
+      email:this.pacienteForm.get('uemail')?.value,
       strikes:0
     }
     if(this.pacienteForm.get('rol')?.value){
@@ -164,8 +170,9 @@ export class RegistroComponent implements OnInit{
     const PACIENTE: Paciente ={
       dni: Number(this.pacienteForm.get('dni')?.value),
       nombre: this.pacienteForm.get('nombre')?.value,
-      telefono:"54" + this.pacienteForm.get('telefono')?.value,
+      telefono:this.pacienteForm.get('codArea')?.value + this.pacienteForm.get('telefono')?.value,
       passw: this.pacienteForm.get('passw1')?.value,
+      email:this.pacienteForm.get('uemail')?.value,
       strikes:0
     }
     if(this.pacienteForm.get('rol')?.value){

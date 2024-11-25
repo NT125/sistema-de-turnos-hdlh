@@ -3,14 +3,14 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Medico } from '../models/medico';
 import { Turno } from '../models/turno';
-
+import { baseUrl } from '../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
 export class MedicoService {
-  url='https://sthdlh-back.onrender.com/api/medico/';
+  url=`${baseUrl}/api/medico/`;
   
-  medicos:Medico[];
+  medicos:any[];
   turnos:Turno[];
   constructor(private http: HttpClient) {
     this.medicos = [];
@@ -25,7 +25,7 @@ export class MedicoService {
   }
 
   getEspecialidades(id:any){
-    return this.http.get<Medico[]>(`${this.url}especialidad/${id}`,this.createHeader());
+    return this.http.get<any>(`${this.url}especialidad/${id}`,this.createHeader());
   }
   postMedico(medico: Medico){
     return this.http.post<any>(this.url,medico,this.createHeader());

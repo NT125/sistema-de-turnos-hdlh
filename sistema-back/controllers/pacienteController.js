@@ -309,6 +309,7 @@ exports.register = async(req,res) => {
  }
  exports.login = async(req,res) => {
     try{
+     
      const paciente = await Paciente.findOne({dni: req.body.dni});
      if(!paciente){
         return res.json({

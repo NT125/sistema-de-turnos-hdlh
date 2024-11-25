@@ -22,6 +22,11 @@ const PacienteSchema = mongoose.Schema({
         required:false,
         default:0
     },
+    email:{
+        type: String,
+        required:false,
+        default:0
+    },
     rol:{
         type: String,
         required:false,

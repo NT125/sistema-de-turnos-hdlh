@@ -149,7 +149,7 @@ exports.eliminarMedico = async (req, res) => {
         res.status(500).send('Hubo un error');
     }
 }
-exports.obtenerMedicosporEspecialidad = async (req, res) => {
+exports.obtenerMedicosporEspecialidad2 = async (req, res) => {
     try {
         const especialidadId = req.params.especialidad_id;
 
@@ -175,6 +175,47 @@ exports.obtenerMedicosporEspecialidad = async (req, res) => {
         res.status(500).send('Hubo un error al obtener los médicos');
     }
 }
+exports.obtenerMedicosporEspecialidad = async (req, res) => {
+    try {
+        const especialidadId = req.params.especialidad_id;
+        
+        // Verificar si la especialidad existe
+        let especialidad = await Especialidad.findById(especialidadId);
+
+        if (!especialidad) {
+            return res.status(404).json({ msg: 'No existe la especialidad' });
+        }
+
+        // Obtener médicos que tienen esta especialidad
+        const medicos = await Medico.find({ especialidades: especialidadId })
+            .populate('especialidades', 'nombre') // Opcional: Poblar detalles de especialidades
+            .exec();
+
+        if (!medicos || medicos.length === 0) {
+            return res.status(404).json({ msg: 'No se encontraron médicos para esta especialidad' });
+        }
+
+        // Agregar la cantidad de turnos disponibles para cada médico
+        const medicosConTurnos = await Promise.all(
+            medicos.map(async (medico) => {
+                const turnosDisponibles = await Turno.countDocuments({
+                    medico_id: medico._id,
+                    estado: 'Disponible', // Suponiendo que el estado "disponible" indica que el turno está libre
+                });
+               
+                return {
+                    ...medico._doc,
+                    turnosDisponibles,
+                };
+            })
+        );
+
+        res.json(medicosConTurnos);
+    } catch (error) {
+        console.error('Error al obtener médicos por especialidad:', error.message);
+        res.status(500).send('Hubo un error al obtener los médicos');
+    }
+};
 exports.obtenerTurnosDelMedico = async (req, res) => {
     try {
         const medicoId = req.params.medicoId;

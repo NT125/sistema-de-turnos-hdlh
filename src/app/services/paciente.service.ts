@@ -7,7 +7,7 @@ import { baseUrl } from '../../environments/environment';
   providedIn: 'root'
 })
 export class PacienteService {
-  url=`${baseUrl}/api/paciente`;
+  url=`${baseUrl}/api/paciente/`;
   
   pacientes:Paciente[];
   turnos:Turno[];

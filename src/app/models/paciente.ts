@@ -6,6 +6,7 @@ export class Paciente {
     passw?: String;
     strikes:number;
     rol?:String;
+    email?:String;
     constructor(dni:number,telefono:String,nombre:String,strikes:number){
         this.dni=dni;
         this.telefono=telefono; 

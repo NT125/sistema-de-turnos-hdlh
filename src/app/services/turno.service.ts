@@ -2,11 +2,12 @@ import { Injectable } from '@angular/core';
 import {Turno} from '../models/turno'
 import { HttpClient ,HttpHeaders ,HttpParams} from '@angular/common/http'
 import { TurnoServ } from '../models/turnoServ';
+import { baseUrl } from '../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
 export class TurnoService {
-  url='https://sthdlh-back.onrender.com/api/turno/';
+  url=`${baseUrl}/api/turno/`;
   
   turnos:any[];
   

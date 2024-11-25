@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { ObraSocial } from '../models/obraSocial';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { baseUrl } from '../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
 export class ObraSocialService {
-  url='https://sthdlh-back.onrender.com/api/obra/';
+  url=`${baseUrl}/api/obra/`;
   
   obras:ObraSocial[];
   obras1:ObraSocial[];

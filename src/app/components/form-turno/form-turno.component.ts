@@ -44,6 +44,7 @@ export class FormTurnoComponent implements OnInit {
   doctor = ""
   consultorio = ""
   especialidad = ""
+  turnosdisponible=""
    especialidadNombre:String=""
 
   ngOnInit(): void {
@@ -94,6 +95,7 @@ export class FormTurnoComponent implements OnInit {
   cargarMedicos(id: any) {
     this._medicoService.getEspecialidades(id).subscribe({
       next: (data) => {
+        console.log(data);
         this._medicoService.medicos = data;
         
       },
