@@ -1,4 +1,6 @@
 const Especialidad = require('../models/Especialidad');
+const Medico = require('../models/Medico');
+
 exports.crearEspecialidad = async(req,res) => {
     try{
         let especialidad;
@@ -14,7 +16,7 @@ exports.crearEspecialidad = async(req,res) => {
 }
 exports.obtenerEspecialidades = async(req,res) => {
     try{
-        const especialidades = await Especialidad.find();
+        const especialidades = await Especialidad.find().sort({ nombreEsp: 1 });;
         res.send(especialidades);
 
     }catch(error){
@@ -22,6 +24,25 @@ exports.obtenerEspecialidades = async(req,res) => {
         res.status(500).send('Hubo un error');
     }
 }
+exports.obtenerEspecialidadesconMedicos = async (req, res) => {
+    try {
+        const especialidadesUsadas = await Medico.distinct('especialidades');
+
+        // Buscar las especialidades cuyos IDs estén en el array especialidadesUsadas
+        const especialidades = await Especialidad.find({
+            _id: { $in: especialidadesUsadas }
+        }).sort({ nombreEsp: 1 });;
+
+        if (especialidades.length === 0) {
+            return res.status(404).json({ msg: 'No hay especialidades con médicos cargados' });
+        }
+
+        res.json(especialidades);
+    } catch (error) {
+        console.error('Error al obtener especialidades:', error.message);
+        res.status(500).send('Hubo un error');
+    }
+};
 exports.actualizarEspecialidad = async(req,res) => {
     try{
         const{nombreEsp}= req.body;

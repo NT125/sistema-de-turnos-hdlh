@@ -20,6 +20,9 @@ export class EspecialidadService {
   getEspecialidades(){
     return this.http.get<Especialidad[]>(this.url,this.createHeader());
   }
+  getEspecialidadesMedico(){
+    return this.http.get<Especialidad[]>(`${this.url}/medico`,this.createHeader());
+  }
   getEspecialidad(id:any){
     return this.http.get<Especialidad>(`${this.url}/${id}`,this.createHeader());
   }

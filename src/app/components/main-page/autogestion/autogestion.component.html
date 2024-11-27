@@ -1,8 +1,10 @@
+<app-nav></app-nav>
 <div class="autogestion">
-
+       
     <h1 *ngIf="_loginService.userLoggedIn()">Bienvenido, {{_loginService.userLogged()}}</h1>
     
     <div class="autogestion-options">
+       
         <div class="title flex-column">
             <h2>AUTOGESTIÓN</h2>
             <span *ngIf="_loginService.userLoggedIn()">Aquí puede organizar sus turnos y cambiar su contraseña.</span>

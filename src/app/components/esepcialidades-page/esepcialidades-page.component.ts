@@ -36,7 +36,7 @@ export class EsepcialidadesPageComponent implements OnInit {
     })
   }
   getEspecialidades() {
-    this._especialidadService.getEspecialidades().subscribe({
+    this._especialidadService.getEspecialidadesMedico().subscribe({
       next:(data) => {
         this._especialidadService.especialidades=data;
         
