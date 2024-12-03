@@ -10,7 +10,6 @@
             <div class="nav-items-list flex-column">
                 <button *ngIf="!_loginService.userLoggedIn()" class="nav-item login-button" routerLink="/login">Iniciar Sesión</button>
                 <button *ngIf="_loginService.userLoggedIn()" class="nav-item turno-button" routerLink="/especialidades">SACAR TURNO</button>
-                <button *ngIf="_loginService.userLoggedIn()" class="nav-item" routerLink="/autogestion">Autogestión</button>
                 <button *ngIf="_loginService.userLoggedIn()" class="nav-item logout-button" routerLink="/login" (click)="logout()">Cerrar Sesión</button>
                 
                 
@@ -25,7 +24,6 @@
         <div class="nav-items-list flex-row">
             <button *ngIf="!_loginService.userLoggedIn()" class="nav-item login-button" routerLink="/login">Iniciar Sesión</button>
             <button *ngIf="_loginService.userLoggedIn()" class="nav-item turno-button" routerLink="/especialidades">SACAR TURNO</button>
-            <button *ngIf="_loginService.userLoggedIn()" class="nav-item" routerLink="/autogestion">Autogestión</button>
             <button *ngIf="_loginService.userLoggedIn()" class="nav-item logout-button" routerLink="/login" (click)="logout()">Cerrar Sesión</button>
                 
         </div>
