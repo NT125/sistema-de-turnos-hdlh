@@ -15,11 +15,22 @@ export class CarouselComponent {
   indice: number = 0;
 
   fotos = [
-    { img: "/placeholder.jpg" },
-    { img: "/placeholder2.jpg" },
-    { img: "/placeholder3.jpg" },
-    { img: "/placeholder4.jpg" },
-    { img: "/placeholder5.jpg" },
+    { img: "/slider/1.jpg" },
+    { img: "/slider/2.jpg" },
+    { img: "/slider/3.jpg" },
+    { img: "/slider/4.jpg" },
+    { img: "/slider/5.jpg" },
+    { img: "/slider/6.jpg" },
+    { img: "/slider/7.jpg" },
+    { img: "/slider/8.jpg" },
+    { img: "/slider/9.jpg" },
+    { img: "/slider/10.jpg" },
+    { img: "/slider/11.jpg" },
+    { img: "/slider/12.jpg" },
+    { img: "/slider/13.jpg" },
+    { img: "/slider/14.jpg" },
+    { img: "/slider/15.jpg" },
+    { img: "/slider/16.jpg" },
   ];
 
   getImagen(): string {
