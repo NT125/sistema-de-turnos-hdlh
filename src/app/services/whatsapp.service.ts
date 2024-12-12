@@ -69,4 +69,13 @@ export class WhatsappService {
       headers,
     });
   }
+
+  sendMessageCancelDate(
+    target: String,
+    paciente: String,
+    fechaHora: String,
+    doctor: String,
+    consultorio: String,
+    especialidad: String
+  ) {}
 }

@@ -3,7 +3,7 @@ const Turno = require("./models/Turno");
 const wpp = require('./controllers/whatsappController');
 require('dotenv').config({ path: 'variables.env'});
 
-cron.schedule("00 08 * * *", () => {
+cron.schedule("00 11 * * *", () => {
   obtenerTurnos()
   procesarTurnos();
   eliminarTurnos()
@@ -35,7 +35,6 @@ async function procesarTurnos() {
 
         // let doctor = turnos[i].medico_id.apellido
         if (turnos[i].medico_id != null && turnos[i].paciente_id != null) {
-          console.log(turnos[i]);
           
           wpp.recordatorio(
             turnos[i].paciente_id.telefono,
@@ -66,7 +65,7 @@ async function eliminarTurnos() {
 
     const diferenciaDias = diferenciaTiempo / (1000 * 60 * 60 * 24);
 
-    if (diferenciaDias >= 1) {
+    if (diferenciaDias >= 60) {
       const id = turnos[i]._id;
       try {
         const turno = await Turno.findByIdAndDelete(id);

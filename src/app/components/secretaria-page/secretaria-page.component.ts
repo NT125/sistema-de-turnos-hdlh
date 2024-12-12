@@ -11,6 +11,7 @@ import { PacienteService } from '../../services/paciente.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Paciente } from '../../models/paciente';
+import { WhatsappService } from '../../services/whatsapp.service';
 registerLocaleData(localeEs, 'es');
 @Component({
   selector: 'app-secretaria-page',
@@ -40,7 +41,8 @@ export class SecretariaPageComponent implements OnInit{
     public _pacienteService:PacienteService,
     private datePipe:DatePipe,
     private toastr: ToastrService,
-    private router:Router
+    private router:Router,
+    private wppService: WhatsappService
     
   ){
     this.turnoForm = this.fb.group({
@@ -246,10 +248,38 @@ export class SecretariaPageComponent implements OnInit{
       },
     });
   }
+
+  formatearFecha(fechaISO: string) {
+    // Convertir la cadena ISO a un objeto Date
+    const fecha = new Date(fechaISO);
+  
+    // Definir las opciones para el formato de la fecha y la hora
+    const opcionesFecha: Intl.DateTimeFormatOptions = { day: 'numeric', month: 'long' };
+    const opcionesHora: Intl.DateTimeFormatOptions = { hour: 'numeric', minute: 'numeric', hour12: true };
+  
+    // Formatear la fecha y la hora
+    const formatoFecha = new Intl.DateTimeFormat('es-ES', opcionesFecha).format(fecha);
+    const formatoHora = new Intl.DateTimeFormat('es-ES', opcionesHora).format(fecha);
+  
+    return `${formatoFecha}, ${formatoHora}`.toString();
+  }
+
   confirmarCancelarTurno(turno: any) {
+    console.log('Turno', turno);
+
+    
+    
     const confirmacion = window.confirm('¿Estás seguro de que deseas cancelar el turno?');
     
     if (confirmacion) {
+      const target = turno.paciente_id.telefono;
+      const paciente = turno.paciente_id.nombre;
+      const fechaHora = this.formatearFecha(turno.fecha);
+      const doctor = turno.medico_id.nombre + turno.medico_id.apellido;
+      const consultorio = turno.consultorio;
+      const especialidad = turno.especialidad_id.nombreEsp;
+
+      this.wppService.sendMessageCancelDate(target, paciente, fechaHora, doctor, consultorio, especialidad);
       this.cancelarTurno(turno);
     }
   }
