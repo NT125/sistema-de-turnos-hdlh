@@ -93,7 +93,7 @@ router.post("/turno-cancelado", async (req, res) => {
       .json({ error: "Número de destino y mensaje son requeridos" });
   }
 
-  const mensaje = `*Información sobre su turno*\n\nEstimado/a *${paciente}*. \n\nLamentamos informarle que su cita médica programada con los siguientes detalles ha sido cancelada por motivos administrativos: \n\n${messageBody(
+  const mensaje = `*Turno cancelado*\n\nEstimado/a *${paciente}*. \n\nLamentamos informarle que su cita médica programada con los siguientes detalles ha sido cancelada por motivos administrativos: \n\n${messageBody(
     fechaHora,
     doctor,
     consultorio,

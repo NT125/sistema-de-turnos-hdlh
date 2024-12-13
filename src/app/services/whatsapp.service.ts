@@ -77,5 +77,20 @@ export class WhatsappService {
     doctor: String,
     consultorio: String,
     especialidad: String
-  ) {}
+  ):Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+
+    const body = {
+      target,
+      paciente,
+      fechaHora,
+      doctor,
+      consultorio,
+      especialidad,
+    }
+
+    return this._http.post(`${this.urlBase}/turno-cancelado`, body, { headers });
+  }
 }

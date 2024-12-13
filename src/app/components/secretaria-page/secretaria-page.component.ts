@@ -265,10 +265,6 @@ export class SecretariaPageComponent implements OnInit{
   }
 
   confirmarCancelarTurno(turno: any) {
-    console.log('Turno', turno);
-
-    
-    
     const confirmacion = window.confirm('¿Estás seguro de que deseas cancelar el turno?');
     
     if (confirmacion) {
@@ -279,7 +275,13 @@ export class SecretariaPageComponent implements OnInit{
       const consultorio = turno.consultorio;
       const especialidad = turno.especialidad_id.nombreEsp;
 
-      this.wppService.sendMessageCancelDate(target, paciente, fechaHora, doctor, consultorio, especialidad);
+      this.wppService.sendMessageCancelDate(target, paciente, fechaHora, doctor, consultorio, especialidad).subscribe({
+        next: (data:any) => {
+        },
+        error: (error:any) => {
+          console.log(error);
+        }
+      });
       this.cancelarTurno(turno);
     }
   }
