@@ -275,13 +275,16 @@ export class SecretariaPageComponent implements OnInit{
       const consultorio = turno.consultorio;
       const especialidad = turno.especialidad_id.nombreEsp;
 
-      this.wppService.sendMessageCancelDate(target, paciente, fechaHora, doctor, consultorio, especialidad).subscribe({
-        next: (data:any) => {
-        },
-        error: (error:any) => {
-          console.log(error);
-        }
-      });
+      if (turno.paciente_id != null){
+        this.wppService.sendMessageCancelDate(target, paciente, fechaHora, doctor, consultorio, especialidad).subscribe({
+          next: (data:any) => {
+          },
+          error: (error:any) => {
+            console.log(error);
+          }
+        });
+      }
+
       this.cancelarTurno(turno);
     }
   }
