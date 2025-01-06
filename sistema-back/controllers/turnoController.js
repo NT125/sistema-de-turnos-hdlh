@@ -1,4 +1,6 @@
 const Turno = require('../models/Turno');
+const moment = require('moment-timezone');
+
 // Crear Turno
 exports.crearTurno = async (req, res) => {
     try {
@@ -44,21 +46,19 @@ exports.obtenerTurnos = async (req, res) => {
         res.send(error);
     }
 };
+
 exports.obtenerTurnosHoy = async (req, res) => {
     try {
-        // Obtener la fecha de hoy al inicio del día y al final del día
-        const hoy = new Date();
-        hoy.setHours(0, 0, 0, 0); // Inicio del día (00:00:00)
-        const mañana = new Date(hoy);
-        mañana.setDate(hoy.getDate() + 1); // Fin del día (23:59:59)
+        const hoy = moment.tz("America/Argentina/Buenos_Aires").startOf('day'); 
+        const mañana = hoy.clone().add(1, 'day'); 
 
-        // Buscar los turnos entre las fechas de hoy
         const turnos = await Turno.find({
             fecha: {
-                $gte: hoy, // Mayor o igual que el inicio del día
-                $lt: mañana // Menor que el inicio del siguiente día
+                $gte: hoy.toDate(), 
+                $lt: mañana.toDate() 
             }
-        }).populate('medico_id paciente_id obras_sociales especialidad_id')
+        })
+        .populate('medico_id paciente_id obras_sociales especialidad_id')
         .sort({ fecha: 1 });
 
         res.send(turnos);
@@ -66,7 +66,6 @@ exports.obtenerTurnosHoy = async (req, res) => {
         res.status(500).send({ message: "Error al obtener turnos de hoy", error });
     }
 };
-const moment = require('moment-timezone');
 
 exports.obtenerTurnosPorFecha = async (req, res) => {
     try {
