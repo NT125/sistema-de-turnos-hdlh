@@ -94,6 +94,37 @@ option{
     bottom: 2rem;
 }
 
+.touch-scrollbar {
+    --sb-track-color: #fff;
+    --sb-thumb-color: var(--celeste);
+    --sb-size: 50px;
+  }
+
+  .scrollbar-small{
+    --sb-size:30px
+  }
+  
+  .touch-scrollbar::-webkit-scrollbar {
+    width: var(--sb-size)
+  }
+  
+  .touch-scrollbar::-webkit-scrollbar-track {
+    background: var(--sb-track-color);
+  }
+  
+  .touch-scrollbar::-webkit-scrollbar-thumb {
+    background: var(--sb-thumb-color);
+    border-radius: 50px;
+    border: 5px solid #fff;
+  }
+  
+  @supports not selector(::-webkit-scrollbar) {
+    .touch-scrollbar {
+      scrollbar-color: var(--sb-thumb-color)
+                       var(--sb-track-color);
+    }
+  }
+
 .option-pill-access{
     background: linear-gradient(180deg, #dbe2e9, var(--gris));
 }

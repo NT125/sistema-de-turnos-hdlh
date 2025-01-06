@@ -22,7 +22,7 @@
 		<div *ngIf="pasoActual == 3" class="flex-column paso">
 			<h1>Paso 3: Especialidad</h1>
 			<h2>¿Para qué médico desea sacar turno?</h2>
-			<select formControlName="especialidad" name="especialidad" id="especialidad">
+			<select formControlName="especialidad" name="especialidad" id="especialidad" class="touch-scrollbar">
 				<option value="">Toque aquí</option>
 				<option *ngFor="let especialidad of _especialidadService.especialidades" value={{especialidad._id}}>{{especialidad.nombreEsp}}</option>
 			</select>
@@ -36,7 +36,7 @@
 
 				<div class="flex-column section">
 					<h3>MÉDICO</h3>
-					<div class="card-container" >
+					<div class="card-container touch-scrollbar scrollbar-small" >
 						<div class="card" *ngFor="let medico of _medicoService.medicos" (click)="cargarTurnos(medico._id)" 
 						>
 							<label for="medicoID">
@@ -56,7 +56,7 @@
 
 				<div class="flex-column section">
 					<h3>TURNO</h3>
-					<div class="card-container" >
+					<div class="card-container touch-scrollbar scrollbar-small" >
 						<div class="card" *ngFor="let turno of _medicoService.turnos">
 							<label for="{{ turno._id }}" >
 								<input formControlName="turno" value="{{ turno._id }}" type="radio"  name="turno" id="{{ turno._id }}"
@@ -89,18 +89,18 @@
 			<div class="flex-column" style="width: 100%; margin: auto;">
 				<div class="flex-row" style="gap: 2rem; justify-content: center; width: 60%;">
 					<div>
-						<select class="small-select" name="obra0" id="obra0" formControlName="obra1">
+						<select class="small-select touch-scrollbar" name="obra0" id="obra0" formControlName="obra1">
 							<option *ngFor="let obra of _obraService.obras" value="{{obra._id}}">{{ obra.nombreOS }}</option>
 							
 						</select>
 			
-						<select *ngIf="obra1" class="small-select" name="obra0" id="obra0" formControlName="obra2">
+						<select *ngIf="obra1" class="small-select touch-scrollbar" name="obra0" id="obra0" formControlName="obra2">
 							<option  value="{{ obra1._id }}"
 							*ngFor="let obra1 of _obraService.obras1">{{obra1.nombreOS}}</option>
 							
 						</select>
 			
-						<select *ngIf="obra2" class="small-select" name="obra0" id="obra0" formControlName="obra3">
+						<select *ngIf="obra2" class="small-select touch-scrollbar" name="obra0" id="obra0" formControlName="obra3">
 							<option value="{{ obra2._id }}"
 							*ngFor="let obra2 of _obraService.obras1">{{obra2.nombreOS}}</option>
 							
