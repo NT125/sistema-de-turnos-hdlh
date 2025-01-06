@@ -66,21 +66,20 @@ exports.obtenerTurnosHoy = async (req, res) => {
         res.status(500).send({ message: "Error al obtener turnos de hoy", error });
     }
 };
+const moment = require('moment-timezone');
+
 exports.obtenerTurnosPorFecha = async (req, res) => {
     try {
-        const fechaParametro = new Date(req.params.fecha); // Fecha enviada como parámetro en formato 'yyyy-mm-dd'
-        fechaParametro.setHours(0, 0, 0, 0); // Inicio del día
-        fechaParametro.setDate(fechaParametro.getDate()+1);
-        const siguienteDia = new Date(fechaParametro);
-        siguienteDia.setDate(fechaParametro.getDate() + 1); // Fin del día
-      
-        // Buscar los turnos entre la fecha especificada
+        const fechaParametro = moment.tz(req.params.fecha, "YYYY-MM-DD", "America/Argentina/Buenos_Aires").startOf('day');
+        const siguienteDia = fechaParametro.clone().add(1, 'day'); 
+
         const turnos = await Turno.find({
             fecha: {
-                $gt: fechaParametro, // Mayor o igual que el inicio del día
-                $lte: siguienteDia // Menor que el inicio del siguiente día
+                $gte: fechaParametro.toDate(),
+                $lt: siguienteDia.toDate()
             }
-        }).populate('medico_id paciente_id obras_sociales especialidad_id')
+        })
+        .populate('medico_id paciente_id obras_sociales especialidad_id')
         .sort({ fecha: 1 });
 
         res.send(turnos);
@@ -88,6 +87,7 @@ exports.obtenerTurnosPorFecha = async (req, res) => {
         res.status(500).send({ message: "Error al obtener turnos de la fecha", error });
     }
 };
+
 /*exports.obtenerTurnosPorMedico = async (req, res) => {
     try {
         const searchTerm = req.params.termino; // Puede ser nombre o legajo (parcial)
