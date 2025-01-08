@@ -33,7 +33,11 @@ export class TerminalComponent implements OnInit{
   doctor = ""
   consultorio = ""
   especialidad = ""
-   especialidadNombre:String=""
+  especialidadNombre:String=""
+  keys: string[] = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
+  keysLetter: string[] = 'QWERTYUIOPASDFGHJKLÑ ZXCVBNM'.split('');
+  isCapsLock: boolean = false;
+
   constructor(
     private fb: FormBuilder,
     public _obraService: ObraSocialService,
@@ -54,6 +58,37 @@ export class TerminalComponent implements OnInit{
     });
     this.turno = new TurnoServ('0', new Date(), '0', '0', '0', 0);
   }
+
+  onKeyPress(key: string): void {
+    const currentDNI = this.turnoForm.get('pacienteDNI')?.value || '';
+    this.turnoForm.get('pacienteDNI')?.setValue(currentDNI + key);
+  }
+
+  onDelete(): void {
+    const currentDNI = this.turnoForm.get('pacienteDNI')?.value || '';
+    this.turnoForm.get('pacienteDNI')?.setValue(currentDNI.slice(0, -1));
+  }
+
+  onKeyPressLetter(key: string): void {
+    const currentName = this.turnoForm.get('pacienteNombre')?.value || '';
+    const newKey = this.isCapsLock ? key.toUpperCase() : key.toLowerCase();
+    this.turnoForm.get('pacienteNombre')?.setValue(currentName + newKey);
+  }
+
+  onSpace(): void {
+    const currentName = this.turnoForm.get('pacienteNombre')?.value || '';
+    this.turnoForm.get('pacienteNombre')?.setValue(currentName + ' ');
+  }
+
+  onCapsLock(): void {
+    this.isCapsLock = !this.isCapsLock;
+  }
+
+  onDeleteLetter(): void {
+    const currentName = this.turnoForm.get('pacienteNombre')?.value || '';
+    this.turnoForm.get('pacienteNombre')?.setValue(currentName.slice(0, -1));
+  }
+
   ngOnInit(): void {
     this._medicoService.medicos = [];
     this.cargarObras();

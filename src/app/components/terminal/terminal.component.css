@@ -1,113 +1,209 @@
 @import "../form-turno/form-turno.component.css";
 
-h1{
-    font-size: 54px;
-    color: var(--azul);
+h1 {
+  font-size: 54px;
+  color: var(--azul);
 }
-h2{
-    font-size: 32px;
+h2 {
+  font-size: 32px;
 }
-h3{
-    text-align: center;
-}
-
-button{
-    padding: 2rem;
-    font-size: 28px;
+h3 {
+  text-align: center;
 }
 
-input, select{
-    max-width: 800px;
-    padding: 1rem;
-
-    border: solid 3px var(--gris);
-    border-radius: 20px;
-
-    text-align: center;
-    font-size: 36px;
+button {
+  padding: 2rem;
+  font-size: 28px;
 }
 
-.terminal{
-    background: linear-gradient(180deg, #ffffff, #ecf5ff);
-    height: 720px;
+input,
+select {
+  max-width: 800px;
+  padding: 1rem;
+
+  border: solid 3px var(--gris);
+  border-radius: 20px;
+
+  text-align: center;
+  font-size: 36px;
 }
 
-.logo{
-    background: var(--celeste);
-
-    padding: 0.5rem;
-    max-width: 200px;
-
-    border: solid 4px #fff;
-    border-radius: 100%;
+.terminal {
+  background: linear-gradient(180deg, #ffffff, #ecf5ff);
+  height: 720px;
 }
 
-.small-select{
-    float: right;
+.logo {
+  background: var(--celeste);
 
-    max-width: 400px;
-    padding: 0.5rem;
+  padding: 0.5rem;
+  max-width: 200px;
 
-    font-size: 28px;
+  border: solid 4px #fff;
+  border-radius: 100%;
 }
 
-.buttons{
-    max-width: 500px;
-    padding: 1rem;
-    margin: auto;
-    
+.small-select {
+  float: right;
+
+  max-width: 400px;
+  padding: 0.5rem;
+
+  font-size: 28px;
 }
 
-option{
-    padding: 1rem;
-
-    text-align: center;
-    margin: auto;
-    font-size: 28px;
-    font-weight: 600;
+.buttons {
+  max-width: 500px;
+  padding: 1rem;
+  margin: auto;
 }
 
-.paso{
-    padding: 3rem 1rem;
+option {
+  padding: 1rem;
+
+  text-align: center;
+  margin: auto;
+  font-size: 28px;
+  font-weight: 600;
 }
 
-.dni-input{
-    max-width: 400px;
+.paso {
+  padding: 1.5rem 1rem;
 }
 
-.section{
-    padding: 1rem;
+.dni-input {
+  max-width: 400px;
+  margin: 0;
 }
 
-.card-container{
-    background-color: #fff;
-    max-height: 250px !important;
+.section {
+  padding: 1rem;
 }
 
-.small-button{
-    padding: 20px;
-    font-size: 20px;
+.card-container {
+  background-color: #fff;
+  max-height: 250px !important;
 }
 
-.botonera{
-    position:fixed;
-    bottom: 2rem;
+.small-button {
+  padding: 20px;
+  font-size: 20px;
 }
 
-.option-pill-access{
-    background: linear-gradient(180deg, #dbe2e9, var(--gris));
+.botonera {
+  position: fixed;
+  bottom: 2rem;
 }
 
-.option-pill-access:hover{
-    outline: none;
+.option-pill-access {
+  background: linear-gradient(180deg, #dbe2e9, var(--gris));
 }
 
-.lblue-button-access{
-    background: linear-gradient(180deg, #5c98c9, var(--celesteO));
-    color: #fff;
+.option-pill-access:hover {
+  outline: none;
 }
 
-.green-button-access{
-    background: linear-gradient(180deg, var(--verde), var(--verdeO));
-    color: #fff;
+.lblue-button-access {
+  background: linear-gradient(180deg, #5c98c9, var(--celesteO));
+  color: #fff;
+}
+
+.green-button-access {
+  background: linear-gradient(180deg, var(--verde), var(--verdeO));
+  color: #fff;
+}
+
+/*? CSS para teclado  */
+
+.keyboard {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  width: 400px;
+  margin: 0 auto;
+}
+
+.key {
+  width: 80px;
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #007bff;
+  color: white;
+  font-size: 1.5rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.keyboardLetter {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 10px;
+  align-items: center;
+  width: 800px;
+  margin: 0 auto;
+}
+
+.keyLetter {
+  width: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #007bff;
+  color: white;
+  font-size: 1.5rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.hidden {
+    visibility: hidden;
+  }
+
+.key:hover {
+  background-color: #0056b3;
+}
+
+.button-container{
+    width: 800px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin: 0 auto;
+    margin-top: 10px;
+}
+
+.key.delete {
+    width: 120px;
+  background-color: #dc3545;
+}
+
+.key.delete:hover {
+  background-color: #a71d2a;
+}
+
+.key.space {
+  /* grid-column: span 3; */
+  width: 300px;
+  background-color: #28a745;
+}
+
+.key.space:hover {
+  background-color: #1c7430;
+}
+
+.key.capslock {
+  width: 200px;
+  background-color: #ffc107;
+}
+
+.key.capslock:hover {
+  background-color: #d39e00;
 }
