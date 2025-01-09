@@ -174,7 +174,7 @@ exports.obtenerMedicosporEspecialidad2 = async (req, res) => {
         console.error('Error al obtener médicos por especialidad:', error.message);
         res.status(500).send('Hubo un error al obtener los médicos');
     }
-}
+}/*
 exports.obtenerMedicosporEspecialidad = async (req, res) => {
     try {
         const especialidadId = req.params.especialidad_id;
@@ -216,6 +216,69 @@ exports.obtenerMedicosporEspecialidad = async (req, res) => {
         res.status(500).send('Hubo un error al obtener los médicos');
     }
 };
+
+*/
+exports.obtenerMedicosporEspecialidad = async (req, res) => {
+    try {
+        const { especialidad_id } = req.params;
+
+        // Verificar si el ID de especialidad es válido
+        if (!mongoose.Types.ObjectId.isValid(especialidad_id)) {
+            return res.status(400).json({ msg: 'ID de especialidad no válido' });
+        }
+
+        // Verificar si la especialidad existe
+        const especialidad = await Especialidad.findById(especialidad_id);
+        if (!especialidad) {
+            return res.status(404).json({ msg: 'No existe la especialidad' });
+        }
+
+        // Obtener médicos que tienen esta especialidad
+        const medicos = await Medico.find({ especialidades: especialidad_id })
+            .select('nombre especialidades') // Selecciona solo los campos necesarios
+            .populate('especialidades', 'nombre'); // Poblar detalles de especialidades
+
+        if (!medicos || medicos.length === 0) {
+            return res.status(404).json({ msg: 'No se encontraron médicos para esta especialidad' });
+        }
+
+        // Obtener fecha actual
+        const hoy = new Date();
+        hoy.setHours(0, 0, 0, 0); // Asegurarse de comparar desde el inicio del día
+
+        // Agregar la cantidad de turnos disponibles posteriores al día de hoy usando agregación
+        const turnosDisponibles = await Turno.aggregate([
+            {
+                $match: {
+                    estado: 'Disponible',
+                    fecha: { $gt: hoy }, // Solo turnos posteriores a hoy
+                    medico_id: { $in: medicos.map(m => m._id) },
+                },
+            },
+            {
+                $group: {
+                    _id: '$medico_id',
+                    count: { $sum: 1 },
+                },
+            },
+        ]);
+
+        // Mapear los médicos con su cantidad de turnos disponibles
+        const medicosConTurnos = medicos.map(medico => {
+            const turnos = turnosDisponibles.find(t => t._id.toString() === medico._id.toString());
+            return {
+                ...medico._doc,
+                turnosDisponibles: turnos ? turnos.count : 0,
+            };
+        });
+
+        res.json(medicosConTurnos);
+    } catch (error) {
+        console.error('Error al obtener médicos por especialidad:', error.message);
+        res.status(500).json({ msg: 'Hubo un error al obtener los médicos' });
+    }
+};
+
 exports.obtenerTurnosDelMedico = async (req, res) => {
     try {
         const medicoId = req.params.medicoId;
