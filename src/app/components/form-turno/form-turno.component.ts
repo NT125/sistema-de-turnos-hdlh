@@ -130,11 +130,12 @@ export class FormTurnoComponent implements OnInit {
       .getTurnosMedicoEsp(this.medico_id, idEspecialidad)
       .subscribe({
         next: (data) => {
+          console.log(data);
           this._medicoService.turnos = data;
         },
         error: (e) => {
           this._medicoService.turnos = [];
-         this.toastr.error("Sin turnos");
+          this.toastr.error("Sin turnos");
         },
       });
   };
@@ -246,8 +247,9 @@ export class FormTurnoComponent implements OnInit {
       },
     });
   }
-  formatearFecha(fechaISO: string) {
+  formatearFecha(fechaISO: any) {
     // Convertir la cadena ISO a un objeto Date
+    
     const fecha = new Date(fechaISO);
   
     // Definir las opciones para el formato de la fecha y la hora
@@ -261,7 +263,8 @@ export class FormTurnoComponent implements OnInit {
     this.fechaTurno = `${formatoFecha}, ${formatoHora}`.toString();
   }
   
-  getConsultorio(consultorio:string){
+  getConsultorio(consultorio:any){
+   
     this.consultorio = consultorio;
   }
 
@@ -269,7 +272,8 @@ export class FormTurnoComponent implements OnInit {
     this.doctor = `${apellido} ${nombre}`
   }
 
-  getEspecialidad(esp:string){
+  getEspecialidad(esp:any){
+    
     this.especialidad = esp
   }
   

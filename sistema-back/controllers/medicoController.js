@@ -198,11 +198,15 @@ exports.obtenerMedicosporEspecialidad = async (req, res) => {
         // Agregar la cantidad de turnos disponibles para cada médico
         const medicosConTurnos = await Promise.all(
             medicos.map(async (medico) => {
+                const hoy = new Date();
+                hoy.setHours(0, 0, 0, 0); // Asegurarse de comparar desde el inicio del día
+        
                 const turnosDisponibles = await Turno.countDocuments({
                     medico_id: medico._id,
                     estado: 'Disponible', // Suponiendo que el estado "disponible" indica que el turno está libre
+                    fecha: { $gt: hoy }, // Solo turnos posteriores a hoy
                 });
-               
+        
                 return {
                     ...medico._doc,
                     turnosDisponibles,
@@ -331,14 +335,14 @@ exports.obtenerTurnosMedicoEspDisponibles = async (req, res) => {
             fecha: { $gt: hoy }, // Solo turnos posteriores al día actual
         })
             .populate('paciente_id', 'dni nombre') // Opcional: Poblar detalles del paciente
-            .populate('especialidad_id', 'nombre') // Opcional: Poblar detalles de la especialidad
+            .populate('especialidad_id', 'nombreEsp') // Opcional: Poblar detalles de la especialidad
             .populate('obras_sociales', 'nombreOS') // Opcional: Poblar detalles de las obras sociales
             .exec();
 
         if (turnos.length === 0) {
             return res.status(404).json({ msg: 'No se encontraron turnos disponibles para el médico con la especialidad especificada' });
         }
-
+        
         res.json(turnos);
     } catch (error) {
         console.error('Error al obtener turnos disponibles:', error.message);

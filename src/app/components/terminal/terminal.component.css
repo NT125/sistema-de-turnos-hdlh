@@ -27,10 +27,33 @@ select {
   text-align: center;
   font-size: 36px;
 }
+select {
+  width: 100%; /* Ajusta el ancho según sea necesario */
+  max-height: 200px; /* Altura máxima para que se muestre el scroll */
+  overflow-y: auto; /* Forzar el scroll vertical si el contenido excede */
+}
 
+/* Personalización de la barra de desplazamiento en navegadores basados en WebKit */
+select::-webkit-scrollbar {
+  width: 50px; /* Ancho de la barra */
+}
+
+select::-webkit-scrollbar-thumb {
+  background-color: #888; /* Color de la barra de desplazamiento */
+  border-radius: 10px; /* Bordes redondeados */
+}
+
+select::-webkit-scrollbar-thumb:hover {
+  background-color: #555; /* Color de la barra al pasar el mouse */
+}
+
+select::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Fondo de la barra de desplazamiento */
+  border-radius: 10px;
+}
 .terminal {
   background: linear-gradient(180deg, #ffffff, #ecf5ff);
-  height: 720px;
+  height: 768px;
 }
 
 .logo {
@@ -84,6 +107,29 @@ option {
   background-color: #fff;
   max-height: 250px !important;
 }
+.card-input-element {
+  display: none;
+}
+
+.card-input {
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.card-input:hover {
+  cursor: pointer;
+}
+
+.card-input-element:checked+.card-input {
+  outline: solid 4px var(--verde);
+  background-color: var(--verdeC);
+
+  .turno-titulo-text,
+  .turno-text {
+      color: #058824;
+  }
+}
+
 
 .small-button {
   padding: 20px;
@@ -119,13 +165,13 @@ option {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 10px;
-  width: 400px;
+  width: 300px;
   margin: 0 auto;
 }
 
 .key {
-  width: 80px;
-  height: 80px;
+  width: 50px;
+  height: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -149,7 +195,8 @@ option {
 }
 
 .keyLetter {
-  width: 40px;
+  width: 50px;
+  height: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -206,4 +253,10 @@ option {
 
 .key.capslock:hover {
   background-color: #d39e00;
+}
+
+@media print {
+  button {
+    display: none;
+  }
 }

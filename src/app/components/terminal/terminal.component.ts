@@ -59,6 +59,7 @@ export class TerminalComponent implements OnInit{
     this.turno = new TurnoServ('0', new Date(), '0', '0', '0', 0);
   }
 
+  //Teclado
   onKeyPress(key: string): void {
     const currentDNI = this.turnoForm.get('pacienteDNI')?.value || '';
     this.turnoForm.get('pacienteDNI')?.setValue(currentDNI + key);
@@ -88,7 +89,7 @@ export class TerminalComponent implements OnInit{
     const currentName = this.turnoForm.get('pacienteNombre')?.value || '';
     this.turnoForm.get('pacienteNombre')?.setValue(currentName.slice(0, -1));
   }
-
+//Fin teclado
   ngOnInit(): void {
     this._medicoService.medicos = [];
     this.cargarObras();
@@ -207,12 +208,16 @@ export class TerminalComponent implements OnInit{
       this.toastr.error("Ingrese una Obra correctamente");
       return;
     }
+    if (this.turnoForm.invalid) {
+      this.toastr.error("Todos los campos deben estar completos y correctos.");
+      return;
+    }
     this.turno.paciente_id = sessionStorage.getItem('id');
     this.turno.nombreTerminal=this.turnoForm.get('pacienteNombre')?.value;
     this.turno.dniTerminal=this.turnoForm.get('pacienteDNI')?.value;
     
     this.turno.estado = 'Ocupado';
-    console.log(this.turnoForm)
+    
     this._turnoService.putTurno(this.turno).subscribe({
       next: (actua) => {
         if (actua.status == '2') {

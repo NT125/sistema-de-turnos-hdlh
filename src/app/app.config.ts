@@ -23,6 +23,7 @@ export const appConfig: ApplicationConfig = {
           timeOut: 4000,
           newestOnTop: false,
           positionClass: "toast-top-left",
+          
         }
       )
     )

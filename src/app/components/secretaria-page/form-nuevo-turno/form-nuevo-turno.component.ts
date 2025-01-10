@@ -68,18 +68,19 @@ export class FormNuevoTurnoComponent implements OnInit , OnDestroy {
   getTurno() {
     this._turnoService.getTurno(this.idTurno).subscribe({
       next:(data) => {
-        console.log(data)
+        console.log(data.especialidad_id)
         const fechaFormateada = this.formatDate(data.fecha);
 
         this.turnoForm = this.fb.group({
-          especialidad: [data.especialidad_id, Validators.required],
-          medico: [data.medico_id, Validators.required],
+          especialidad: [data.especialidad_id._id, Validators.required],
+          medico: [data.medico_id._id, Validators.required],
           fecha: [fechaFormateada,Validators.required],
           duracion: [data.duracion, Validators.required],
           consultorio: [data.consultorio, Validators.required],
           estado:[data.estado]
         })
-        this.preCargarMedicos(data.especialidad_id);
+        
+        this.preCargarMedicos(data.especialidad_id._id);
       },
       error:(e) => {
         console.log(e);
@@ -146,61 +147,7 @@ export class FormNuevoTurnoComponent implements OnInit , OnDestroy {
     })
 
   }
-  /*
-  agregarTurno() {
-    if (this.turnoForm.invalid) {
-      this.toastr.error("Todos los campos deben estar completos");
-      return;
-    }
-    const fechaRaw = this.turnoForm.get('fecha')?.value;
-    const fechaISO = new Date(fechaRaw).toISOString();
-    const TURNO: TurnoServ = {
-      medico_id: this.turnoForm.get('medico')?.value,
-      especialidad_id: this.turnoForm.get('especialidad')?.value,
-      fecha: new Date(fechaISO),
-      duracion: this.turnoForm.get('duracion')?.value,
-      consultorio: this.turnoForm.get('consultorio')?.value,
-      estado: "Disponible"
-
-    }
-    console.log(TURNO.fecha)
-    this._turnoService.postTurno(TURNO).subscribe({
-      next: (data) => {
-
-        this.toastr.success(data.msg);
-
-        this._medicoService.getMedico(this.turnoForm.get('medico')?.value).subscribe({
-          next: (data) => {
-            let medico = data;
-            medico.disponibles = medico.disponibles + 1;
-            console.log(medico);
-            this._medicoService.putMedico(data).subscribe({
-              next: (data) => {
-                console.log(data);
-
-              },
-              error: (e) => {
-                console.log(e);
-              },
-
-            })
-
-          },
-          error: (e) => {
-            console.log(e);
-          },
-
-        })
-        this.router.navigateByUrl('secretaria');
-
-      },
-      error: (e) => {
-        console.log(e);
-      },
-
-    })
-
-  }*/
+  
     agregarTurno() {
       if (this.turnoForm.invalid) {
         this.toastr.error("Todos los campos deben estar completos");

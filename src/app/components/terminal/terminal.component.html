@@ -7,13 +7,6 @@
 	</div>
 
 	<form action="#" [formGroup]="turnoForm" (ngSubmit)="finalizarTurno()">
-
-		<!-- <div *ngIf="pasoActual == 1" class="flex-column paso">
-			<h1>Paso 1: DNI</h1>
-			<h2>Introduzca su número de documento.</h2>
-			<input formControlName="pacienteDNI" class="dni-input" type="number" name="dni" id="dni">
-		</div> -->
-
 		<div *ngIf="pasoActual === 1" class="flex-column paso">
 			<h1>Paso 1: DNI</h1>
 			<h2>Introduzca su número de documento.</h2>
@@ -61,14 +54,14 @@
 					<div class="card-container" >
 						<div class="card" *ngFor="let medico of _medicoService.medicos" (click)="cargarTurnos(medico._id)" 
 						>
-							<label for="medicoID">
-								<input type="radio" name="medico" id="medicoID" class="card-input-element" />
+							<label for="{{ medico._id }}">
+								<input type="radio" name="medico" id="{{ medico._id }}" class="card-input-element" />
 								<div class="card-input">
 									<div class="turno-titulo-text">
 										{{ medico.apellido }} {{ medico.nombre }}
 									</div>
 									<div class="turno-text">
-										Turnos Disponibles: {{ medico.disponibles }}
+										Turnos Disponibles: {{ medico.turnosDisponibles }}
 									</div>
 								</div>
 							</label>
@@ -145,5 +138,6 @@
 		<button *ngIf="pasoActual > 0" class="option-pill-access" (click)="retroceder()">Paso Anterior</button>
 		<button *ngIf="pasoActual < 5" class="option-pill-access lblue-button-access" (click)="avanzar()">Paso Siguiente</button>
 		<button *ngIf="pasoActual === 5" class="option-pill-access green-button-access" type="submit" (click)="finalizarTurno()">Confirmar Turno</button>
+		<!--<button *ngIf="pasoActual === 5" class="option-pill-access green-button-access" type="submit" onclick="window.print()">Imprimir</button>-->
 	</div>
 </div>

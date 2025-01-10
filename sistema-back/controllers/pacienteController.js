@@ -236,15 +236,23 @@ exports.obtenerTurnosDelPaciente = async (req, res) => {
         const pacienteId = req.params.pacienteId;
 
         // Verificar si el paciente existe (opcional, si quieres asegurarte de que el paciente exista)
-        let paciente = await Paciente.findById(pacienteId);
+        const paciente = await Paciente.findById(pacienteId);
         if (!paciente) {
-             return res.status(404).json({ msg: 'No existe el paciente' });
+            return res.status(404).json({ msg: 'No existe el paciente' });
         }
 
-        // Obtener turnos del paciente
-        let turnos = await Turno.find({ paciente_id: pacienteId , estado:'Ocupado'})
-            .populate('medico_id', 'nombre apellido') // Opcional: Poblar detalles del médico
-            .populate('obras_sociales', 'nombreOS') // Opcional: Poblar detalles de las obras sociales
+        // Obtener fecha actual y ajustarla al inicio del día
+        const hoy = new Date();
+        hoy.setHours(0, 0, 0, 0);
+
+        // Obtener turnos del paciente con fecha igual o posterior a hoy
+        const turnos = await Turno.find({
+            paciente_id: pacienteId,
+            estado: 'Ocupado', // Estado ocupado
+            fecha: { $gte: hoy }, // Fecha igual o posterior a hoy
+        })
+            .populate('medico_id', 'nombre apellido') // Poblar detalles del médico
+            .populate('obras_sociales', 'nombreOS') // Poblar detalles de las obras sociales
             .exec();
 
         if (!turnos || turnos.length === 0) {
@@ -256,7 +264,8 @@ exports.obtenerTurnosDelPaciente = async (req, res) => {
         console.error('Error al obtener los turnos del paciente:', error.message);
         res.status(500).send('Hubo un error al obtener los turnos');
     }
-}
+};
+
 //LOGIN
 
 exports.register = async(req,res) => {

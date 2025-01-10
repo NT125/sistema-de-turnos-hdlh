@@ -46,11 +46,7 @@
       <div
         *ngFor="let turno of _medicoService.turnos"
         class="card"
-        (click)="
-          formatearFecha(turno.fecha.toString());
-          getConsultorio(turno.consultorio.toString());
-          getEspecialidad(turno.especialidad_id.nombreEsp.toString())
-        "
+        (click)="formatearFecha(turno.fecha.toString());getConsultorio(turno.consultorio.toString());getEspecialidad(turno.especialidad_id.nombreEsp.toString())"
       >
         <label for="{{ turno._id }}">
           <input
