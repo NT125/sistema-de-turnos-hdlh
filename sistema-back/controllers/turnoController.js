@@ -363,7 +363,7 @@ exports.actualizarTurno = async (req, res) => {
         console.log(error);
         res.json({
             'status': '0',
-            'msg': 'Error en el server',
+            'msg': 'ERROR! Por favor cargue sus datos correctamente',
             
         }) 
     }

@@ -18,19 +18,9 @@ import { MisTurnosComponent } from './components/mis-turnos/mis-turnos.component
   imports: [
     RouterModule,
     RouterOutlet,
-    RouterLink,
-    RouterLinkActive,
-    NavComponent,
-    BodyComponent,
+  
     FooterComponent,
-    EsepcialidadesPageComponent,
-    AdminPageComponent,
-    MedicosListComponent,
-    UsuariosListComponent,
-    OptionCardComponent,
-    MedicoFormComponent,
-    SecretariaPageComponent,
-    MisTurnosComponent,
+   
 ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'

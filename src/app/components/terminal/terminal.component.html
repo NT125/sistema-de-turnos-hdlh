@@ -133,11 +133,22 @@
 
 		</div>		
 	</form>
+	<div *ngIf="pasoActual == 6" class="flex-column paso" id="bienvenida">
+		<h2>¡Turno registrado! Por favor, recuerda llegar 15 minutos antes para completar la admisión. Aquí tienes los detalles:</h2>
+			<h2><strong>Nombre:</strong> {{turnoForm.get('pacienteNombre')?.value}}</h2>
+			<h2><strong>DNI:</strong> {{turnoForm.get('pacienteDNI')?.value}}</h2>
+			<h2><strong>Fecha:</strong> {{ turno.fecha | date : "EEEE dd/MM" }}, a las {{ turno.fecha | date : "shortTime" }}</h2>
+			<h2><strong>Lugar:</strong> {{turno.consultorio}}</h2>
+			<h2><strong>Doctor:</strong> {{doctor}}</h2>
+			<h2>Si lo necesitas, ¡puedes copiar estos datos para tenerlos a mano! 📝</h2>
+	</div>
 
-	<div *ngIf="pasoActual > 0" class="botonera flex-row">
-		<button *ngIf="pasoActual > 0" class="option-pill-access" (click)="retroceder()">Paso Anterior</button>
+	<div *ngIf="pasoActual > 0 " class="botonera flex-row">
+		<button *ngIf="pasoActual > 0 && pasoActual < 6" class="option-pill-access" (click)="retroceder()">Paso Anterior</button>
 		<button *ngIf="pasoActual < 5" class="option-pill-access lblue-button-access" (click)="avanzar()">Paso Siguiente</button>
 		<button *ngIf="pasoActual === 5" class="option-pill-access green-button-access" type="submit" (click)="finalizarTurno()">Confirmar Turno</button>
+		<button *ngIf="pasoActual === 6" class="option-pill-access green-button-access" type="submit" (click)="irFinal()">Finalizar</button>
+		
 		<!--<button *ngIf="pasoActual === 5" class="option-pill-access green-button-access" type="submit" onclick="window.print()">Imprimir</button>-->
 	</div>
 </div>

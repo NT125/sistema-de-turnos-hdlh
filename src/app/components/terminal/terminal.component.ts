@@ -103,7 +103,6 @@ export class TerminalComponent implements OnInit{
     this._especialidadService.getEspecialidades().subscribe({
       next:(data) => {
         this._especialidadService.especialidades=data;
-        
       },
       error:(e) => {
         console.log(e);
@@ -223,10 +222,12 @@ export class TerminalComponent implements OnInit{
         if (actua.status == '2') {
           this.toastr.success('Turno agendado!');
         
-          this.pasoActual = 0;
+          this.pasoActual = 6;
           this._medicoService.getMedico(this.medico_id).subscribe({
             next: (data) => {
               let medico = data;
+              this.doctor= medico.apellido+""+medico.nombre;
+              
               medico.disponibles = medico.disponibles - 1;
               console.log(medico);
               this._medicoService.putMedico(data).subscribe({
@@ -260,7 +261,7 @@ export class TerminalComponent implements OnInit{
 
   avanzar = () => {
     let paso4:Boolean=false;
-    if (this.pasoActual < 5){
+    if (this.pasoActual < 6){
       this.pasoActual++;
       
     }
@@ -276,6 +277,19 @@ export class TerminalComponent implements OnInit{
       this.pasoActual--;
     }
     console.log("Paso Actual: " + this.pasoActual);
+  }
+  irFinal(){
+    this.turnoForm = this.fb.group({
+      pacienteDNI:['',Validators.required],
+      pacienteNombre:['',Validators.required],
+      especialidad:['',Validators.required],
+      obra1: ['',Validators.required],
+      obra2: [''],
+      obra3: [''],
+      turno: ['', Validators.required],
+    });
+    this.turno = new TurnoServ('0', new Date(), '0', '0', '0', 0);
+    this.pasoActual = 0;
   }
 
 }
