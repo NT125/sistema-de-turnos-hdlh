@@ -134,13 +134,24 @@
 		</div>		
 	</form>
 	<div *ngIf="pasoActual == 6" class="flex-column paso" id="bienvenida">
-		<h2>¡Turno registrado! Por favor, recuerda llegar 15 minutos antes para completar la admisión. Aquí tienes los detalles:</h2>
-			<h2><strong>Nombre:</strong> {{turnoForm.get('pacienteNombre')?.value}}</h2>
-			<h2><strong>DNI:</strong> {{turnoForm.get('pacienteDNI')?.value}}</h2>
-			<h2><strong>Fecha:</strong> {{ turno.fecha | date : "EEEE dd/MM" }}, a las {{ turno.fecha | date : "shortTime" }}</h2>
-			<h2><strong>Lugar:</strong> {{turno.consultorio}}</h2>
-			<h2><strong>Doctor:</strong> {{doctor}}</h2>
-			<h2>Si lo necesitas, ¡puedes copiar estos datos para tenerlos a mano! 📝</h2>
+		<h1 class="green-text">¡Turno registrado!</h1>
+		<span class="info">Por favor, recuerda llegar 15 minutos antes para completar la admisión. Aquí tienes los detalles:</span>
+		
+		<ul class="turno-info">
+			<li><b class="blue-text">Fecha: </b>{{ turno.fecha | date : "EEEE dd/MM" }}, a las {{ turno.fecha | date : "shortTime" }}</li>
+			<li><b class="blue-text">Doctor: </b>{{ doctor }}</li>
+			<li><b class="blue-text">Lugar: </b>{{ turno.consultorio }}</li>
+			<li><b class="blue-text">Paciente: </b>{{ turnoForm.get('pacienteNombre')?.value }}</li>
+			<li><b class="blue-text">DNI: </b>{{ turnoForm.get('pacienteDNI')?.value }}</li>
+		</ul>
+		
+		<!-- <h2><span class="blue-text">Fecha:</span> {{ turno.fecha | date : "EEEE dd/MM" }}, a las {{ turno.fecha | date : "shortTime" }}</h2>
+		<h2><span class="blue-text">Doctor:</span> {{doctor}}</h2>
+		<h2><span class="blue-text">Lugar:</span> {{turno.consultorio}}</h2>
+		<h2><span class="blue-text">Paciente:</span> {{turnoForm.get('pacienteNombre')?.value}}</h2>
+		<h2><span class="blue-text">DNI:</span> {{turnoForm.get('pacienteDNI')?.value}}</h2> -->
+
+		<span class="info">Si lo necesitas, ¡puedes copiar estos datos para tenerlos a mano! 📝</span>
 	</div>
 
 	<div *ngIf="pasoActual > 0 " class="botonera flex-row">
