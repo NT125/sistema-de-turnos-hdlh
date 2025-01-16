@@ -43,16 +43,16 @@ select::-webkit-scrollbar {
 }
 
 select::-webkit-scrollbar-thumb {
-  background-color: #888; /* Color de la barra de desplazamiento */
+  background-color: #007bff; /* Color de la barra de desplazamiento */
   border-radius: 10px; /* Bordes redondeados */
 }
 
 select::-webkit-scrollbar-thumb:hover {
-  background-color: #555; /* Color de la barra al pasar el mouse */
+  background-color: #0056b3; /* Color de la barra al pasar el mouse */
 }
 
 select::-webkit-scrollbar-track {
-  background: #f1f1f1; /* Fondo de la barra de desplazamiento */
+  background: #fff; /* Fondo de la barra de desplazamiento */
   border-radius: 10px;
 }
 .terminal {
