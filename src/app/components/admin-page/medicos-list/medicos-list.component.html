@@ -29,14 +29,14 @@
 							<th>Matricula</th>
 							<th>Apellido</th>
 							<th>Nombres</th>
-							<th>Especialiad</th>
+							<th>Especialidad</th>
 							<th>Acciones</th>
 						</tr>
 						<tr *ngFor="let medico of _medicoService.medicos">
 							<td>{{ medico.legajo }}</td>
 							<td>{{ medico.apellido }}</td>
 							<td>{{ medico.nombre }}</td>
-							<td>{{medico.especialidades[0].nombreEsp}}</td>
+							<td>{{medico?.especialidades[0]?.nombreEsp}}</td>
 							<td class="actions-cell">
 								<div class="flex-column buttons-container">
 									<button class="option-pill blue-button action-element" type="button"
