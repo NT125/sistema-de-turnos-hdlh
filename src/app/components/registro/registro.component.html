@@ -35,7 +35,7 @@
                         este número)</small></label>
 
                 <div class="flex-row" style="gap: 1rem; margin-top: 1rem;">
-                    <div style="width: 35%;">             
+                    <div style="width: 100%;">             
                         <small>Código de Área</small>           
                         <div class="flex-row">
                             <select id="codArea"  name="codArea" formControlName="codArea">
@@ -242,10 +242,11 @@
                         </div>
                     </div>
 
-                    <div>
-                        <small>Número de Teléfono ej. 2974201981</small>
-                        <input type="text" formControlName="telefono" name="telefono" id="telefono" required>
-                    </div>
+                    
+                </div>
+                <div>
+                    <small>Número de Teléfono Sin guiones, puntos y espacios ej. 2974201981</small>
+                    <input type="text" formControlName="telefono" name="telefono" id="telefono" required>
                 </div>
 
                 <div class="errors" *ngIf="pacienteForm.get('telefono')?.invalid && pacienteForm.get('telefono')?.touched">
