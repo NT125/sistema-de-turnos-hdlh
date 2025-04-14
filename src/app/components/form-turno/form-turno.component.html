@@ -77,6 +77,7 @@
     <h2>Seleccione sus Obras Sociales</h2>
     <label for="user-dni">Obra Social 1</label>
     <select name="obra" id="obra" formControlName="obra1" required>
+      <option value="67e742711df3670626c0ea99" selected="selected"> SIN OBRA SOCIAL</option>
       <option value="{{ obra._id }}" *ngFor="let obra of _obraService.obras">
         {{ obra.nombreOS }}
       </option>
@@ -85,17 +86,21 @@
       <label for="user-dni">Obra Social 2</label>
 
       <select name="obra2" id="obra2" formControlName="obra2">
+       			
         <option
           value="{{ obra1._id }}"
           *ngFor="let obra1 of _obraService.obras1"
         >
           {{ obra1.nombreOS }}
         </option>
+       
+				
       </select>
     </div>
     <div *ngIf="obra2">
       <label for="user-dni">Obra Social 3</label>
       <select name="obra2" id="obra2" formControlName="obra3">
+        
         <option
           value="{{ obra2._id }}"
           *ngFor="let obra2 of _obraService.obras2"

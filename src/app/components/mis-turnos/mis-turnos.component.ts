@@ -50,9 +50,9 @@ export class MisTurnosComponent implements OnInit {
     const now = new Date();
 
     // Resta los tiempos para obtener la diferencia en milisegundos
-    const diffInMinutes = (turnoDate.getTime() - now.getTime()) / 1000 / 60;
+    const diffInMinutes = (turnoDate.getTime() - now.getTime()) / 1000 / 360;
     console.log(diffInMinutes);
-    // Si faltan 30 minutos o menos, devolver false
+    // Si faltan 60 minutos o menos, devolver false
     return diffInMinutes > 60;
   }
   cargarTurnos() {

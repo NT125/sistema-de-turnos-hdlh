@@ -105,6 +105,7 @@
 				<div class="flex-row" style="gap: 2rem; justify-content: center; width: 60%;">
 					<div>
 						<select class="small-select" name="obra0" id="obra0" formControlName="obra1">
+							<option value="67e742711df3670626c0ea99" selected="selected"> SIN OBRA SOCIAL</option>
 							<option *ngFor="let obra of _obraService.obras" value="{{obra._id}}">{{ obra.nombreOS }}</option>
 							
 						</select>
@@ -134,6 +135,7 @@
 		</div>		
 	</form>
 	<div *ngIf="pasoActual == 6" class="flex-column paso" id="bienvenida">
+		<img class="logo" src="logos/logo-transp.png" alt="">
 		<h1 class="green-text">¡Turno registrado!</h1>
 		<span class="info">Por favor, recuerda llegar 15 minutos antes para completar la admisión. Aquí tienes los detalles:</span>
 		
@@ -158,8 +160,8 @@
 		<button *ngIf="pasoActual > 0 && pasoActual < 6" class="option-pill-access" (click)="retroceder()">Paso Anterior</button>
 		<button *ngIf="pasoActual < 5" class="option-pill-access lblue-button-access" (click)="avanzar()">Paso Siguiente</button>
 		<button *ngIf="pasoActual === 5" class="option-pill-access green-button-access" type="submit" (click)="finalizarTurno()">Confirmar Turno</button>
-		<button *ngIf="pasoActual === 6" class="option-pill-access green-button-access" type="submit" (click)="irFinal()">Finalizar</button>
+		<button *ngIf="pasoActual === 6" class="option-pill-access green-button-access" type="submit" onclick="window.print()" (click)="irFinal()">Finalizar</button>
 		
-		<!--<button *ngIf="pasoActual === 5" class="option-pill-access green-button-access" type="submit" onclick="window.print()">Imprimir</button>-->
+	<!--	<button *ngIf="pasoActual === 6" class="option-pill-access green-button-access" type="submit" ">Imprimir</button>-->
 	</div>
 </div>

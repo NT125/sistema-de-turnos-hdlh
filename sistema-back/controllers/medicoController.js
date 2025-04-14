@@ -334,6 +334,7 @@ exports.obtenerTurnosMedicoEspDisponibles = async (req, res) => {
             estado: "Disponible",
             fecha: { $gt: hoy }, // Solo turnos posteriores al día actual
         })
+            .sort({ fecha: 1 })
             .populate('paciente_id', 'dni nombre') // Opcional: Poblar detalles del paciente
             .populate('especialidad_id', 'nombreEsp') // Opcional: Poblar detalles de la especialidad
             .populate('obras_sociales', 'nombreOS') // Opcional: Poblar detalles de las obras sociales
