@@ -36,7 +36,7 @@ export class TerminalComponent implements OnInit{
   especialidadNombre:String=""
   keys: string[] = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
   keysLetter: string[] = 'QWERTYUIOPASDFGHJKLÑ ZXCVBNM'.split('');
-  isCapsLock: boolean = false;
+  isCapsLock: boolean = true;
 
   constructor(
     private fb: FormBuilder,
@@ -83,6 +83,12 @@ export class TerminalComponent implements OnInit{
 
   onCapsLock(): void {
     this.isCapsLock = !this.isCapsLock;
+    if(this.isCapsLock){
+      this.keysLetter = 'QWERTYUIOPASDFGHJKLÑ ZXCVBNM'.split('');
+    }
+    else{
+      this.keysLetter = 'qwertyuiopasdfghjklñ zxcvbnm'.split('');
+    }
   }
 
   onDeleteLetter(): void {

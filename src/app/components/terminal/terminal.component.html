@@ -60,7 +60,7 @@
 									<div class="turno-titulo-text">
 										{{ medico.apellido }} {{ medico.nombre }}
 									</div>
-									<div class="turno-text">
+									<div class="turno-text" >
 										Turnos Disponibles: {{ medico.turnosDisponibles }}
 									</div>
 								</div>
@@ -69,10 +69,11 @@
 					</div>
 				</div>
 
-				<div class="flex-column section">
+				<div class="flex-column section"  >
 					<h3>TURNO</h3>
-					<div class="card-container" >
-						<div class="card" *ngFor="let turno of _medicoService.turnos">
+					<div class="card-container" id="turnera">
+						
+						<div class="card"  *ngFor="let turno of _medicoService.turnos">
 							<label for="{{ turno._id }}" >
 								<input formControlName="turno" value="{{ turno._id }}" type="radio"  name="turno" id="{{ turno._id }}"
 									class="card-input-element" />
@@ -90,7 +91,8 @@
 									</ul>
 								</div>
 							</label>
-						</div>
+						
+					</div>
 					</div>
 				</div>
 
@@ -138,7 +140,6 @@
 		<img class="logo" src="logos/logo-transp.png" alt="">
 		<h1 class="green-text">¡Turno registrado!</h1>
 		<span class="info">Por favor, recuerda llegar 15 minutos antes para completar la admisión. Aquí tienes los detalles:</span>
-		
 		<ul class="turno-info">
 			<li><b class="blue-text">Fecha: </b>{{ turno.fecha | date : "EEEE dd/MM" }}, a las {{ turno.fecha | date : "shortTime" }}</li>
 			<li><b class="blue-text">Doctor: </b>{{ doctor }}</li>
@@ -152,8 +153,7 @@
 		<h2><span class="blue-text">Lugar:</span> {{turno.consultorio}}</h2>
 		<h2><span class="blue-text">Paciente:</span> {{turnoForm.get('pacienteNombre')?.value}}</h2>
 		<h2><span class="blue-text">DNI:</span> {{turnoForm.get('pacienteDNI')?.value}}</h2> -->
-
-		<span class="info">Si lo necesitas, ¡puedes copiar estos datos para tenerlos a mano! 📝</span>
+		<span></span>
 	</div>
 
 	<div *ngIf="pasoActual > 0 " class="botonera flex-row">
