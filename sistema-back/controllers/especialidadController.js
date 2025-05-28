@@ -59,7 +59,7 @@ exports.actualizarEspecialidad = async(req,res) => {
         console.error('Error al obtener la especialidad:', error.message);
 
         if (error.name === 'CastError') {
-            // Error de formato de ObjectId
+            // Error de formato
             return res.status(400).json({ msg: 'Formato de ID no válido' });
         }
 
