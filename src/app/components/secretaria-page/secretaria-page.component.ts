@@ -268,14 +268,19 @@ export class SecretariaPageComponent implements OnInit{
     const confirmacion = window.confirm('¿Estás seguro de que deseas cancelar el turno?');
     
     if (confirmacion) {
-      const target = turno.paciente_id.telefono;
-      const paciente = turno.paciente_id.nombre;
+      let target
+      let paciente
+      if (turno.paciente_id != null){
+          target = turno.paciente_id.telefono;
+          paciente = turno.paciente_id.nombre;
+      }
       const fechaHora = this.formatearFecha(turno.fecha);
       const doctor = turno.medico_id.nombre + turno.medico_id.apellido;
       const consultorio = turno.consultorio;
       const especialidad = turno.especialidad_id.nombreEsp;
-
+      
       if (turno.paciente_id != null){
+       
         this.wppService.sendMessageCancelDate(target, paciente, fechaHora, doctor, consultorio, especialidad).subscribe({
           next: (data:any) => {
           },
@@ -304,6 +309,7 @@ export class SecretariaPageComponent implements OnInit{
         console.log(e);
       },
     });
+    this.hideMenuTurno();
   }
   reprogramarTurno(id:any){
     this.router.navigateByUrl("/secretaria/nuevo-turno/"+id);
