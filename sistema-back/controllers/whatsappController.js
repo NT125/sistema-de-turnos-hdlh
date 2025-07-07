@@ -41,7 +41,8 @@ exports.recordatorio = async(target, paciente, fechaHora, doctor, consultorio, e
   // Formatear la hora
   const opcionesHora = { hour: 'numeric', minute: '2-digit', hour12: true };
   const horaFormateada = new Intl.DateTimeFormat('es-ES', opcionesHora).format(fecha);
-
+  
+  horaFormateada.setHours(horaFormateada.getHours()-3);
   // Concatenar fecha y hora
   const fechaHoraFormateada = `${fechaFormateada.charAt(0).toUpperCase() + fechaFormateada.slice(1)}, ${horaFormateada}`;
 

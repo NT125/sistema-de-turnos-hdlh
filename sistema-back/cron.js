@@ -34,7 +34,7 @@ async function procesarTurnos() {
       if (fechaTurno.toDateString() === fechaActual.toDateString()) {
 
         // let doctor = turnos[i].medico_id.apellido
-        if (turnos[i].medico_id != null && turnos[i].paciente_id != null && turnos[i].estado == 'Ocupado') {
+        if ( turnos[i].medico_id != null && turnos[i].paciente_id != null && turnos[i].estado == 'Ocupado') {
           
           wpp.recordatorio(
             turnos[i].paciente_id.telefono,
@@ -78,6 +78,4 @@ async function eliminarTurnos() {
     }
   }
 }
-
-
 
