@@ -3,7 +3,7 @@ const Turno = require("./models/Turno");
 const wpp = require('./controllers/whatsappController');
 require('dotenv').config({ path: 'variables.env'});
 
-cron.schedule("00 11 * * *", () => {
+cron.schedule("00 9 * * *", () => {
   obtenerTurnos()
   procesarTurnos();
   eliminarTurnos()
