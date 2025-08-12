@@ -272,7 +272,7 @@ export class TerminalComponent implements OnInit{
       
     }
     
-    if(this.pasoActual == 4){
+    if(this.pasoActual == 2){
       this._medicoService.turnos = [];
       this.cargarMedicos(this.turnoForm.get('especialidad')?.value);
     }
