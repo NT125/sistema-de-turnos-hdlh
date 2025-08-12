@@ -7,35 +7,35 @@
 	</div>
 
 	<form action="#" [formGroup]="turnoForm" (ngSubmit)="finalizarTurno()">
-		<div *ngIf="pasoActual === 1" class="flex-column paso">
-			<h1>Paso 1: DNI</h1>
+		<div *ngIf="pasoActual === 3" class="flex-column paso">
+			<h1>Paso 3: DNI</h1>
 			<h2>Introduzca su número de documento.</h2>
 			<input formControlName="pacienteDNI" class="dni-input" type="text" id="dni" />
 		</div>
 		
-		<div *ngIf="pasoActual === 1" class="keyboard">
+		<div *ngIf="pasoActual === 3" class="keyboard">
 			<button type="button" class="key" *ngFor="let key of keys" (click)="onKeyPress(key)">{{ key }}</button>
 			<button type="button" class="key delete" (click)="onDelete()">⌫</button>
 		</div>
 		
-		<div *ngIf="pasoActual == 2" class="flex-column paso">
-			<h1>Paso 2: Nombre</h1>
+		<div *ngIf="pasoActual == 4" class="flex-column paso">
+			<h1>Paso 4: Nombre</h1>
 			<h2>Introduzca su nombre.</h2>
 			<input formControlName="pacienteNombre" class="dni-input" type="text" name="nombre" id="nombre">
 		</div>
 		
-		<div *ngIf="pasoActual === 2" class="keyboardLetter">
+		<div *ngIf="pasoActual === 4" class="keyboardLetter">
 			<button type="button" [ngClass]="{ 'hidden': key === ' ' }" class="keyLetter" *ngFor="let key of keysLetter" (click)="onKeyPressLetter(key)">{{ key }}</button>
 		</div>
-		<div *ngIf="pasoActual === 2" class="button-container">
+		<div *ngIf="pasoActual === 4" class="button-container">
 			<button type="button" class="key capslock" (click)="onCapsLock()">Mayúscula</button>
 			<button type="button" class="key space" (click)="onSpace()">Espacio</button>
 			<button type="button" class="key delete" (click)="onDeleteLetter()">⌫</button>
 		</div>
 		
 
-		<div *ngIf="pasoActual == 3" class="flex-column paso">
-			<h1>Paso 3: Especialidad</h1>
+		<div *ngIf="pasoActual == 1" class="flex-column paso">
+			<h1>Paso 1: Especialidad</h1>
 			<h2>¿Para qué médico desea sacar turno?</h2>
 			<select formControlName="especialidad" name="especialidad" id="especialidad">
 				<option value="">Toque aquí</option>
@@ -43,8 +43,8 @@
 			</select>
 		</div>
 
-		<div *ngIf="pasoActual == 4" class="flex-column paso">
-			<h1>Paso 4: Médico y Turno</h1>
+		<div *ngIf="pasoActual == 2" class="flex-column paso">
+			<h1>Paso 2: Médico y Turno</h1>
 			<h2>Seleccione el médico y el turno que desee.</h2>
 
 			<div class="flex-row" style="gap: 3rem; max-width: 1000px;">
