@@ -57,6 +57,15 @@ nav {
     background-color: var(--cianC);
     color: var(--cianO);
 }
+.misturnos-button {
+    background-color:#5bc0de;
+    color: white;
+}
+
+.misturnos-button:hover {
+    background-color: rgba(44, 252, 241, 0.795);
+    color:white;
+}
 /* Estilos exclusivos para el nav en pantallas chicas */
 
 .mobile-nav {

@@ -12,9 +12,10 @@
                 <div class="turno-card" *ngFor="let turno of _pacienteService.turnos">
                     <ul class="turno-info">
                         <li class="turno-titulo-text"> {{turno.fecha | date:"EEEE, dd/MM/yy HH:mm"}} </li>
-                        <li class="turno-text"> Duración: {{turno.duracion}} min </li>
-                        <li class="turno-text"> Medico: {{turno.medico_id.apellido}} {{turno.medico_id.nombre}} </li>
+                        <li class="turno-text">Duración: {{turno.duracion}} min </li>
+                        <li class="turno-text">Medico: {{turno.medico_id.apellido}} {{turno.medico_id.nombre}} </li>
                         <li class="turno-text"> <b>Lugar: {{turno.consultorio}} </b></li>
+                        <li *ngIf="turno.observacion!=null" class="turno-text">Observacion: <br> {{turno.observacion}} </li>
                     </ul>
                     <div class="flex-row">
                         <button *ngIf="canCancelTurno(turno.fecha)" class="option-pill-access red-button-access cancel-turno"

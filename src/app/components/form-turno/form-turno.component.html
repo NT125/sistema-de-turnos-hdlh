@@ -77,7 +77,7 @@
     <h2>Seleccione sus Obras Sociales</h2>
     <label for="user-dni">Obra Social 1</label>
     <select name="obra" id="obra" formControlName="obra1" required>
-      <option value="67e742711df3670626c0ea99" selected="selected"> SIN OBRA SOCIAL</option>
+      <option value="67e742711df3670626c0ea99" selected="selected">PARTICULAR</option>
       <option value="{{ obra._id }}" *ngFor="let obra of _obraService.obras">
         {{ obra.nombreOS }}
       </option>
@@ -128,6 +128,10 @@
       >
         - Quitar Obra
       </button>
+    </div>
+     <div *ngIf='especialidadNombre=="Pediatria" || especialidadNombre=="Diagnostico por imagenes"' class="flex-column" style="margin-bottom: 2rem">
+      <label for="user-observacion">Observacion</label>
+      <textarea formControlName="observacion" style="font-size: 22px" name="" id="" placeholder="Si el turno es para su hija/o o para otra persona, complete los datos de quien recibirá la atención médica APELLIDO, NOMBRE Y DNI"></textarea>
     </div>
     <div class="flex-column">
       <button class="option-pill-access blue-button-access">

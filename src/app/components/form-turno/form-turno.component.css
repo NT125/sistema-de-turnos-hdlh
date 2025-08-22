@@ -143,3 +143,18 @@ label {
         max-width: 30%;
     }
 }
+textarea{
+    display: block;
+    margin: auto;
+    padding: 1rem;
+    width: 100%;          /* más ancho */
+    height: 8rem;        /* más alto */
+
+    border-radius: 0.5rem; /* esquinas redondeadas */
+    background-color: #f9f9f9;
+    border: 1px solid #cccccc;
+
+    font-size: 1rem;      /* texto más grande */
+    font-family: Arial, sans-serif;
+    resize: vertical;     /* permite agrandar en vertical */
+}

@@ -29,6 +29,9 @@ const TurnoSchema = mongoose.Schema({
     duracion:{
         type:Number,
         required:true
+    },
+    observacion:{
+        type:String
     }
 });
 

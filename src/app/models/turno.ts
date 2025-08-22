@@ -15,6 +15,7 @@ export class Turno {
     duracion:Number;
     nombreTerminal?:String;
     dniTerminal?:String;
+    observacion?:String;
     constructor(medico_id:Medico,paciente_id:Paciente,fecha:Date,especialidad_id:Especialidad,obras_sociales:Array<ObraSocial>,estado:String,consultorio:String,duracion:Number){
         this.medico_id=medico_id;
         this.paciente_id=paciente_id;

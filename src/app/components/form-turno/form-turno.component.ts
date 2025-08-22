@@ -11,6 +11,7 @@ import {
   ReactiveFormsModule,
   FormBuilder,
   Validators,
+  FormControl,
 } from '@angular/forms';
 import { TurnoServ } from '../../models/turnoServ';
 import { Turno } from '../../models/turno';
@@ -75,6 +76,7 @@ export class FormTurnoComponent implements OnInit {
       obra1: [''],
       obra2: [''],
       obra3: [''],
+      observacion: new FormControl(),
       turno: ['', Validators.required],
     });
     this.turno = new TurnoServ('0', new Date(), '0', '0', '0', 0);
@@ -90,6 +92,7 @@ export class FormTurnoComponent implements OnInit {
         this.toastr.error("Sin Medicos")
       },
     });
+    console.log(this.especialidadNombre)
   }
   
   cargarMedicos(id: any) {
@@ -181,6 +184,7 @@ export class FormTurnoComponent implements OnInit {
     }
     this.turno.paciente_id = sessionStorage.getItem('id');
     this.turno.estado = 'Ocupado';
+    this.turno.observacion= this.turnoForm.get('observacion')?.value;
     this._turnoService.putTurno(this.turno).subscribe({
       next: (actua) => {
         if (actua.status == '2') {
