@@ -208,13 +208,18 @@ export class FormTurnoComponent implements OnInit {
             });
 
           this.route.navigateByUrl('/');
-        } else {
+        }
+        else if(actua.status=='1'){
+          this.toastr.warning('Este turno ya fue ocupado por otro paciente.');
+        } 
+       
+        else {
           this.toastr.error(actua.msg);
           this.route.navigateByUrl('/');
         }
       },
       error: (e) => {
-        this.toastr.success('Ocurrio un error');
+        this.toastr.error('Ocurrio un error');
         console.log(e);
       },
     });

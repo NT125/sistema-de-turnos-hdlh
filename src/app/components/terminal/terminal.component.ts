@@ -249,7 +249,11 @@ export class TerminalComponent implements OnInit{
               console.log(e);
             },
           });
-        } else {
+        }
+         else if(actua.status=='1'){
+          this.toastr.warning('Este turno ya fue ocupado por otro paciente.');
+        } 
+         else {
           this.toastr.error(actua.msg);
           this.pasoActual = 0;
         }

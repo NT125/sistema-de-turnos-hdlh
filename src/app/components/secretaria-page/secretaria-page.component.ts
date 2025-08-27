@@ -233,7 +233,7 @@ export class SecretariaPageComponent implements OnInit{
   }
   asistio(turno:any){
     turno.estado="Finalizado"
-    this._turnoService.putTurno(turno).subscribe({
+    this._turnoService.putTurnoSecretaria(turno).subscribe({
       next: (actua) => {
         if (actua.status == '2') {
           this.toastr.success('Turno Finalizado!');
@@ -295,7 +295,7 @@ export class SecretariaPageComponent implements OnInit{
   }
   cancelarTurno(turno:any){
     turno.estado="Cancelado"
-    this._turnoService.putTurno(turno).subscribe({
+    this._turnoService.putTurnoSecretaria(turno).subscribe({
       next: (actua) => {
         if (actua.status == '2') {
           this.toastr.success('Turno cancelado!');

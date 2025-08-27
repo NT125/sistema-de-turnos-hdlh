@@ -109,7 +109,35 @@ router.post("/turno-cancelado", async (req, res) => {
     res.status(500).json({ error: "Error al enviar mensaje" });
   }
 });
+/**
+ * Para informar que desde administracion el turno se reprogramo
+ */
+router.post("/turno-reprogramado", async (req, res) => {
+  const { target, paciente, fechaHora, doctor, consultorio, especialidad } =
+    req.body;
 
+  if (!target) {
+    return res
+      .status(400)
+      .json({ error: "Número de destino y mensaje son requeridos" });
+  }
+
+  const mensaje = `*Turno reprogramado*\n\nEstimado/a *${paciente}*. \n\nLamentamos informarle que su cita médica programada con los siguientes detalles ha sido reprogramada por motivos administrativos: \n\n${messageBody(
+    fechaHora,
+    doctor,
+    consultorio,
+    especialidad
+  )} \n\nLe pedimos disculpas por cualquier inconveniente que esta situación pueda causarle.  \n\nAgradecemos su comprensión. \n\nAtentamente, *Hospital Distrital las Heras*`;
+
+  try {
+    const chatId = `${target}@c.us`;
+    const response = await client.sendMessage(chatId, mensaje);
+    res.json({ message: "Mensaje enviado", response });
+  } catch (error) {
+    console.error("Error al enviar mensaje:", error);
+    res.status(500).json({ error: "Error al enviar mensaje" });
+  }
+});
 router.post("/recover-password", async (req, res) => {
   const { target, link } = req.body;
 

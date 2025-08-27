@@ -16,6 +16,7 @@ router.get('/consultorio/:termino', turnoController.obtenerTurnosPorConsultorio)
 router.get('/especialidad/:termino', turnoController.obtenerTurnosPorEspecialidad);
 router.get('/:id',turnoController.obtenerTurno);
 router.put('/:id', turnoController.actualizarTurno);
+router.put('/secretaria/:id', turnoController.actualizarTurnoSecretaria);
 router.delete('/:id', turnoController.eliminarTurno);
 router.get('/paciente/:paciente_id', turnoController.getTurnosByPaciente);
 module.exports = router;

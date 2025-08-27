@@ -129,7 +129,7 @@ export class FormNuevoTurnoComponent implements OnInit , OnDestroy {
       estado: this.turnoForm.get('estado')?.value
 
     }
-    this._turnoService.putTurno(TURNO).subscribe({
+    this._turnoService.putTurnoSecretaria(TURNO).subscribe({
       next: (data) => {
 
         this.toastr.success(data.msg);

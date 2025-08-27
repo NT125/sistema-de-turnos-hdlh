@@ -346,11 +346,32 @@ exports.obtenerTurnosPorEspecialidad = async (req, res) => {
 // Actualizar Turno
 exports.actualizarTurno = async (req, res) => {
     try {
-        const turno = await Turno.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+
+      /*  const pacienteId = req.body.paciente_id;
+        const especialidadId = req.body.especialidad_id;
+
+         const existeTurno = await Turno.findOne({
+            paciente_id: pacienteId,
+            especialidad_id: especialidadId,
+            estado: 'Ocupado'
+        });
+
+        if (existeTurno) {
+            return res.json({
+                status: "3",
+                msg: "El paciente ya tiene un turno en esta especialidad"
+            });
+        }*/
+        //const turno = await Turno.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+        const turno = await Turno.findOneAndUpdate(
+            { _id: req.params.id, estado: 'Disponible' }, // condición extra
+            { ...req.body, estado: 'Ocupado' },           // fuerza el ocupado
+            { new: true, runValidators: true }
+        );
         if (!turno) {
             return res.json({
                 'status': '1',
-                'msg': 'Error',
+                'msg': 'El turno ya fue ocupado por otro paciente',
                 
             }) 
         }
@@ -368,7 +389,32 @@ exports.actualizarTurno = async (req, res) => {
         }) 
     }
 };
+exports.actualizarTurnoSecretaria = async (req, res) => {
+    try {
 
+        const turno = await Turno.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+       
+        if (!turno) {
+            return res.json({
+                'status': '1',
+                'msg': 'Error',
+                
+            }) 
+        }
+        res.json({
+            'status': '2',
+            'msg': 'Turno editado con exito',
+            
+        }) 
+    } catch (error) {
+        console.log(error);
+        res.json({
+            'status': '0',
+            'msg': 'ERROR! Por favor cargue sus datos correctamente',
+            
+        }) 
+    }
+};
 // Eliminar Turno
 exports.eliminarTurno = async (req, res) => {
     try {

@@ -48,7 +48,9 @@ export class TurnoService {
   putTurno(turno:TurnoServ){
     return this.http.put<any>(this.url+turno._id,turno,this.createHeader());
   }
-  
+  putTurnoSecretaria(turno:TurnoServ){
+    return this.http.put<any>(this.url+'secretaria/'+turno._id,turno,this.createHeader());
+  }
   getTurno(id:any){
     return this.http.get<TurnoServ>(`${this.url}/${id}`,this.createHeader());
   }
