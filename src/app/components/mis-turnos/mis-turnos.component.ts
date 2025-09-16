@@ -118,6 +118,7 @@ export class MisTurnosComponent implements OnInit {
         this.turnoCancelado._id = data._id;
         this.turnoCancelado.paciente_id = null;
         this.turnoCancelado.obras_sociales = [];
+        this.turnoCancelado.observacion = "";
         this.dejarLibreTurno();
       },
       error: (e) => {
@@ -128,7 +129,7 @@ export class MisTurnosComponent implements OnInit {
 
   dejarLibreTurno() {
     this.turnoCancelado.estado = 'Disponible';
-    this._turnoService.putTurno(this.turnoCancelado).subscribe({
+    this._turnoService.putTurnoSecretaria(this.turnoCancelado).subscribe({
       next: (actua) => {
         if (actua.status == '2') {
           this.toastr.success('Turno cancelado!');
