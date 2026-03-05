@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon ."
+    "dev": "nodemon .",
+    "postinstall": "npx puppeteer browsers install chrome"
   },
   "author": "Hospital Las Heras",
   "license": "ISC",
