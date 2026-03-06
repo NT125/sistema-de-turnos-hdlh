@@ -19,3 +19,4 @@ const client = new Client({
 });
 
 client.initialize();
+module.exports = { client };
