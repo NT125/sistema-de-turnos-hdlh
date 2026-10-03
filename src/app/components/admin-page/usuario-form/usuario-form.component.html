@@ -1,0 +1,55 @@
+<app-admin-nav></app-admin-nav>
+
+<div class="form-container" style="padding: 2rem; max-width: 800px; margin: 0 auto;">
+  <div class="flex-row" style="align-items: center; margin-bottom: 2rem;">
+    <h1 style="font-size: 64px; font-weight: 800; margin: 0; color: var(--azul);">Editar Usuario</h1>
+    <button routerLink="/usuario-list" class="option-pill small-button" style="color: white; background-color: var(--azul); border: none; cursor: pointer;">
+      Volver
+    </button>
+  </div>
+  
+  <div class="card" style="background: white; border-radius: 10px; padding: 2rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+    <form [formGroup]="usuarioForm" (ngSubmit)="actualizarUsuario()">
+      
+      <div class="mb-3" style="margin-bottom: 1.5rem;">
+        <label style="font-weight: bold; color: var(--azul); display: block; margin-bottom: 0.5rem;">DNI (No editable)</label>
+        <input type="text" formControlName="dni" style="width: 100%; padding: 0.8rem; border-radius: 5px; border: 1px solid var(--gris); background-color: #e9ecef;">
+      </div>
+
+      <div class="mb-3" style="margin-bottom: 1.5rem;">
+        <label style="font-weight: bold; color: var(--azul); display: block; margin-bottom: 0.5rem;">Nombre Completo</label>
+        <input type="text" formControlName="nombre" style="width: 100%; padding: 0.8rem; border-radius: 5px; border: 1px solid var(--gris);">
+      </div>
+
+      <div class="mb-3" style="margin-bottom: 1.5rem;">
+        <label style="font-weight: bold; color: var(--azul); display: block; margin-bottom: 0.5rem;">Teléfono</label>
+        <input type="text" formControlName="telefono" style="width: 100%; padding: 0.8rem; border-radius: 5px; border: 1px solid var(--gris);">
+      </div>
+
+      <div class="mb-3" style="margin-bottom: 1.5rem;">
+        <label style="font-weight: bold; color: var(--azul); display: block; margin-bottom: 0.5rem;">Correo Electrónico</label>
+        <input type="email" formControlName="email" style="width: 100%; padding: 0.8rem; border-radius: 5px; border: 1px solid var(--gris);">
+      </div>
+
+      <div class="flex-row" style="gap: 1rem; margin-bottom: 1.5rem;">
+        <div class="mb-3" style="flex: 1;">
+          <label style="font-weight: bold; color: var(--azul); display: block; margin-bottom: 0.5rem;">Rol</label>
+          <select formControlName="rol" style="width: 100%; padding: 0.8rem; border-radius: 5px; border: 1px solid var(--gris);">
+            <option value="paciente">Paciente</option>
+            <option value="admin">Administrador</option>
+            <option value="secretaria">Secretaría</option>
+          </select>
+        </div>
+        
+        <div class="mb-3" style="flex: 1;">
+          <label style="font-weight: bold; color: var(--azul); display: block; margin-bottom: 0.5rem;">Strikes (Faltas)</label>
+          <input type="number" formControlName="strikes" style="width: 100%; padding: 0.8rem; border-radius: 5px; border: 1px solid var(--gris);">
+        </div>
+      </div>
+
+      <button type="submit" [disabled]="usuarioForm.invalid" class="option-pill small-button" style="color: white; background-color: var(--verde); border: none; cursor: pointer; width: 100%;">
+        Guardar Cambios
+      </button>
+    </form>
+  </div>
+</div>

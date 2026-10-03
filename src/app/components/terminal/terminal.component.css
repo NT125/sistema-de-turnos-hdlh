@@ -313,3 +313,18 @@ option {
   font-size: 24px;
   text-align: center;
 }
+.keyboardEmail {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 5px;
+  align-items: center;
+  width: 700px;
+  margin: 0 auto;
+}
+
+.keyboardEmail .keyLetter {
+  width: auto;
+  padding: 10px;
+  font-size: 1.2rem;
+}
+

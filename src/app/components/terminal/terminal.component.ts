@@ -37,6 +37,8 @@ export class TerminalComponent implements OnInit{
   keys: string[] = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
   keysLetter: string[] = 'QWERTYUIOPASDFGHJKLÑ ZXCVBNM'.split('');
   isCapsLock: boolean = true;
+    mostrarEmail: boolean = false;
+    toggleEmail(event: any) { this.mostrarEmail = event.target.checked; }
 
   constructor(
     private fb: FormBuilder,
@@ -51,6 +53,7 @@ export class TerminalComponent implements OnInit{
       pacienteDNI:['',Validators.required],
       pacienteNombre:['',Validators.required],
       especialidad:['',Validators.required],
+        emailTerminal: [''],
       obra1: ['',Validators.required],
       obra2: [''],
       obra3: [''],
@@ -95,7 +98,17 @@ export class TerminalComponent implements OnInit{
     const currentName = this.turnoForm.get('pacienteNombre')?.value || '';
     this.turnoForm.get('pacienteNombre')?.setValue(currentName.slice(0, -1));
   }
-//Fin teclado
+keysEmail: string[] = '1234567890QWERTYUIOPASDFGHJKL-ZXCVBNM@._'.split('');
+    onKeyPressEmail(key: string): void {
+      const currentEmail = this.turnoForm.get('emailTerminal')?.value || '';
+      const newKey = this.isCapsLock ? key.toUpperCase() : key.toLowerCase();
+      this.turnoForm.get('emailTerminal')?.setValue(currentEmail + newKey);
+    }
+    onDeleteEmail(): void {
+      const currentEmail = this.turnoForm.get('emailTerminal')?.value || '';
+      this.turnoForm.get('emailTerminal')?.setValue(currentEmail.slice(0, -1));
+    }
+  //Fin teclado
   ngOnInit(): void {
     this._medicoService.medicos = [];
     this.cargarObras();
@@ -106,7 +119,7 @@ export class TerminalComponent implements OnInit{
     this.getEspecialidades();
   }
   getEspecialidades() {
-    this._especialidadService.getEspecialidades().subscribe({
+    this._especialidadService.getEspecialidadesMedico().subscribe({
       next:(data) => {
         this._especialidadService.especialidades=data;
       },
@@ -220,6 +233,7 @@ export class TerminalComponent implements OnInit{
     this.turno.paciente_id = sessionStorage.getItem('id');
     this.turno.nombreTerminal=this.turnoForm.get('pacienteNombre')?.value;
     this.turno.dniTerminal=this.turnoForm.get('pacienteDNI')?.value;
+      this.turno.emailTerminal=this.turnoForm.get('emailTerminal')?.value;
     
     this.turno.estado = 'Ocupado';
     
@@ -228,7 +242,7 @@ export class TerminalComponent implements OnInit{
         if (actua.status == '2') {
           this.toastr.success('Turno agendado!');
         
-          this.pasoActual = 6;
+          this.pasoActual = 7;
           this._medicoService.getMedico(this.medico_id).subscribe({
             next: (data) => {
               let medico = data;
@@ -293,6 +307,7 @@ export class TerminalComponent implements OnInit{
       pacienteDNI:['',Validators.required],
       pacienteNombre:['',Validators.required],
       especialidad:['',Validators.required],
+        emailTerminal: [''],
       obra1: ['',Validators.required],
       obra2: [''],
       obra3: [''],

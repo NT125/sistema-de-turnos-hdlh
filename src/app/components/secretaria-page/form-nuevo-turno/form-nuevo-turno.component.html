@@ -31,6 +31,9 @@
         <label *ngIf="accion=='agregar'" for="cantidad">Cantidad</label>
         <input *ngIf="accion=='agregar'" type="number" formControlName="cantidad" name="cantidad" id="cantidad">
         
+        <label for="observacionAdmin">Observación para el paciente (Opcional)</label>
+        <textarea formControlName="observacionAdmin" id="observacionAdmin" rows="3" placeholder="Ej: Traer estudios previos..."></textarea>
+
         <div *ngIf="accion=='editar'" class="flex-row">
             <button type="sumbit" class="option-pill blue-button" >
                 Modificar Turno

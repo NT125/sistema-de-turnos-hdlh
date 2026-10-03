@@ -27,7 +27,7 @@ exports.actualizarObra = async(req,res) => {
         const obra = await ObraSocial.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
 
          if(!obra){
-            return res.status(404).json({msg: 'No existe el obra'});
+            return res.status(404).json({msg: 'No existe la obra social'});
         }
 
         res.json(obra);
@@ -48,7 +48,7 @@ exports.obtenerObra = async(req,res) => {
     try{
         let obra =  await ObraSocial.findById(req.params.id);
         if(!obra){
-            return res.status(404).json({msg: 'No existe el medico'});
+            return res.status(404).json({msg: 'No existe la obra social'});
         }
         res.json(obra);
 
@@ -67,7 +67,7 @@ exports.eliminarObra = async(req,res) => {
     try{
         let obra =  await ObraSocial.findById(req.params.id);
         if(!obra){
-           return res.status(404).json({msg: 'No existe el medico'});
+           return res.status(404).json({msg: 'No existe la obra social'});
         }
         await ObraSocial.deleteOne({_id:req.params.id});
         res.json({msg: ' Obra eliminado'});

@@ -50,7 +50,7 @@ export class MisTurnosComponent implements OnInit {
     const now = new Date();
 
     // Resta los tiempos para obtener la diferencia en milisegundos
-    const diffInMinutes = (turnoDate.getTime() - now.getTime()) / 1000 / 360;
+    const diffInMinutes = (turnoDate.getTime() - now.getTime()) / (1000 * 60);
     console.log(diffInMinutes);
     // Si faltan 60 minutos o menos, devolver false
     return diffInMinutes > 60;
@@ -145,7 +145,9 @@ export class MisTurnosComponent implements OnInit {
       },
     });
 
-    this._medicoService.getMedico(this.turnoCancelado.medico_id).subscribe({
+    // Handle populated object or string ID
+    const medicoIdStr = this.turnoCancelado.medico_id._id ? this.turnoCancelado.medico_id._id : this.turnoCancelado.medico_id;
+    this._medicoService.getMedico(medicoIdStr).subscribe({
       next: (data) => {
         let medico = data;
         medico.disponibles = medico.disponibles + 1;

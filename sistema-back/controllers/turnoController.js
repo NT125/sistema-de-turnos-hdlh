@@ -1,5 +1,7 @@
 const Turno = require('../models/Turno');
+const Paciente = require('../models/Paciente');
 const moment = require('moment-timezone');
+const emailService = require('../utils/email');
 
 // Crear Turno
 exports.crearTurno = async (req, res) => {
@@ -375,6 +377,36 @@ exports.actualizarTurno = async (req, res) => {
                 
             }) 
         }
+
+        // Enviar email de reserva
+        try {
+            const turnoPopulated = await Turno.findById(turno._id).populate('medico_id paciente_id especialidad_id');
+            if (turnoPopulated) {
+                let correoDestino = null;
+                let nombreDestino = null;
+
+                if (turnoPopulated.emailTerminal) {
+                    correoDestino = turnoPopulated.emailTerminal;
+                    nombreDestino = turnoPopulated.nombreTerminal || 'Paciente';
+                } else if (turnoPopulated.paciente_id && turnoPopulated.paciente_id.email && turnoPopulated.paciente_id.email !== 'terminal@terminal.terminal') {
+                    correoDestino = turnoPopulated.paciente_id.email;
+                    nombreDestino = turnoPopulated.paciente_id.nombre;
+                }
+
+                if (correoDestino) {
+                    emailService.reservaConfirmada(
+                        correoDestino,
+                        nombreDestino,
+                        turnoPopulated.fecha,
+                        turnoPopulated.medico_id.nombre,
+                        turnoPopulated.consultorio,
+                        turnoPopulated.especialidad_id.nombreEsp
+                    );
+                }
+            }
+        } catch (mailError) {
+            console.error("Error enviando email al reservar turno:", mailError);
+        }
         res.json({
             'status': '2',
             'msg': 'Turno creado con exito',
@@ -400,6 +432,36 @@ exports.actualizarTurnoSecretaria = async (req, res) => {
                 'msg': 'Error',
                 
             }) 
+        }
+
+        if (req.body.estado === 'Ocupado') {
+            try {
+                const turnoPopulated = await Turno.findById(turno._id).populate('medico_id paciente_id especialidad_id');
+                
+                let correoDestino = null;
+                let nombreDestino = null;
+                
+                if (turnoPopulated.emailTerminal) {
+                    correoDestino = turnoPopulated.emailTerminal;
+                    nombreDestino = turnoPopulated.nombreTerminal || 'Paciente';
+                } else if (turnoPopulated.paciente_id && turnoPopulated.paciente_id.email) {
+                    correoDestino = turnoPopulated.paciente_id.email;
+                    nombreDestino = turnoPopulated.paciente_id.nombre;
+                }
+
+                if (correoDestino) {
+                    emailService.reservaConfirmada(
+                        correoDestino,
+                        nombreDestino,
+                        turnoPopulated.fecha,
+                        turnoPopulated.medico_id.nombre,
+                        turnoPopulated.consultorio,
+                        turnoPopulated.especialidad_id.nombreEsp
+                    );
+                }
+            } catch (mailError) {
+                console.error("Error enviando email en secretaria:", mailError);
+            }
         }
         res.json({
             'status': '2',
@@ -442,6 +504,105 @@ exports.getTurnosByPaciente = async (req, res) => {
 
         res.send(turnos);
     } catch (error) {
+        res.status(500).send('Hubo un error');
+    }
+};
+
+exports.obtenerEstadisticas = async (req, res) => {
+    try {
+        const { fechaInicio, fechaFin } = req.query;
+        let filtroFecha = {};
+        
+        if (fechaInicio || fechaFin) {
+            filtroFecha.fecha = {};
+            if (fechaInicio) filtroFecha.fecha.$gte = new Date(fechaInicio);
+            if (fechaFin) {
+                let endDate = new Date(fechaFin);
+                endDate.setHours(23, 59, 59, 999);
+                filtroFecha.fecha.$lte = endDate;
+            }
+        }
+
+        const totalTurnos = await Turno.countDocuments(filtroFecha);
+        const turnosOcupados = await Turno.countDocuments({ ...filtroFecha, estado: 'Ocupado' });
+        const turnosDisponibles = await Turno.countDocuments({ ...filtroFecha, estado: 'Disponible' });
+        const turnosCancelados = await Turno.countDocuments({ ...filtroFecha, estado: 'Cancelado' });
+        const turnosFinalizados = await Turno.countDocuments({ ...filtroFecha, estado: 'Finalizado' });
+        
+        // Group by especialidad
+        const turnosPorEspecialidad = await Turno.aggregate([
+            { $match: filtroFecha },
+            {
+                $lookup: {
+                    from: 'especialidads',
+                    localField: 'especialidad_id',
+                    foreignField: '_id',
+                    as: 'especialidad'
+                }
+            },
+            { $unwind: '$especialidad' },
+            {
+                $group: {
+                    _id: '$especialidad.nombreEsp',
+                    count: { $sum: 1 }
+                }
+            }
+        ]);
+
+        // Group by medico
+        const turnosPorMedico = await Turno.aggregate([
+            { $match: filtroFecha },
+            {
+                $lookup: {
+                    from: 'medicos',
+                    localField: 'medico_id',
+                    foreignField: '_id',
+                    as: 'medico'
+                }
+            },
+            { $unwind: '$medico' },
+            {
+                $group: {
+                    _id: { nombre: '$medico.nombre', apellido: '$medico.apellido' },
+                    count: { $sum: 1 }
+                }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    medico: { $concat: ['$_id.nombre', ' ', '$_id.apellido'] },
+                    count: 1
+                }
+            },
+            { $sort: { count: -1 } },
+            { $limit: 10 }
+        ]);
+
+        // Turnos sacados por terminal
+        const turnosTerminal = await Turno.countDocuments({ ...filtroFecha, dniTerminal: { $exists: true, $ne: null } });
+
+        // Pacientes con strikes
+        const pacientesStrikes = await Paciente.find({ strikes: { $gt: 0 } })
+            .select('nombre dni strikes')
+            .sort({ strikes: -1 })
+            .limit(10);
+
+        res.json({
+            totales: {
+                total: totalTurnos,
+                ocupados: turnosOcupados,
+                disponibles: turnosDisponibles,
+                cancelados: turnosCancelados,
+                finalizados: turnosFinalizados,
+                porTerminal: turnosTerminal
+            },
+            porEspecialidad: turnosPorEspecialidad,
+            turnosPorMedico,
+            pacientesStrikes
+        });
+
+    } catch (error) {
+        console.error('Error al obtener estadísticas:', error);
         res.status(500).send('Hubo un error');
     }
 };

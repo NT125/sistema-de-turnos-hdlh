@@ -77,6 +77,7 @@ export class FormNuevoTurnoComponent implements OnInit , OnDestroy {
           fecha: [fechaFormateada,Validators.required],
           duracion: [data.duracion, Validators.required],
           consultorio: [data.consultorio, Validators.required],
+          observacionAdmin: [data.observacionAdmin],
           estado:[data.estado]
         })
         
@@ -107,6 +108,7 @@ export class FormNuevoTurnoComponent implements OnInit , OnDestroy {
       fecha: ['', Validators.required],
       duracion: ['', Validators.required],
       consultorio: ['', Validators.required],
+      observacionAdmin: [''],
       estado:[''],
       cantidad:[1]
     })
@@ -126,6 +128,7 @@ export class FormNuevoTurnoComponent implements OnInit , OnDestroy {
       fecha: new Date(fechaISO),
       duracion: this.turnoForm.get('duracion')?.value,
       consultorio: this.turnoForm.get('consultorio')?.value,
+      observacionAdmin: this.turnoForm.get('observacionAdmin')?.value,
       estado: this.turnoForm.get('estado')?.value
 
     }
@@ -167,6 +170,7 @@ export class FormNuevoTurnoComponent implements OnInit , OnDestroy {
           fecha: fechaTurno,
           duracion: duracion,
           consultorio: this.turnoForm.get('consultorio')?.value,
+      observacionAdmin: this.turnoForm.get('observacionAdmin')?.value,
           estado: "Disponible"
         };
     

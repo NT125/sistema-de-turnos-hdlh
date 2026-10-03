@@ -1,0 +1,125 @@
+<div class="informes-container" *ngIf="estadisticas; else loading">
+  <div class="flex-row" style="align-items: center; margin-bottom: 2rem;">
+    <h1 style="font-size: 64px; font-weight: 800; margin: 0; color: var(--azul);">Panel de Estadísticas</h1>
+    <button routerLink="/admin" class="option-pill small-button" style="color: white; background-color: var(--azul); border: none; cursor: pointer;">
+      Volver
+    </button>
+  </div>
+
+  <div class="filters-container" style="background: white; padding: 1.5rem; border-radius: 10px; margin-bottom: 2rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1); display: flex; gap: 1rem; align-items: flex-end;">
+    <div style="flex: 1;">
+      <label style="display: block; font-weight: bold; color: var(--azul); margin-bottom: 0.5rem;">Fecha Inicio</label>
+      <input type="date" [(ngModel)]="fechaInicio" style="width: 100%; padding: 0.8rem; border-radius: 5px; border: 1px solid var(--gris);">
+    </div>
+    <div style="flex: 1;">
+      <label style="display: block; font-weight: bold; color: var(--azul); margin-bottom: 0.5rem;">Fecha Fin</label>
+      <input type="date" [(ngModel)]="fechaFin" style="width: 100%; padding: 0.8rem; border-radius: 5px; border: 1px solid var(--gris);">
+    </div>
+    <button (click)="cargarEstadisticas()" class="option-pill small-button" style="color: white; background-color: var(--verde); border: none; cursor: pointer; height: fit-content; padding: 0.8rem 1.5rem;">
+      Filtrar
+    </button>
+  </div>
+  
+  <div class="cards-grid">
+    <div class="stat-card">
+      <i class="material-symbols-rounded">event</i>
+      <div class="info">
+        <h3>Total de Turnos</h3>
+        <p>{{ estadisticas.totales.total }}</p>
+      </div>
+    </div>
+    <div class="stat-card">
+      <i class="material-symbols-rounded">check_circle</i>
+      <div class="info">
+        <h3>Finalizados</h3>
+        <p>{{ estadisticas.totales.finalizados }}</p>
+      </div>
+    </div>
+    <div class="stat-card">
+      <i class="material-symbols-rounded">event_available</i>
+      <div class="info">
+        <h3>Disponibles</h3>
+        <p>{{ estadisticas.totales.disponibles }}</p>
+      </div>
+    </div>
+    <div class="stat-card">
+      <i class="material-symbols-rounded">terminal</i>
+      <div class="info">
+        <h3>Por Terminal</h3>
+        <p>{{ estadisticas.totales.porTerminal || 0 }}</p>
+      </div>
+    </div>
+    <div class="stat-card">
+      <i class="material-symbols-rounded">event_busy</i>
+      <div class="info">
+        <h3>Ocupados</h3>
+        <p>{{ estadisticas.totales.ocupados }}</p>
+      </div>
+    </div>
+    <div class="stat-card error-card">
+      <i class="material-symbols-rounded">cancel</i>
+      <div class="info">
+        <h3>Cancelados</h3>
+        <p>{{ estadisticas.totales.cancelados }}</p>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="sub-title">Turnos por Especialidad</h3>
+  <div class="especialidad-grid">
+    <div class="especialidad-card" *ngFor="let esp of estadisticas.porEspecialidad">
+      <h4>{{ esp._id }}</h4>
+      <p>{{ esp.count }} turnos</p>
+    </div>
+  </div>
+
+  <div class="reports-tables">
+    <div class="report-section">
+      <h3 class="sub-title">Top 10 Pacientes con más Strikes</h3>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>DNI</th>
+            <th>Strikes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let pac of estadisticas.pacientesStrikes">
+            <td>{{ pac.nombre }}</td>
+            <td>{{ pac.dni }}</td>
+            <td><span class="badge badge-danger">{{ pac.strikes }}</span></td>
+          </tr>
+          <tr *ngIf="estadisticas.pacientesStrikes.length === 0">
+            <td colspan="3" class="text-center">No hay pacientes con strikes</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="report-section">
+      <h3 class="sub-title">Top 10 Médicos con más Turnos</h3>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Médico</th>
+            <th>Total Turnos</th>
+          </tr>
+        </thead>
+          <tbody>
+            <tr *ngFor="let med of estadisticas.turnosPorMedico">
+              <td>{{ med.medico || (med._id?.nombre + ' ' + med._id?.apellido) }}</td>
+              <td><span class="badge badge-info">{{ med.count }}</span></td>
+            </tr>
+            <tr *ngIf="estadisticas.turnosPorMedico.length === 0">
+              <td colspan="2" class="text-center">No hay datos de médicos</td>
+            </tr>
+          </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<ng-template #loading>
+  <div class="loading-spinner">Cargando estadísticas...</div>
+</ng-template>

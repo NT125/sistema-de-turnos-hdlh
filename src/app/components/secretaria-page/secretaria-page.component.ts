@@ -243,7 +243,7 @@ export class SecretariaPageComponent implements OnInit{
         }
       },
       error: (e) => {
-        this.toastr.success('Ocurrio un error');
+        this.toastr.error('Ocurrio un error');
         console.log(e);
       },
     });
@@ -275,7 +275,7 @@ export class SecretariaPageComponent implements OnInit{
           paciente = turno.paciente_id.nombre;
       }
       const fechaHora = this.formatearFecha(turno.fecha);
-      const doctor = turno.medico_id.nombre + turno.medico_id.apellido;
+      const doctor = turno.medico_id.nombre + ' ' + turno.medico_id.apellido;
       const consultorio = turno.consultorio;
       const especialidad = turno.especialidad_id.nombreEsp;
       
@@ -305,7 +305,7 @@ export class SecretariaPageComponent implements OnInit{
         }
       },
       error: (e) => {
-        this.toastr.success('Ocurrio un error');
+        this.toastr.error('Ocurrio un error');
         console.log(e);
       },
     });

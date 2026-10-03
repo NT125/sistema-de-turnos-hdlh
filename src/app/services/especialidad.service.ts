@@ -26,6 +26,19 @@ export class EspecialidadService {
   getEspecialidad(id:any){
     return this.http.get<Especialidad>(`${this.url}/${id}`,this.createHeader());
   }
+  
+  postEspecialidad(especialidad: Especialidad): Observable<any>{
+    return this.http.post(this.url, especialidad, this.createHeader());
+  }
+
+  putEspecialidad(id: string, especialidad: Especialidad): Observable<any>{
+    return this.http.put(`${this.url}/${id}`, especialidad, this.createHeader());
+  }
+
+  deleteEspecialidad(id: string): Observable<any>{
+    return this.http.delete(`${this.url}/${id}`, this.createHeader());
+  }
+
   createHeader(){
     return {
       headers: new HttpHeaders({

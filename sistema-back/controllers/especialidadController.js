@@ -1,5 +1,6 @@
 const Especialidad = require('../models/Especialidad');
 const Medico = require('../models/Medico');
+const Turno = require('../models/Turno');
 
 exports.crearEspecialidad = async(req,res) => {
     try{
@@ -26,15 +27,23 @@ exports.obtenerEspecialidades = async(req,res) => {
 }
 exports.obtenerEspecialidadesconMedicos = async (req, res) => {
     try {
-        const especialidadesUsadas = await Medico.distinct('especialidades');
+        const hoy = new Date();
+        hoy.setHours(0, 0, 0, 0);
 
-        // Buscar las especialidades cuyos IDs estén en el array especialidadesUsadas
+        // Find all unique especialidades that have an active 'Disponible' Turno in the future
+        const especialidadesConTurnos = await Turno.distinct('especialidad_id', {
+            estado: 'Disponible',
+            fecha: { $gt: hoy }
+        });
+
+        // Fetch those especialidades from DB, also ensuring they are active
         const especialidades = await Especialidad.find({
-            _id: { $in: especialidadesUsadas }
-        }).sort({ nombreEsp: 1 });;
+            _id: { $in: especialidadesConTurnos },
+            activa: { $ne: false } // Only active specialties
+        }).sort({ nombreEsp: 1 });
 
         if (especialidades.length === 0) {
-            return res.status(404).json({ msg: 'No hay especialidades con médicos cargados' });
+            return res.json([]);
         }
 
         res.json(especialidades);
@@ -45,13 +54,16 @@ exports.obtenerEspecialidadesconMedicos = async (req, res) => {
 };
 exports.actualizarEspecialidad = async(req,res) => {
     try{
-        const{nombreEsp}= req.body;
+        const{nombreEsp, activa}= req.body;
         let especialidad =  await Especialidad.findById(req.params.id);
         if(!especialidad){
            return res.status(404).json({msg: 'No existe la especialidad'});
         }
 
         especialidad.nombreEsp = nombreEsp;
+        if (activa !== undefined) {
+            especialidad.activa = activa;
+        }
         especialidad = await Especialidad.findOneAndUpdate({_id:req.params.id},especialidad,{new:true})
         res.json(especialidad);
 
@@ -96,7 +108,7 @@ exports.eliminarEspecialidad = async(req,res) => {
         res.json({msg: ' Especialidad eliminado'});
 
     }catch(error){
-        onsole.error('Error al obtener la especialidad:', error.message);
+        console.error('Error al obtener la especialidad:', error.message);
 
         if (error.name === 'CastError') {
             // Error de formato de ObjectId

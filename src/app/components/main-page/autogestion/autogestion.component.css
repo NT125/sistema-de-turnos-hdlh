@@ -70,13 +70,16 @@ span{
     }
 
     app-option-card{
-        max-width: 400px;
+        width: calc(50% - 2rem);
+        max-width: none;
     }
 
     .options{
         padding: 2rem 3rem;
         flex-direction: row;
-        justify-content: space-around;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: stretch;
         gap: 2rem;
     }
 }
@@ -87,24 +90,26 @@ span{
     }
 
     app-option-card{
-        max-width: 100%;
+        width: calc(50% - 3rem);
     }
 
     .options{
         padding: 3rem 6rem;
-        flex-wrap: nowrap;
+        flex-wrap: wrap;
+        justify-content: center;
         gap: 4rem;
     }
 }
 
 @media(min-width: 1800px){
     app-option-card{
-        max-width: 100%;
+        width: calc(50% - 3rem);
     }
 
     .options{
         padding: 3rem 8rem;
-        flex-wrap: nowrap;
+        flex-wrap: wrap;
+        justify-content: center;
         gap: 4rem;
     }
 }

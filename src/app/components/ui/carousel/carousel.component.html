@@ -8,7 +8,7 @@
         </button>
     </div>
 
-    <img class="slide" [src]="fotos[indice].img">
+    <img class="slide" [ngSrc]="fotos[indice].img" width="1920" height="1080" priority>
 
     <div class="paginas flex-row">
         <div class="pagina" (click)="irAIndice(indiceFoto)" *ngFor="let foto of fotos, let indiceFoto = index">

@@ -1,10 +1,26 @@
 <app-nav></app-nav>
 <div id="main-page">
-    <div class="title">
-        <h1>Bienvenidos al Hospital Distrital Las Heras</h1>
-        <app-carousel/>
-    </div>
+    <section class="hero-section">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1>Bienvenidos al<br/>Hospital Distrital Las Heras</h1>
+            <p class="hero-subtitle">Comprometidos con tu salud y bienestar, brindando atención médica de calidad.</p>
+            <a [routerLink]="_loginService.userLoggedIn() ? '/especialidades' : '/login'" class="cta-button">Solicitar Turno</a>
+        </div>
+        <div class="hero-carousel-container">
+            <app-carousel/>
+        </div>
+    </section>
 
-    <app-autogestion/>
-   
+    <section class="services-section">
+        <div class="services-header">
+            <h2>Nuestros Servicios de Autogestión</h2>
+            <div class="separator"></div>
+            <p class="services-description">Reserva tus turnos, consulta información y gestiona tus citas desde la comodidad de tu hogar.</p>
+        </div>
+        
+        <div class="autogestion-wrapper">
+            <app-autogestion/>
+        </div>
+    </section>
 </div>

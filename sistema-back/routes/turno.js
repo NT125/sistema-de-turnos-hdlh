@@ -5,6 +5,7 @@ const turnoController = require('../controllers/turnoController');
 //api/turno
 router.post('/', turnoController.crearTurno);
 router.get('/',turnoController.obtenerTurnos);
+router.get('/estadisticas', turnoController.obtenerEstadisticas);
 router.get('/hoy',turnoController.obtenerTurnosHoy);
 router.get('/fecha/:fecha',turnoController.obtenerTurnosPorFecha);
 // Ruta para obtener turnos por médico (nombre o legajo)

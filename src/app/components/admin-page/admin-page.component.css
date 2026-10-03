@@ -14,12 +14,16 @@ h1{
 
 .menus{
     padding: 2rem 0;
-    gap:10%
+    gap: 2rem;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .menu-box{
     padding:3rem;
-
+    min-width: 250px;
+    flex: 1 1 300px;
+    max-width: 400px;
     border: solid 1px var(--gris);
     border-radius: 10px;
     box-shadow: 0 0 10px 10px #fafafa;

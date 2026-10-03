@@ -44,6 +44,7 @@
 						<tr>
 							<th>Nombre</th>
 							<th>Teléfono</th>
+							<th>Email</th>
 							<th>DNI</th>
 							<th>Strikes</th>
 							<th *ngIf="_loginService.rolLogged()=='admin'">Rol</th>
@@ -53,24 +54,28 @@
 						<tr *ngFor="let paciente of _pacienteService.pacientes">
 							<td>{{ paciente.nombre }}</td>
 							<td>{{ paciente.telefono }}</td>
+							<td>{{ paciente.email || 'N/A' }}</td>
 							<td>{{ paciente.dni }}</td>
 							<td>{{ paciente.strikes }}</td>
 							<td *ngIf="_loginService.rolLogged()=='admin'">{{ paciente.rol }}</td>
 							<td class="actions-cell">
 								<div class="flex-column buttons-container">
+									<button [routerLink]="['/usuario-form', paciente._id]" class="option-pill small-button action-element" style="background-color: var(--amarillo); border: none; cursor: pointer;">
+										<span class="material-symbols-rounded">edit</span>
+									</button>
 									<button *ngIf="paciente.rol=='paciente' && paciente.strikes>=3"
 										class="option-pill yellow-button action-element"
 										(click)="desbloquearPaciente(paciente._id)">
 										<span class="material-symbols-rounded">lock_open_right</span>
 									</button>
-									<button *ngIf="paciente.rol=='admin' || paciente.rol=='secretaria'"
-										class="option-pill blue-button action-element"
-										(click)="modificarUsuario(paciente._id)">
-										<span class="material-symbols-rounded">stylus</span>
+									<button *ngIf="paciente.rol=='paciente' && paciente.strikes<3"
+										class="option-pill red-button action-element"
+										(click)="bloquearPaciente(paciente._id)">
+										<span class="material-symbols-rounded">lock</span>
 									</button>
 									<button class="option-pill red-button action-element"
 										(click)="confirmarEliminarPaciente(paciente._id)">										
-										<span class="material-symbols-rounded">delete_forever</span>
+										<span class="material-symbols-rounded">delete</span>
 									</button>
 								</div>
 							</td>

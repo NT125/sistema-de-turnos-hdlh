@@ -9,11 +9,22 @@
             <span class="subtitle-mobile">Toque la especialidad del médico que desea que lo atienda.</span>
             <span class="subtitle-desktop">Haga click en la especialidad del médico que desea que lo atienda.</span>
         </div>
+        
 
-        <div class="especialidades">
-            <button class="option-pill-access green-button especialidad-button"  (click)="ToMedicos(especialidad._id)" *ngFor="let especialidad of _especialidadService.especialidades" routerLink="/form-turno">
-                {{ especialidad.nombreEsp }}
-            </button>
+        <div class="flex-column" style="width: 100%; align-items: center;">
+            <div *ngIf="!_especialidadService.especialidades || _especialidadService.especialidades.length === 0" class="title flex-column" style="margin-top: 10%; align-items: center;">
+                <span class="material-symbols-rounded" style="color: var(--rojo); font-size: 120px; margin-bottom: 1rem;">
+                    cancel
+                </span>
+                <h1>No hay turnos disponibles.</h1>
+                <h2 style="font-weight: 400;">Lo sentimos, no hay especialidades con turnos cargados.</h2>
+            </div>
+
+            <div class="especialidades" *ngIf="_especialidadService.especialidades && _especialidadService.especialidades.length > 0">
+                <button class="option-pill-access green-button especialidad-button"  (click)="ToMedicos(especialidad._id)" *ngFor="let especialidad of _especialidadService.especialidades" routerLink="/form-turno">
+                    {{ especialidad.nombreEsp }}
+                </button>
+            </div>
         </div>
     </div>
 </div>

@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon .",
-    "postinstall": "npx puppeteer browsers install chrome"
+    "dev": "nodemon ."
   },
   "author": "Hospital Las Heras",
   "license": "ISC",
@@ -25,11 +24,12 @@
     "moment-timezone": "^0.5.46",
     "mongoose": "^8.6.1",
     "node-cron": "^3.0.3",
-    "puppeteer": "^24.38.0",
+    "nodemailer": "^10.0.10",
+    "puppeteer": "^24.22.0",
     "qrcode": "^1.5.4",
     "qrcode-terminal": "^0.12.0",
     "socket.io": "^4.8.0",
     "timezone": "^1.0.23",
-    "whatsapp-web.js": "^1.23.0"
+    "whatsapp-web.js": "^1.34.1"
   }
 }

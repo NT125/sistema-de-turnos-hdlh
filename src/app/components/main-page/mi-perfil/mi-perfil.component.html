@@ -1,0 +1,48 @@
+<app-nav></app-nav>
+<button routerLink="/" class="option-pill small-button" style="margin: 2rem 2rem 0 2rem; color: white; background-color: var(--azul); border: none; cursor: pointer;">
+    Volver
+</button>
+
+<div class="login-page">
+    <div class="perfil-container flex-column" style="align-items: center; padding: 2rem;">
+        <div class="title flex-column" style="text-align: center; margin-bottom: 2rem;">
+            <h1>Mi Perfil</h1>
+            <span>Visualice sus datos. Para modificar datos sensibles, contacte con administración.</span>
+        </div>
+
+    <div class="card" style="width: 100%; max-width: 600px; padding: 2rem; border-radius: 10px; background-color: white; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+        <form [formGroup]="perfilForm" (ngSubmit)="actualizarEmail()">
+            
+            <div class="mb-3" style="margin-bottom: 1.5rem;">
+                <label style="font-weight: bold; color: var(--azul); display: block; margin-bottom: 0.5rem;">DNI</label>
+                <input type="text" formControlName="dni" style="width: 100%; padding: 0.8rem; border-radius: 5px; border: 1px solid var(--gris); background-color: #e9ecef;">
+            </div>
+
+            <div class="mb-3" style="margin-bottom: 1.5rem;">
+                <label style="font-weight: bold; color: var(--azul); display: block; margin-bottom: 0.5rem;">Nombre Completo</label>
+                <input type="text" formControlName="nombre" style="width: 100%; padding: 0.8rem; border-radius: 5px; border: 1px solid var(--gris); background-color: #e9ecef;">
+            </div>
+
+            <div class="mb-3" style="margin-bottom: 1.5rem;">
+                <label style="font-weight: bold; color: var(--azul); display: block; margin-bottom: 0.5rem;">Teléfono</label>
+                <input type="text" formControlName="telefono" style="width: 100%; padding: 0.8rem; border-radius: 5px; border: 1px solid var(--gris); background-color: #e9ecef;">
+            </div>
+
+            <div class="mb-3" style="margin-bottom: 1.5rem;">
+                <label style="font-weight: bold; color: var(--azul); display: block; margin-bottom: 0.5rem;">Correo Electrónico (Editable)</label>
+                <input type="email" formControlName="email" style="width: 100%; padding: 0.8rem; border-radius: 5px; border: 1px solid var(--gris);">
+                <div class="text-danger" *ngIf="perfilForm.get('email')?.hasError('required') && perfilForm.get('email')?.touched" style="color: var(--rojo); margin-top: 0.5rem; font-size: 0.9rem;">
+                    El correo es requerido.
+                </div>
+                <div class="text-danger" *ngIf="perfilForm.get('email')?.hasError('email') && perfilForm.get('email')?.touched" style="color: var(--rojo); margin-top: 0.5rem; font-size: 0.9rem;">
+                    Formato de correo inválido.
+                </div>
+            </div>
+
+            <button type="submit" [disabled]="perfilForm.invalid" class="option-pill-access green-button-access" style="width: 100%; margin-top: 1rem;">
+                Actualizar Correo
+            </button>
+        </form>
+    </div>
+</div>
+</div>

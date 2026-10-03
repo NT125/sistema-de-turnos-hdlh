@@ -20,6 +20,7 @@ yarn-error.log
 *.launch
 .settings/
 *.sublime-workspace
+.cache
 
 # Visual Studio Code
 .vscode/*
@@ -45,3 +46,6 @@ Thumbs.db
 
 .wwebjs_cache
 .wwebjs_auth
+ * . e n v 
+ v a r i a b l e s . e n v  
+ 

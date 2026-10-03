@@ -1,0 +1,38 @@
+.form-container {
+  padding: 2rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+.card {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  overflow: hidden;
+}
+.card-header {
+  background: var(--azul);
+  color: white;
+  padding: 1.5rem;
+}
+.card-header h2 { margin: 0; }
+.card-body { padding: 2rem; }
+.form-label { display: block; margin-bottom: 0.5rem; font-weight: bold; }
+.form-control {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-bottom: 0.5rem;
+}
+.text-danger { color: #dc3545; font-size: 0.875rem; margin-bottom: 1rem; }
+.actions { display: flex; gap: 1rem; margin-top: 1rem; }
+.btn {
+  padding: 0.8rem 1.5rem;
+  border-radius: 5px;
+  cursor: pointer;
+  border: none;
+  font-weight: bold;
+}
+.btn-secondary { background: #6c757d; color: white; text-decoration: none;}
+.btn-success { background: #28a745; color: white; }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }

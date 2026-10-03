@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const Paciente = require('../models/Paciente');
 const Turno = require('../models/Turno');
 const wpp = require('../controllers/whatsappController');
+const emailService = require('../utils/email');
 require('dotenv').config();
 
 exports.crearPaciente = async(req,res) => {
@@ -34,7 +35,9 @@ exports.crearPaciente = async(req,res) => {
 }
 exports.obtenerPacientes = async(req,res) => {
     try{
-        const pacientes = await Paciente.find();
+        const pacientes = await Paciente.find()
+            .sort({ _id: -1 })
+            .limit(50);
         res.send(pacientes);
 
     }catch(error){
@@ -59,10 +62,9 @@ exports.obtenerUsuarios = async(req,res) => {
 }
 exports.obtenerSoloPacientes = async(req,res) => {
     try{
-        const pacientes = await Paciente.find(
-            { rol: 'paciente' }
-            
-        );
+        const pacientes = await Paciente.find({ rol: 'paciente' })
+            .sort({ _id: -1 })
+            .limit(50);
         res.send(pacientes);
 
     }catch(error){
@@ -337,6 +339,15 @@ exports.register = async(req,res) => {
             }) 
         }
         else{
+            if (paciente.rol === 'terminal') {
+                if (!req.body.masterPass || req.body.masterPass !== process.env.MASTER_PASS_TERMINAL) {
+                    return res.json({
+                        'status': '4',
+                        'msg': 'Se requiere contraseña maestra'
+                    })
+                }
+            }
+
             return res.json({
                 'status': '1',
                 'msg': 'Sesion Iniciada.',
@@ -399,7 +410,11 @@ exports.requestPasswordReset = async (req, res) => {
     console.log("Se esta por enviar el mensaje");
     
     wpp.sendUrlResetPassword(number, `${resetLink}`);
-  
+    
+    if (paciente.email) {
+      emailService.sendUrlResetPassword(paciente.email, `${resetLink}`);
+    }
+
     res.status(200).json({
       'status': '200',
       'msg': 'Se envió un mensaje a su WhatsApp con el enlace para restablecer su contraseña'
@@ -497,5 +512,5 @@ function createToken(paciente){
         paciente_id:paciente._id,
         paciente_rol:paciente.rol
     }
-    return jwt.sign(payload,'en un lugar de las Heras');
+    return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '8h' });
 }

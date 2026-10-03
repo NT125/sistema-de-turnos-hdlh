@@ -2,20 +2,20 @@
 	<div *ngIf="pasoActual == 0" class="flex-column paso" id="bienvenida">
 		<img class="logo" src="logos/logo-transp.png" alt="">
 		<h1>Bienvenidos al Hospital Distrital de Las Heras</h1>
-		<h2>Desde aquí puede tramitar un turno de manera inmediata.</h2>
+		<h2>Desde aqu&iacute; puede tramitar un turno de manera inmediata.</h2>
 		<button class="option-pill-access lblue-button-access" (click)="avanzar()">Tramitar Turno</button>
 	</div>
 
 	<form action="#" [formGroup]="turnoForm" (ngSubmit)="finalizarTurno()">
 		<div *ngIf="pasoActual === 3" class="flex-column paso">
 			<h1>Paso 3: DNI</h1>
-			<h2>Introduzca su número de documento.</h2>
+			<h2>Introduzca su n&uacute;mero de documento.</h2>
 			<input formControlName="pacienteDNI" class="dni-input" type="text" id="dni" />
 		</div>
 		
 		<div *ngIf="pasoActual === 3" class="keyboard">
 			<button type="button" class="key" *ngFor="let key of keys" (click)="onKeyPress(key)">{{ key }}</button>
-			<button type="button" class="key delete" (click)="onDelete()">⌫</button>
+			<button type="button" class="key delete" (click)="onDelete()">&#x232B;</button>
 		</div>
 		
 		<div *ngIf="pasoActual == 4" class="flex-column paso">
@@ -28,29 +28,29 @@
 			<button type="button" [ngClass]="{ 'hidden': key === ' ' }" class="keyLetter" *ngFor="let key of keysLetter" (click)="onKeyPressLetter(key)">{{ key }}</button>
 		</div>
 		<div *ngIf="pasoActual === 4" class="button-container">
-			<button type="button" class="key capslock" (click)="onCapsLock()">Mayúscula</button>
+			<button type="button" class="key capslock" (click)="onCapsLock()">May&uacute;scula</button>
 			<button type="button" class="key space" (click)="onSpace()">Espacio</button>
-			<button type="button" class="key delete" (click)="onDeleteLetter()">⌫</button>
+			<button type="button" class="key delete" (click)="onDeleteLetter()">&#x232B;</button>
 		</div>
 		
 
 		<div *ngIf="pasoActual == 1" class="flex-column paso">
 			<h1>Paso 1: Especialidad</h1>
-			<h2>¿Para qué médico desea sacar turno?</h2>
+			<h2>&iquest;Para qu&eacute; m&eacute;dico desea sacar turno?</h2>
 			<select formControlName="especialidad" name="especialidad" id="especialidad">
-				<option value="">Toque aquí</option>
+				<option value="">Toque aqu&iacute;</option>
 				<option *ngFor="let especialidad of _especialidadService.especialidades" value={{especialidad._id}}>{{especialidad.nombreEsp}}</option>
 			</select>
 		</div>
 
 		<div *ngIf="pasoActual == 2" class="flex-column paso">
-			<h1>Paso 2: Médico y Turno</h1>
-			<h2>Seleccione el médico y el turno que desee.</h2>
+			<h1>Paso 2: M&eacute;dico y Turno</h1>
+			<h2>Seleccione el m&eacute;dico y el turno que desee.</h2>
 
 			<div class="flex-row" style="gap: 3rem; max-width: 1000px;">
 
 				<div class="flex-column section">
-					<h3>MÉDICO</h3>
+					<h3>M&Eacute;DICO</h3>
 					<div class="card-container" >
 						<div class="card" *ngFor="let medico of _medicoService.medicos" (click)="cargarTurnos(medico._id)" 
 						>
@@ -83,16 +83,18 @@
 											{{ turno.fecha | date : "EEEE dd/MM" }}, a las
                								 {{ turno.fecha | date : "shortTime" }}
 										</li>
-										<li class="turno-text">Duración: {{ turno.duracion }} min</li>
+										<li class="turno-text">Duraci&oacute;n: {{ turno.duracion }} min</li>
 										<li class="turno-text">Lugar: {{ turno.consultorio }} </li>
 										<li class="turno-text">
 											<b>{{turno.consultorio}} </b>
 										</li>
+										<li class="turno-text" *ngIf="turno.observacionAdmin" style="color: var(--rojo); font-weight: bold;">
+											Aviso: {{ turno.observacionAdmin }}
+										</li>
 									</ul>
 								</div>
 							</label>
-						
-					</div>
+						</div>
 					</div>
 				</div>
 
@@ -130,16 +132,33 @@
 						(click)="sacarObra()" type="button" class="option-pill red-button small-button">Quitar Obra Social</button>
 						<button *ngIf="!obra2"
 						(click)="agregarObra()"  type="button" class="option-pill green-button small-button">Agregar Obra Social</button>
-					</div>	
+					</div>
 				</div>
 			</div>
+		</div>
 
-		</div>		
+		<div *ngIf="pasoActual == 6" class="flex-column paso">
+			<h1>Paso 6: Correo Electr&oacute;nico (Opcional)</h1>
+			<h2>Si desea recibir un comprobante, introduzca su correo aqu&iacute;. De lo contrario, d&eacute;jelo vac&iacute;o y presione Confirmar Turno.</h2>
+
+			<div style="margin-top: 0.5rem; display: flex; flex-direction: column; align-items: center; width: 100%;">
+				<input formControlName="emailTerminal" class="dni-input" type="email" placeholder="ejemplo@correo.com" style="margin-top: 1rem; width: 60%; font-size: 1.5rem;">
+
+				<div class="keyboardEmail" style="margin-top: 0.5rem;">
+					<button type="button"  class="keyLetter" *ngFor="let key of keysEmail" (click)="onKeyPressEmail(key)">{{ key }}</button>
+				</div>
+
+				<div class="button-container" style="margin-top: 0.5rem; width: 700px;">
+					<button type="button" class="key capslock" (click)="onCapsLock()">May&uacute;scula</button>
+					<button type="button" class="key delete" (click)="onDeleteEmail()">&#x232B;</button>
+				</div>
+			</div>
+		</div>
 	</form>
-	<div *ngIf="pasoActual == 6" class="flex-column paso" id="bienvenida">
+	<div *ngIf="pasoActual == 7" class="flex-column paso" id="bienvenida">
 		<img class="logo" src="logos/logo-transp.png" alt="">
-		<h1 class="green-text">¡Turno registrado!</h1>
-		<span class="info">Por favor, recuerda llegar 15 minutos antes para completar la admisión. Aquí tienes los detalles:</span>
+		<h1 class="green-text">&iexcl;Turno registrado!</h1>
+		<span class="info">Por favor, recuerda llegar 15 minutos antes para completar la admisi&oacute;n. Aqu&iacute; tienes los detalles:</span>
 		<ul class="turno-info">
 			<li><b class="blue-text">Fecha: </b>{{ turno.fecha | date : "EEEE dd/MM" }}, a las {{ turno.fecha | date : "shortTime" }}</li>
 			<li><b class="blue-text">Doctor: </b>{{ doctor }}</li>
@@ -147,21 +166,13 @@
 			<li><b class="blue-text">Paciente: </b>{{ turnoForm.get('pacienteNombre')?.value }}</li>
 			<li><b class="blue-text">DNI: </b>{{ turnoForm.get('pacienteDNI')?.value }}</li>
 		</ul>
-		
-		<!-- <h2><span class="blue-text">Fecha:</span> {{ turno.fecha | date : "EEEE dd/MM" }}, a las {{ turno.fecha | date : "shortTime" }}</h2>
-		<h2><span class="blue-text">Doctor:</span> {{doctor}}</h2>
-		<h2><span class="blue-text">Lugar:</span> {{turno.consultorio}}</h2>
-		<h2><span class="blue-text">Paciente:</span> {{turnoForm.get('pacienteNombre')?.value}}</h2>
-		<h2><span class="blue-text">DNI:</span> {{turnoForm.get('pacienteDNI')?.value}}</h2> -->
 		<span></span>
 	</div>
 
 	<div *ngIf="pasoActual > 0 " class="botonera flex-row">
-		<button *ngIf="pasoActual > 0 && pasoActual < 6" class="option-pill-access" (click)="retroceder()">Paso Anterior</button>
-		<button *ngIf="pasoActual < 5" class="option-pill-access lblue-button-access" (click)="avanzar()">Paso Siguiente</button>
-		<button *ngIf="pasoActual === 5" class="option-pill-access green-button-access" type="submit" (click)="finalizarTurno()">Confirmar Turno</button>
-		<button *ngIf="pasoActual === 6" class="option-pill-access green-button-access" type="submit" onclick="window.print()" (click)="irFinal()">Finalizar</button>
-		
-	<!--	<button *ngIf="pasoActual === 6" class="option-pill-access green-button-access" type="submit" ">Imprimir</button>-->
+		<button *ngIf="pasoActual > 0 && pasoActual < 7" class="option-pill-access" (click)="retroceder()">Paso Anterior</button>
+		<button *ngIf="pasoActual < 6" class="option-pill-access lblue-button-access" (click)="avanzar()">Paso Siguiente</button>
+		<button *ngIf="pasoActual === 6" class="option-pill-access green-button-access" type="submit" (click)="finalizarTurno()">Confirmar Turno</button>
+		<button *ngIf="pasoActual === 7" class="option-pill-access green-button-access" type="submit" onclick="window.print()" (click)="irFinal()">Finalizar</button>
 	</div>
 </div>

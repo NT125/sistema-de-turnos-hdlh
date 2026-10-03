@@ -16,7 +16,14 @@
     (ngSubmit)="finalizarTurno()"
   >
     <h2>Seleccione un médico</h2>
-    <div class="card-container">
+    <div *ngIf="!_medicoService.medicos || _medicoService.medicos.length === 0" class="title flex-column" style="margin: 2rem 0; align-items: center;">
+      <span class="material-symbols-rounded" style="color: var(--rojo); font-size: 80px; margin-bottom: 1rem;">
+          cancel
+      </span>
+      <h1 style="text-align: center;">No hay médicos.</h1>
+      <h2 style="font-weight: 400; text-align: center;">No hay médicos disponibles para esta especialidad.</h2>
+    </div>
+    <div class="card-container" *ngIf="_medicoService.medicos && _medicoService.medicos.length > 0">
       <div
         *ngFor="let medico of _medicoService.medicos"
         class="card"
@@ -34,7 +41,7 @@
               {{ medico.apellido }} {{ medico.nombre }}
             </div>
             <div class="turno-text">
-              Turnos Disponibles: {{ medico.turnosDisponibles}}
+              Turnos Disponibles: {{ medico.turnosDisponibles }}
             </div>
           </div>
         </label>
@@ -42,7 +49,14 @@
     </div>
 
     <h2>Seleccione un turno</h2>
-    <div class="card-container">
+    <div *ngIf="!_medicoService.turnos || _medicoService.turnos.length === 0" class="title flex-column" style="margin: 2rem 0; align-items: center;">
+      <span class="material-symbols-rounded" style="color: var(--celeste); font-size: 80px; margin-bottom: 1rem;">
+          info
+      </span>
+      <h1 style="text-align: center;">Seleccione un médico.</h1>
+      <h2 style="font-weight: 400; text-align: center;">Seleccione un médico arriba para ver sus turnos.</h2>
+    </div>
+    <div class="card-container" *ngIf="_medicoService.turnos && _medicoService.turnos.length > 0">
       <div
         *ngFor="let turno of _medicoService.turnos"
         class="card"
@@ -67,6 +81,9 @@
               <li class="turno-text">Lugar: {{ turno.consultorio }}</li>
               <li class="turno-text">
                 <b>Consultorio {{ turno.consultorio }} </b>
+                </li>
+                <li class="turno-text" *ngIf="turno.observacionAdmin" style="color: var(--rojo); font-weight: bold;">
+                  Aviso: {{ turno.observacionAdmin }}
               </li>
             </ul>
           </div>

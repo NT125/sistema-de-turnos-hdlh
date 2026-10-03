@@ -1,0 +1,33 @@
+<div class="form-container">
+  <div class="flex-row" style="align-items: center; margin-bottom: 2rem;">
+    <h1 style="font-size: 64px; font-weight: 800; margin: 0; color: var(--azul);">{{ titulo }}</h1>
+    <button routerLink="/admin/especialidades" class="option-pill small-button" style="color: white; background-color: var(--azul); border: none; cursor: pointer;">
+      Volver
+    </button>
+  </div>
+  
+  <div class="card" style="margin-top: 2rem;">
+    <div class="card-body">
+      <form [formGroup]="especialidadForm" (ngSubmit)="agregarEspecialidad()">
+        
+        <div class="mb-3">
+          <label class="form-label" style="font-size: 1.2rem; font-weight: bold; margin-bottom: 0.5rem; display: block; color: var(--negro);">Nombre de la Especialidad</label>
+          <input type="text" formControlName="nombreEsp" class="form-control" placeholder="Ej: Cardiología, Pediatría..." style="width: 100%; padding: 1rem; border-radius: 10px; border: 1px solid var(--gris); outline: none; margin-bottom: 1rem; font-size: 1rem;" />
+          <div class="text-danger" *ngIf="especialidadForm.get('nombreEsp')?.hasError('required') && especialidadForm.get('nombreEsp')?.touched">
+            El nombre es requerido.
+          </div>
+        </div>
+
+        <div class="mb-3 flex-row" style="align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+          <input type="checkbox" formControlName="activa" id="activaCheckbox" style="width: 20px; height: 20px; cursor: pointer;">
+          <label for="activaCheckbox" style="font-size: 1.1rem; font-weight: bold; color: var(--negro); cursor: pointer; margin: 0;">Especialidad Activa</label>
+        </div>
+
+        <div class="actions" style="display: flex; gap: 1rem;">
+          <button type="submit" [disabled]="especialidadForm.invalid" class="option-pill small-button" style="color: white; background-color: var(--verde); border: none; cursor: pointer; margin-left: 0;">Guardar</button>
+        </div>
+        
+      </form>
+    </div>
+  </div>
+</div>

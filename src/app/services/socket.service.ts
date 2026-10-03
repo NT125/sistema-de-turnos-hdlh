@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Socket, io } from 'socket.io-client';
+import { baseUrl } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ export class SocketService {
   private socket: Socket;
 
   constructor() {
-    this.socket = io('http://localhost:4000'); // Cambia la URL si es necesario
+    this.socket = io(baseUrl);
   }
 
   // Evento para recibir el código QR

@@ -1,6 +1,7 @@
 const cron = require("node-cron");
 const Turno = require("./models/Turno");
 const wpp = require('./controllers/whatsappController');
+const emailService = require('./utils/email');
 require('dotenv').config({ path: 'variables.env'});
 
 cron.schedule("00 9 * * *", () => {
@@ -44,6 +45,17 @@ async function procesarTurnos() {
             turnos[i].consultorio,
             turnos[i].especialidad_id.nombreEsp
           );
+
+          if (turnos[i].paciente_id.email) {
+            emailService.recordatorio(
+              turnos[i].paciente_id.email,
+              turnos[i].paciente_id.nombre,
+              turnos[i].fecha,
+              turnos[i].medico_id.nombre,
+              turnos[i].consultorio,
+              turnos[i].especialidad_id.nombreEsp
+            );
+          }
         }
         
         

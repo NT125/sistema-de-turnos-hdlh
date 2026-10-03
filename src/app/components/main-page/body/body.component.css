@@ -1,177 +1,159 @@
-h1{
-    max-width: 60%;
-    color: #fff;
-
-    font-size: 36px;
-    font-weight: 800;
-    text-align: center;
-    
-    z-index: 998;
-
-    position:absolute;
-    top: 42%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-h2{
-    padding: 3rem;
-    font-size: 2.8rem;
-    text-align: center;
-    color: var(--azul);
+:host {
+    display: block;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-h3{
-    padding: 1rem;
-
-    font-size: 2rem;
-    text-align: center;
-}
-
-.separator{
-    margin: 0 auto 1.5rem;
-    width: 10%;
-    
-    border: none;
-    border-bottom: solid 8px var(--celeste);
-    border-radius: 10px;
-}
-
-.info-container{
-    padding: 0 0 2rem;
-
-    /*background-image: url("/26807.jpg");*/
-    background-position: center;
-    background-size: cover;
-}
-
-.title{    
+/* Hero Section */
+.hero-section {
     position: relative;
-
-    background: linear-gradient(90deg, var(--celesteO), var(--cianO));
-    /*background-image: url("/26800.jpg");*/
-    background-position: center;
-    background-size: cover;
-}
-
-.info-mobile, .info-desktop{
-    background-color: #fff;
-    box-shadow: 0 0 20px 5px #0462;
-}
-
-.info-desktop{
-    display: none;
-}
-
-.parrafo-imagen{
     width: 100%;
-    max-height: 160px;
+    height: 85vh;
+    min-height: 600px;
+    overflow: hidden;
+    background-color: #000;
+}
 
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, rgba(0, 36, 76, 0.8) 0%, rgba(0, 99, 177, 0.4) 100%);
+    z-index: 10;
+    pointer-events: none;
+}
+
+.hero-content {
+    position: absolute;
+    top: 50%;
+    left: 10%;
+    transform: translateY(-50%);
+    z-index: 20;
+    color: white;
+    max-width: 600px;
+    animation: fadeIn 1s ease-out;
+}
+
+.hero-content h1 {
+    font-size: 3.5rem;
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    color: white !important;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+.hero-subtitle {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    margin-bottom: 2.5rem;
+    color: white !important;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+    opacity: 0.9;
+}
+
+.cta-button {
+    display: inline-block;
+    padding: 1rem 2.5rem;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: var(--azul, #004b87);
+    background-color: white;
+    border-radius: 50px;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+}
+
+.cta-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    background-color: var(--celeste, #0088cc);
+    color: white;
+}
+
+.hero-carousel-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+/* Make sure the carousel fills the hero */
+.hero-carousel-container ::ng-deep app-carousel {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.hero-carousel-container ::ng-deep .carrusel, 
+.hero-carousel-container ::ng-deep .slide {
+    height: 100% !important;
+    width: 100% !important;
     object-fit: cover;
 }
 
-.parrafo-info{
-    padding: 0 1rem 1rem;
-    
+/* Services Section */
+.services-section {
+    padding: 6rem 2rem;
+    background-color: #f8f9fa;
+}
+
+.services-header {
     text-align: center;
-    font-size: 18px;
+    max-width: 800px;
+    margin: 0 auto 4rem;
 }
 
-.section{
-    padding: 2rem;
-    gap: 2rem;
+.services-header h2 {
+    font-size: 2.5rem;
+    color: var(--azul, #004b87);
+    margin-bottom: 1.5rem;
+    font-weight: 700;
 }
 
-@media(min-width: 768px) {
-    h1{
-        max-width: 60%;
-        font-size: 50px;
-    }
-
-    .info-mobile{
-        padding: 2rem;
-    }
-
-    .parrafo-imagen{
-        border-radius: 10px;
-        box-shadow: 0 0 10px 3px #0063;
-    }
+.separator {
+    margin: 0 auto 2rem;
+    width: 80px;
+    border-bottom: 6px solid var(--celeste, #0088cc);
+    border-radius: 10px;
 }
 
-@media(min-width: 1280px) {
-    h1{
-        top: 45%;
-        max-width: 70%;
-        font-size: 70px;
-    }
+.services-description {
+    font-size: 1.1rem;
+    color: #666;
+    line-height: 1.6;
+}
 
-    h2{
-        padding:5rem;
+.autogestion-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+}
 
-        font-size: 72px;
-    }
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
 
-    h3{
-        font-size: 3rem;
-    }
-
-    .title{        
-        padding-top: 1.5rem;
-    }
-    .section{
-        padding: 3rem;
-        *{
-            margin: auto;
-        }
-    }
-
-    .separator{
-        margin: 0 auto 2rem;
-    }
-
-    .parrafo-info{
-        padding-top: 1.5rem;
-
-        font-size: 20px;
+/* Responsive */
+@media(max-width: 768px) {
+    .hero-content {
+        left: 5%;
+        right: 5%;
         text-align: center;
     }
-
-    .info-container{
-        padding: 0 2rem 2rem;
+    .hero-content h1 {
+        font-size: 2.5rem;
     }
-
-
-    .info-mobile{
-        display: none;
+    .services-section {
+        padding: 4rem 1rem;
     }
-
-    .info-desktop{
-        display: block;
-        margin: auto;
-        max-width: 1400px;
-        
-        border-radius: 20px;
-    }
-
-    .parrafo-imagen{
-        max-width: 520px;
-        max-height: 500px;
-    
-        object-fit: cover;
-    }
-}
-
-@media(min-width: 1600px){
-    h1{
-        top: 47%;
-        max-width: 60%;
-        font-size: 80px;
-    }
-
-    .info-container{
-        padding: 0 2rem 3rem;
-    }
-
-    .info-desktop{
-        padding: 2rem;
+    .services-header h2 {
+        font-size: 2rem;
     }
 }

@@ -1,0 +1,45 @@
+<div class="list-container">
+  <div class="header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+    <h1 style="font-size: 64px; font-weight: 800; color: var(--azul); margin: 0;">Gestión de Especialidades</h1>
+    <div style="display: flex; gap: 1rem;">
+      <a routerLink="/admin/especialidades/nuevo" class="option-pill small-button" style="color: white; background-color: var(--celeste); text-decoration: none; display: flex; align-items: center; justify-content: center; width: auto; padding: 1rem 1.5rem; margin: 0;">
+        <i class="material-symbols-rounded">add</i> Agregar Nueva
+      </a>
+      <button routerLink="/admin" class="option-pill small-button" style="color: white; background-color: var(--azul); border: none; cursor: pointer;">
+        Volver
+      </button>
+    </div>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Nombre de la Especialidad</th>
+          <th>Estado</th>
+          <th style="width: 200px;">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let esp of especialidades">
+          <td>{{ esp.nombreEsp }}</td>
+          <td>
+            <span [ngClass]="esp.activa !== false ? 'badge-activo' : 'badge-inactivo'">
+              {{ esp.activa !== false ? 'Activa' : 'Inactiva' }}
+            </span>
+          </td>
+          <td>
+            <div class="actions" style="display: flex; gap: 0.5rem; justify-content: center;">
+              <button [routerLink]="['/admin/especialidades/editar', esp._id]" class="option-pill small-button" style="color: white; background-color: var(--amarillo); border: none; cursor: pointer; padding: 0.5rem; width: auto;">
+                <span class="material-symbols-rounded">edit</span>
+              </button>
+              <button (click)="eliminarEspecialidad(esp._id)" class="option-pill small-button" style="color: white; background-color: var(--rojo); border: none; cursor: pointer; padding: 0.5rem; width: auto;">
+                <span class="material-symbols-rounded">delete</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

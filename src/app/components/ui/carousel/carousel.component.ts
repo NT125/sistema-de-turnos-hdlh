@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { Component, CUSTOM_ELEMENTS_SCHEMA, OnInit } from '@angular/core';
 import { register } from 'swiper/element';
 register();
@@ -6,13 +6,14 @@ register();
 @Component({
   selector: 'app-carousel',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, NgOptimizedImage],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './carousel.component.html',
   styleUrl: './carousel.component.css'
 })
-export class CarouselComponent {
+export class CarouselComponent implements OnInit {
   indice: number = 0;
+  intervalo: any;
 
   fotos = [
     { img: "/slider/1.jpg" },
@@ -20,6 +21,16 @@ export class CarouselComponent {
     { img: "/slider/3.jpg" },
     { img: "/slider/4.jpg" },
   ];
+
+  ngOnInit() {
+    this.iniciarAutoPlay();
+  }
+
+  iniciarAutoPlay() {
+    this.intervalo = setInterval(() => {
+      this.sumarIndice();
+    }, 4000);
+  }
 
   getImagen(): string {
     return this.fotos[this.indice].img;

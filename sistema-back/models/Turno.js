@@ -10,6 +10,7 @@ const TurnoSchema = mongoose.Schema({
     paciente_id:{type: Schema.Types.ObjectId, ref:'Paciente'},
     dniTerminal:{type:Number},
     nombreTerminal:{type:String},
+    emailTerminal:{type:String},
     fecha:{
         type: Date,
         required:true
@@ -29,6 +30,9 @@ const TurnoSchema = mongoose.Schema({
     duracion:{
         type:Number,
         required:true
+    },
+    observacionAdmin:{
+        type:String
     },
     observacion:{
         type:String

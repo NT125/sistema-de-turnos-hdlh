@@ -23,6 +23,18 @@ export class ObraSocialService {
   getObra(id:any){
     return this.http.get<ObraSocial>(`${this.url}/${id}`,this.createHeader());
   }
+  getObraId(id:any){
+    return this.http.get<ObraSocial>(`${this.url}${id}`,this.createHeader());
+  }
+  postObra(obra: ObraSocial){
+    return this.http.post(this.url, obra, this.createHeader());
+  }
+  putObra(id: string, obra: ObraSocial){
+    return this.http.put(`${this.url}${id}`, obra, this.createHeader());
+  }
+  deleteObra(id: string){
+    return this.http.delete(`${this.url}${id}`, this.createHeader());
+  }
   createHeader(){
     return {
       headers: new HttpHeaders({
@@ -30,5 +42,4 @@ export class ObraSocialService {
       })
     }
   }
- 
 }

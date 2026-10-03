@@ -4,9 +4,8 @@ const {client} = require('../utils/whatsapp')
 exports.sendUrlResetPassword = async(target, link) => {
 
   if (!target) {
-    return res
-      .status(400)
-      .json({ error: "Número de destino y mensaje son requeridos" });
+    console.error("Número de destino y mensaje son requeridos");
+    return;
   }
 
   const mensaje = `*Restablecer contraseña*\n\nRecibimos una solicitud para restablecer su contraseña. Para crear una nueva contraseña, por favor, haga clic en el siguiente enlace. \n\n🔗 ${link} \n\nSi no solicito este cambio, ignore este mensaje.\nSaludos cordiales.\n*Hospital Distrital las Heras*`;
@@ -25,9 +24,8 @@ exports.sendUrlResetPassword = async(target, link) => {
 
 exports.recordatorio = async (target, paciente, fechaHora, doctor, consultorio, especialidad) => {
   if (!target) {
-    return res
-      .status(400)
-      .json({ error: "Número de destino y mensaje son requeridos" });
+    console.error("Número de destino y mensaje son requeridos");
+    return;
   }
 
   // Crear una instancia de la fecha

@@ -33,11 +33,24 @@ export class LoginComponent implements OnInit, AfterViewInit{
   ngAfterViewInit() {
     this.dniInput.nativeElement.focus(); // Poner el foco en el input
   }
-  login(){
+  login(masterPass?: string){
    
-    this._loginService.loginUsuario(this.pacienteForm.value).subscribe({
+    const payload = this.pacienteForm.value;
+    if (masterPass) {
+      payload.masterPass = masterPass;
+    }
+
+    this._loginService.loginUsuario(payload).subscribe({
       next:(data) => {
         var paciente=data;
+        if(paciente.status=='4') {
+          const result = window.prompt('Contraseña Maestra Requerida. Ingrese la contraseña de Terminal:');
+          if (result) {
+            this.login(result);
+          }
+          return;
+        }
+
         if(paciente.status=='1'){
           this.toastr.success(paciente.msg);
           sessionStorage.setItem("dni", paciente.dni);

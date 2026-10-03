@@ -3,6 +3,12 @@ h3{
     padding: 20px;
 }
 
+:host {
+    display: block;
+    height: 100%;
+    flex: 1;
+}
+
 .option-card{
     margin: 1rem 0;
     padding: 2rem;
@@ -45,7 +51,6 @@ h3{
     font-weight: 500;
     font-size: 22px;    
 }
-
 
 @media(min-width: 1280px) {
     .option-card{

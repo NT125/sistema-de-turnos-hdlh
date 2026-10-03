@@ -88,35 +88,41 @@ export class UsuariosListComponent implements OnInit{
     }
   }
   desbloquearPaciente(idPaciente:any){
-     
-      this._pacienteService.getPaciente(idPaciente).subscribe({
-        next:(data) => {
-          
-          this.pacienteActu._id=data._id;
-          this.pacienteActu.dni=data.dni;
-          this.pacienteActu.nombre=data.nombre;
-          this.pacienteActu.telefono=data.telefono;
-          this.pacienteActu.strikes=0
-          
-          this._pacienteService.putPaciente(this.pacienteActu).subscribe({
-            next:(data) => {
-              this.toastr.success("¡Usuario desbloqueado!")
-              
-              this.getBloqueados();
-            },
-            error:(e) => {
-              console.log(e);
-            },
-            
-          })
-          
-        },
-        error:(e) => {
-          console.log(e);
-        },
-        
-      })
-    
+    this._pacienteService.getPaciente(idPaciente).subscribe({
+      next:(data) => {
+        const paciente: any = {
+          _id: idPaciente,
+          strikes: 0
+        };
+        this._pacienteService.putPaciente(paciente).subscribe({
+          next:(res) => {
+            console.log(res);
+            this.obtenerPacientes();
+          }
+        });
+      }
+    });
+  }
+
+  bloquearPaciente(idPaciente:any){
+    this._pacienteService.getPaciente(idPaciente).subscribe({
+      next:(data) => {
+        const paciente: any = {
+          _id: idPaciente,
+          strikes: 3
+        };
+        this._pacienteService.putPaciente(paciente).subscribe({
+          next:(res) => {
+            console.log(res);
+            this.obtenerPacientes();
+          }
+        });
+      }
+    });
+  }
+
+  obtenerPacientes() {
+    this.getSoloPacientes();
   }
   getPacientes() {
     this._pacienteService.getPacientes().subscribe({

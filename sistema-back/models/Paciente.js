@@ -1,4 +1,3 @@
-const { type } = require('jquery');
 const {mongoose, Schema} = require ('mongoose');
 const PacienteSchema = mongoose.Schema({
     dni:{
@@ -25,7 +24,7 @@ const PacienteSchema = mongoose.Schema({
     email:{
         type: String,
         required:false,
-        default:0
+        default:""
     },
     rol:{
         type: String,
@@ -34,11 +33,11 @@ const PacienteSchema = mongoose.Schema({
     },
     resetPasswordToken:{
         type: String,
-        require: false
+        required: false
     },
     resetPasswordExpires:{
         type: Date,
-        require: false
+        required: false
     }
 });
 

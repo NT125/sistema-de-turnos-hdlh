@@ -8,6 +8,14 @@ const qrcode2 = require("qrcode");
 const socketIo = require("socket.io");
 const whatsappRoutes = require("./routes/whatsapp.route");
 
+// Evitar crasheos fatales
+process.on('uncaughtException', (err) => {
+  console.error('Uncaught Exception:', err);
+});
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+});
+
 //Creamos servidor
 const app = express();
 
@@ -61,7 +69,16 @@ io.on("connection", (socket) => {
   });
 });
 
-client.initialize();
+client.on("disconnected", (reason) => {
+  console.log("WhatsApp client disconnected", reason);
+});
+client.on("auth_failure", (msg) => {
+  console.error("WhatsApp auth failure", msg);
+});
+
+client.initialize().catch(err => {
+  console.error("Error crítico al inicializar WhatsApp:", err);
+});
 require("./cron");
 app.use("/api/login", require("./routes/login"));
 app.use("/api/medico", checkToken, require("./routes/medico"));

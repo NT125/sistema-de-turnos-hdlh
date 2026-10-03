@@ -1,0 +1,41 @@
+<div class="list-container">
+  <div class="header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+    <h1 style="font-size: 64px; font-weight: 800; color: var(--azul); margin: 0;">Gestión de Obras Sociales</h1>
+    <div style="display: flex; gap: 1rem;">
+      <a routerLink="/admin/obras-sociales/nuevo" class="option-pill small-button" style="color: white; background-color: var(--celeste); text-decoration: none; display: flex; align-items: center; justify-content: center; width: auto; padding: 1rem 1.5rem; margin: 0;">
+        <i class="material-symbols-rounded">add</i> Agregar Nueva
+      </a>
+      <button class="option-pill small-button" routerLink="/admin" style="color: white; background-color: var(--azul); border: none; cursor: pointer; margin: 0;">Volver</button>
+    </div>
+  </div>
+
+  <div class="table-responsive" *ngIf="obrasSociales.length > 0; else noData">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let obra of obrasSociales">
+          <td>{{ obra.nombreOS }}</td>
+          <td class="acciones">
+            <a [routerLink]="['/admin/obras-sociales/editar', obra._id]" class="btn btn-sm btn-info">
+              <i class="material-symbols-rounded">edit</i>
+            </a>
+            <button (click)="eliminarObra(obra._id)" class="btn btn-sm btn-danger">
+              <i class="material-symbols-rounded">delete</i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <ng-template #noData>
+    <div class="no-data">
+      <p>No hay obras sociales registradas.</p>
+    </div>
+  </ng-template>
+</div>

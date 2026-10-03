@@ -4,12 +4,17 @@ const { client } = require("../utils/whatsapp");
 const { MessageMedia } = require("whatsapp-web.js");
 const path = require("path");
 const axios = require("axios");
+const { checkToken } = require("../utils/middleware");
+const moment = require("moment");
+const fs = require("fs");
+const Paciente = require("../models/Paciente");
+const emailService = require("../utils/email");
 
 const messageBody = (fechaHora, doctor, consultorio, especialidad) => {
   return `📆 *Fecha y Hora*: ${fechaHora}\n🧑‍⚕️ *Doctor*: ${doctor}\n🏥 *Consultorio*: ${consultorio}\n🩺 *Especialidad*: ${especialidad}`;
 };
 
-router.post("/send", async (req, res) => {
+router.post("/send", checkToken, async (req, res) => {
   const { numeroDestino, mensaje } = req.body;
 
   if (!numeroDestino || !mensaje) {
@@ -28,7 +33,7 @@ router.post("/send", async (req, res) => {
   }
 });
 
-router.post("/cancelado", async (req, res) => {
+router.post("/cancelado", checkToken, async (req, res) => {
   const { target, paciente, fechaHora, doctor, consultorio, especialidad } =
     req.body;
 
@@ -44,16 +49,26 @@ router.post("/cancelado", async (req, res) => {
   )} \n\nSi desea reprogramar su cita, no dude en contactarnos. Estaremos encantados de asistirte.\n\nAtentamente *Hospital Distrital las Heras*`;
 
   try {
+    const pacienteObj = await Paciente.findOne({ telefono: target });
+    if (pacienteObj && pacienteObj.email) {
+      emailService.turnoCancelado(pacienteObj.email, paciente, fechaHora, doctor, consultorio, especialidad);
+    }
+  } catch (e) {
+    console.log('Error enviando email en /cancelado', e);
+  }
+
+  try {
     const chatId = `${target}@c.us`;
     const response = await client.sendMessage(chatId, mensaje);
     res.json({ message: "Mensaje enviado", response });
   } catch (error) {
-    console.error("Error al enviar mensaje:", error);
-    res.status(500).json({ error: "Error al enviar mensaje" });
+    console.error("Error al enviar mensaje WhatsApp:", error);
+    // Si WhatsApp falla, aún así respondemos 200 para no romper el frontend, ya que el email pudo salir
+    res.json({ message: "Error en WhatsApp, pero la acción continuó", error: error.toString() });
   }
 });
 
-router.post("/info-turno", async (req, res) => {
+router.post("/info-turno", checkToken, async (req, res) => {
   const { target, paciente, fechaHora, doctor, consultorio, especialidad } =
     req.body;
 
@@ -83,7 +98,7 @@ router.post("/info-turno", async (req, res) => {
 /**
  * Para informar que desde administracion el turno se cancelo
  */
-router.post("/turno-cancelado", async (req, res) => {
+router.post("/turno-cancelado", checkToken, async (req, res) => {
   const { target, paciente, fechaHora, doctor, consultorio, especialidad } =
     req.body;
 
@@ -101,18 +116,27 @@ router.post("/turno-cancelado", async (req, res) => {
   )} \n\nLe pedimos disculpas por cualquier inconveniente que esta situación pueda causarle. \n\nSi desea reprogramar su cita, le invitamos a comunicarse con nosotros a la brevedad a través de nuestros canales habituales. \n\nAgradecemos su comprensión. \n\nAtentamente, *Hospital Distrital las Heras*`;
 
   try {
+    const pacienteObj = await Paciente.findOne({ telefono: target });
+    if (pacienteObj && pacienteObj.email) {
+      emailService.turnoCancelado(pacienteObj.email, paciente, fechaHora, doctor, consultorio, especialidad);
+    }
+  } catch (e) {
+    console.log('Error enviando email en /turno-cancelado', e);
+  }
+
+  try {
     const chatId = `${target}@c.us`;
     const response = await client.sendMessage(chatId, mensaje);
     res.json({ message: "Mensaje enviado", response });
   } catch (error) {
-    console.error("Error al enviar mensaje:", error);
-    res.status(500).json({ error: "Error al enviar mensaje" });
+    console.error("Error al enviar mensaje WhatsApp:", error);
+    res.json({ message: "Error en WhatsApp, pero la acción continuó", error: error.toString() });
   }
 });
 /**
  * Para informar que desde administracion el turno se reprogramo
  */
-router.post("/turno-reprogramado", async (req, res) => {
+router.post("/turno-reprogramado", checkToken, async (req, res) => {
   const { target, paciente, fechaHora, doctor, consultorio, especialidad } =
     req.body;
 
@@ -159,7 +183,7 @@ router.post("/recover-password", async (req, res) => {
   }
 });
 
-router.post("/recordatorio-turno", async (req, res) => {
+router.post("/recordatorio-turno", checkToken, async (req, res) => {
   const { target, paciente, fechaHora, doctor, consultorio, especialidad } =
     req.body;
 
@@ -186,7 +210,7 @@ router.post("/recordatorio-turno", async (req, res) => {
   }
 });
 
-router.post("/enviar-pdf", async (req, res) => {
+router.post("/enviar-pdf", checkToken, async (req, res) => {
   const { target, pdfUrl } = req.body;
 
   if (!target) {
