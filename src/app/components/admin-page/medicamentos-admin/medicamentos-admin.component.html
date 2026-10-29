@@ -1,0 +1,183 @@
+<app-admin-nav></app-admin-nav>
+
+<div class="admin-medicamentos-container">
+
+  <!-- Encabezado con título y botón volver -->
+  <div class="page-top-header">
+    <div class="header-titles">
+      <span class="subtitulo-admin">ADMINISTRACIÓN DE FARMACIA</span>
+      <h1 class="titulo-admin">Gestión de Medicamentos y Precios</h1>
+      <p class="desc-admin">
+        Administre el catálogo oficial de medicamentos y actualice los precios unitarios de la base de datos en tiempo real.
+      </p>
+    </div>
+
+    <div class="header-actions">
+      <button routerLink="/admin" class="btn btn-secondary">
+        ← Volver a Admin
+      </button>
+      <button routerLink="/recetario" class="btn btn-secondary">
+        Ir a Recetario
+      </button>
+      <button type="button" class="btn btn-primary" (click)="abrirModalNuevo()">
+        ➕ Nuevo Medicamento
+      </button>
+    </div>
+  </div>
+
+  <!-- Barra de búsqueda y conteo -->
+  <div class="filter-card">
+    <div class="search-box">
+      <span class="search-icon">🔍</span>
+      <input 
+        type="text" 
+        [(ngModel)]="filtroBusqueda" 
+        placeholder="Buscar medicamento por nombre o número de ítem (ej: Ibuprofeno, Amoxicilina, 29)..." 
+        class="search-input">
+      <button 
+        *ngIf="filtroBusqueda" 
+        type="button" 
+        class="btn-clear-search" 
+        (click)="filtroBusqueda = ''" 
+        title="Limpiar búsqueda">✕</button>
+    </div>
+
+    <div class="filter-meta">
+      <span class="badge-count">
+        <b>{{ medicamentosFiltrados.length }}</b> de <b>{{ medicamentos.length }}</b> medicamentos en BD
+      </span>
+      <button type="button" class="btn-refresh" (click)="cargarMedicamentos()" title="Recargar lista">
+        🔄 Actualizar
+      </button>
+    </div>
+  </div>
+
+  <!-- Estado de carga -->
+  <div *ngIf="cargando" class="loading-state">
+    <div class="spinner"></div>
+    <span>Cargando medicamentos desde la base de datos...</span>
+  </div>
+
+  <!-- Tabla de medicamentos -->
+  <div class="table-card" *ngIf="!cargando">
+    <div class="table-responsive">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th class="th-item">Ítem</th>
+            <th class="th-nombre">Medicamento Descripción</th>
+            <th class="th-precio">Precio Unitario ($)</th>
+            <th class="th-acciones">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="medicamentosFiltrados.length === 0">
+            <td colspan="4" class="no-results">
+              No se encontraron medicamentos que coincidan con la búsqueda.
+            </td>
+          </tr>
+
+          <tr *ngFor="let med of medicamentosFiltrados">
+            <!-- Ítem -->
+            <td class="col-item">
+              <span class="item-tag">#{{ med.item }}</span>
+            </td>
+
+            <!-- Nombre -->
+            <td class="col-nombre">
+              <span class="med-name">{{ med.nombre }}</span>
+            </td>
+
+            <!-- Precio Unitario -->
+            <td class="col-precio">
+              <span class="precio-tag">${{ med.precio | number:'1.2-2' }}</span>
+            </td>
+
+            <!-- Botones de Acción -->
+            <td class="col-acciones">
+              <div class="action-buttons-group">
+                <button 
+                  type="button" 
+                  class="btn-edit" 
+                  (click)="abrirModalEditar(med)" 
+                  title="Editar precio y nombre">
+                  ✏️ Editar Precio
+                </button>
+                <button 
+                  *ngIf="med._id" 
+                  type="button" 
+                  class="btn-delete" 
+                  (click)="eliminarMedicamento(med)" 
+                  title="Eliminar medicamento">
+                  🗑️
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Modal para Agregar / Editar Medicamento -->
+  <div class="modal-overlay" *ngIf="mostrarModal" (click)="cerrarModal()">
+    <div class="modal-card" (click)="$event.stopPropagation()">
+      <div class="modal-top">
+        <div>
+          <h2 class="modal-title">{{ modoEdicion ? 'Editar Medicamento / Precio' : 'Nuevo Medicamento' }}</h2>
+          <span class="modal-sub">Actualice el precio unitario oficial de la base de datos</span>
+        </div>
+        <button type="button" class="btn-close" (click)="cerrarModal()">✕</button>
+      </div>
+
+      <div class="modal-form-body">
+        <div class="form-row">
+          <div class="form-col" style="max-width: 140px;">
+            <label for="medItem">N.° de Ítem:</label>
+            <input 
+              id="medItem" 
+              type="text" 
+              [(ngModel)]="medicamentoSeleccionado.item" 
+              class="form-input" 
+              placeholder="Ej: 139">
+          </div>
+
+          <div class="form-col" style="flex: 1;">
+            <label for="medPrecio">Precio Unitario ($):</label>
+            <div class="input-precio-wrapper">
+              <span class="currency-prefix">$</span>
+              <input 
+                id="medPrecio" 
+                type="number" 
+                step="0.01" 
+                min="0" 
+                [(ngModel)]="medicamentoSeleccionado.precio" 
+                class="form-input input-precio" 
+                placeholder="0.00">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-top: 1rem;">
+          <label for="medNombre">Nombre y Descripción del Medicamento:</label>
+          <input 
+            id="medNombre" 
+            type="text" 
+            [(ngModel)]="medicamentoSeleccionado.nombre" 
+            class="form-input" 
+            placeholder="Ej: PARACETAMOL 500 MG COMP">
+        </div>
+      </div>
+
+      <div class="modal-bottom">
+        <button type="button" class="btn btn-secondary" (click)="cerrarModal()" [disabled]="guardando">
+          Cancelar
+        </button>
+        <button type="button" class="btn btn-success" (click)="guardarMedicamento()" [disabled]="guardando">
+          {{ guardando ? 'Guardando...' : (modoEdicion ? '💾 Guardar Cambios' : '➕ Crear Medicamento') }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>

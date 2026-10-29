@@ -50,7 +50,8 @@ exports.obtenerUsuarios = async(req,res) => {
         const usuarios = await Paciente.find({
             $or: [
                 { rol: 'admin' },
-                { rol: 'secretaria' }
+                { rol: 'secretaria' },
+                { rol: 'recetario' }
             ]}
         );
         res.send(usuarios);

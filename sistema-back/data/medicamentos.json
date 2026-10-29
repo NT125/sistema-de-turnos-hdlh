@@ -1,0 +1,830 @@
+﻿[
+    {
+        "item":  "1",
+        "nombre":  "AC. ACETIL SALICILICO 100 MG COMP.",
+        "precioTexto":  "$ 37.41",
+        "precio":  37.41
+    },
+    {
+        "item":  "2",
+        "nombre":  "AC. FOLICO 1 MG COMP.",
+        "precioTexto":  "$ 68.54",
+        "precio":  68.54
+    },
+    {
+        "item":  "3",
+        "nombre":  "AC. FOLICO 5 MG COMP.",
+        "precioTexto":  "$ 78.66",
+        "precio":  78.66
+    },
+    {
+        "item":  "4",
+        "nombre":  "AC. FOLICO 7.5 MG + FUMARATO FERROSO 330 MG + OTROS CAP. T/ANEMIDOX FERRUM",
+        "precioTexto":  "$ 1,126.75",
+        "precio":  1126.75
+    },
+    {
+        "item":  "7",
+        "nombre":  "ACENOCUMAROL 4MG COMP.",
+        "precioTexto":  "$ 215.55",
+        "precio":  215.55
+    },
+    {
+        "item":  "9",
+        "nombre":  "ACICLOVIR 800 MG COMP.",
+        "precioTexto":  "$ 873.24",
+        "precio":  873.24
+    },
+    {
+        "item":  "16",
+        "nombre":  "ALFA METILDOPA 500 MG. COMP.",
+        "precioTexto":  "$ 711.78",
+        "precio":  711.78
+    },
+    {
+        "item":  "17",
+        "nombre":  "ALPRAZOLAM 0.5 MG COMP.",
+        "precioTexto":  "$ 52.90",
+        "precio":  52.9
+    },
+    {
+        "item":  "18",
+        "nombre":  "ALPRAZOLAM 1 MG COMP.",
+        "precioTexto":  "$ 50.37",
+        "precio":  50.37
+    },
+    {
+        "item":  "19",
+        "nombre":  "ALPRAZOLAM 2 MG COMP.",
+        "precioTexto":  "$ 62.10",
+        "precio":  62.1
+    },
+    {
+        "item":  "24",
+        "nombre":  "AMIODARONA 200 MG COMP.",
+        "precioTexto":  "$ 333.50",
+        "precio":  333.5
+    },
+    {
+        "item":  "26",
+        "nombre":  "AMLODIPINA 10 MG COMP.",
+        "precioTexto":  "$ 77.05",
+        "precio":  77.05
+    },
+    {
+        "item":  "27",
+        "nombre":  "AMLODIPINA 5 MG COMP.",
+        "precioTexto":  "$ 73.37",
+        "precio":  73.37
+    },
+    {
+        "item":  "29",
+        "nombre":  "AMOXICILINA 500 MG COMP",
+        "precioTexto":  "$ 179.40",
+        "precio":  179.4
+    },
+    {
+        "item":  "31",
+        "nombre":  "AMOXICILINA 875MG +AC.CLAVULANICO 125MG COMP.",
+        "precioTexto":  "$ 678.50",
+        "precio":  678.5
+    },
+    {
+        "item":  "37",
+        "nombre":  "ATENOLOL 50 MG COMP.",
+        "precioTexto":  "$ 52.90",
+        "precio":  52.9
+    },
+    {
+        "item":  "38",
+        "nombre":  "ATORVASTATIN 10 MG COMP.",
+        "precioTexto":  "$ 65.55",
+        "precio":  65.55
+    },
+    {
+        "item":  "39",
+        "nombre":  "ATORVASTATIN 20 MG COMP.",
+        "precioTexto":  "$ 80.73",
+        "precio":  80.73
+    },
+    {
+        "item":  "40",
+        "nombre":  "ATORVASTATIN 40 MG COMP. T/LIPITOR",
+        "precioTexto":  "$ 264.50",
+        "precio":  264.5
+    },
+    {
+        "item":  "44",
+        "nombre":  "AZITROMICINA 500 MG COMP.",
+        "precioTexto":  "$ 736.00",
+        "precio":  736
+    },
+    {
+        "item":  "47",
+        "nombre":  "BACLOFENO 10 MG COMP.",
+        "precioTexto":  "$ 355.48",
+        "precio":  355.48
+    },
+    {
+        "item":  "49",
+        "nombre":  "BIPERIDENO 2 MG COMP.",
+        "precioTexto":  "$ 79.76",
+        "precio":  79.76
+    },
+    {
+        "item":  "50",
+        "nombre":  "BISOPROLOL 5 MG COMP.",
+        "precioTexto":  "$ 206.26",
+        "precio":  206.26
+    },
+    {
+        "item":  "52",
+        "nombre":  "BUDESONIDE 100 MG/100 ML X 20 ML SOLUCION P/NEBULIZAR",
+        "precioTexto":  "$ 9,209.17",
+        "precio":  9209.17
+    },
+    {
+        "item":  "54",
+        "nombre":  "BUDESONIDE 200 MCG/DOSIS AEROSOL",
+        "precioTexto":  "$ 19,550.00",
+        "precio":  19550
+    },
+    {
+        "item":  "57",
+        "nombre":  "BUTILBROMURO DE HIOSCINA 10 MG COMP.",
+        "precioTexto":  "$ 230.00",
+        "precio":  230
+    },
+    {
+        "item":  "60",
+        "nombre":  "CALCIO CARBONATO 1250 COMP.",
+        "precioTexto":  "$ 185.15",
+        "precio":  185.15
+    },
+    {
+        "item":  "62",
+        "nombre":  "CARBAMACEPINA 200MG COMP.",
+        "precioTexto":  "$ 198.37",
+        "precio":  198.37
+    },
+    {
+        "item":  "65",
+        "nombre":  "CARVEDILOL 6,25 MG COMP.",
+        "precioTexto":  "$ 69.00",
+        "precio":  69
+    },
+    {
+        "item":  "66",
+        "nombre":  "CARVEDILOL 12,5 MG COMP.",
+        "precioTexto":  "$ 76.29",
+        "precio":  76.29
+    },
+    {
+        "item":  "67",
+        "nombre":  "CARVEDILOL 25 MG COMP.",
+        "precioTexto":  "$ 122.68",
+        "precio":  122.68
+    },
+    {
+        "item":  "68",
+        "nombre":  "CARVEDILOL 3.125 MG COMP.",
+        "precioTexto":  "$ 133.53",
+        "precio":  133.53
+    },
+    {
+        "item":  "69",
+        "nombre":  "CEFALEXINA 500 MG COMP",
+        "precioTexto":  "$ 246.10",
+        "precio":  246.1
+    },
+    {
+        "item":  "79",
+        "nombre":  "CIPROFLOXACINA 500 COMP",
+        "precioTexto":  "$ 207.00",
+        "precio":  207
+    },
+    {
+        "item":  "81",
+        "nombre":  "CLINDAMICINA 300 MG CAPS.",
+        "precioTexto":  "$ 414.00",
+        "precio":  414
+    },
+    {
+        "item":  "83",
+        "nombre":  "CLONAZEPAM 0,5MG COMP.",
+        "precioTexto":  "$ 48.76",
+        "precio":  48.76
+    },
+    {
+        "item":  "84",
+        "nombre":  "CLONAZEPAM 2 MG COMP.",
+        "precioTexto":  "$ 55.66",
+        "precio":  55.66
+    },
+    {
+        "item":  "86",
+        "nombre":  "CLOPIDOGREL 75 MG COMP.",
+        "precioTexto":  "$ 273.95",
+        "precio":  273.95
+    },
+    {
+        "item":  "93",
+        "nombre":  "COMPLEJO B (B1 250 MG, B6 250 MG Y B12 3 MG) COMP.",
+        "precioTexto":  "$ 236.30",
+        "precio":  236.3
+    },
+    {
+        "item":  "99",
+        "nombre":  "DIAZEPAM 10 MG COMP.",
+        "precioTexto":  "$ 71.76",
+        "precio":  71.76
+    },
+    {
+        "item":  "101",
+        "nombre":  "DICLOFENAC 75 MG COMP",
+        "precioTexto":  "$ 57.50",
+        "precio":  57.5
+    },
+    {
+        "item":  "103",
+        "nombre":  "DIFENHIDRAMINA 250 MG/100 ML JBE.",
+        "precioTexto":  "$ 1,840.00",
+        "precio":  1840
+    },
+    {
+        "item":  "104",
+        "nombre":  "DIFENHIDRAMINA 50 MG COMP.",
+        "precioTexto":  "$ 201.15",
+        "precio":  201.15
+    },
+    {
+        "item":  "110",
+        "nombre":  "DIVALPROATO DE SODIO 500 MG COMP.",
+        "precioTexto":  "$ 886.97",
+        "precio":  886.97
+    },
+    {
+        "item":  "115",
+        "nombre":  "ENALAPRIL 10 MG COMP.",
+        "precioTexto":  "$ 57.50",
+        "precio":  57.5
+    },
+    {
+        "item":  "117",
+        "nombre":  "ENALAPRIL 5 MG COMP.",
+        "precioTexto":  "$ 55.20",
+        "precio":  55.2
+    },
+    {
+        "item":  "118",
+        "nombre":  "ENALAPRIL 20 MG COMP.",
+        "precioTexto":  "$ 94.30",
+        "precio":  94.3
+    },
+    {
+        "item":  "126",
+        "nombre":  "ESCITALOPRAM 20 MG COMP.",
+        "precioTexto":  "$ 173.65",
+        "precio":  173.65
+    },
+    {
+        "item":  "127",
+        "nombre":  "ESPIRONOLACTONA 25 MG COMP.",
+        "precioTexto":  "$ 195.96",
+        "precio":  195.96
+    },
+    {
+        "item":  "128",
+        "nombre":  "ESPIRONOLACTONA 100 MG COMP.",
+        "precioTexto":  "$ 218.50",
+        "precio":  218.5
+    },
+    {
+        "item":  "136",
+        "nombre":  "FENITOINA (DIFENILHIDANTOINA) 0.100 G COMP./CAPS.",
+        "precioTexto":  "$ 464.18",
+        "precio":  464.18
+    },
+    {
+        "item":  "139",
+        "nombre":  "FENOBARBITAL 0.100 G COMP.",
+        "precioTexto":  "$ 370.66",
+        "precio":  370.66
+    },
+    {
+        "item":  "145",
+        "nombre":  "FLUOXETINA 20 MG COMP.",
+        "precioTexto":  "$ 73.87",
+        "precio":  73.87
+    },
+    {
+        "item":  "149",
+        "nombre":  "FUROSEMIDA 40 MG COMP.",
+        "precioTexto":  "$ 73.60",
+        "precio":  73.6
+    },
+    {
+        "item":  "150",
+        "nombre":  "GABAPENTIN 300 MG COMP.",
+        "precioTexto":  "$ 163.76",
+        "precio":  163.76
+    },
+    {
+        "item":  "151",
+        "nombre":  "GADOTERATO DE MEGLUMINA X 15 ML",
+        "precioTexto":  "$ 70,955.00",
+        "precio":  70955
+    },
+    {
+        "item":  "152",
+        "nombre":  "GAMAGLOBULINA ANTITETANICA 500 UI FCO AMP.",
+        "precioTexto":  "$ 59,770.00",
+        "precio":  59770
+    },
+    {
+        "item":  "157",
+        "nombre":  "GLIBENCLAMIDA 5 MG COMP.",
+        "precioTexto":  "$ 65.15",
+        "precio":  65.15
+    },
+    {
+        "item":  "158",
+        "nombre":  "GLICLAZIDA 60 MG COMP.",
+        "precioTexto":  "$ 464.60",
+        "precio":  464.6
+    },
+    {
+        "item":  "159",
+        "nombre":  "GLIMEPIRIDA 4 MG COMP",
+        "precioTexto":  "$ 73.69",
+        "precio":  73.69
+    },
+    {
+        "item":  "162",
+        "nombre":  "HALOPERIDOL 5 MG COMP.",
+        "precioTexto":  "$ 160.70",
+        "precio":  160.7
+    },
+    {
+        "item":  "163",
+        "nombre":  "HALOPERIDOL 10 MG COMP T/HALOPIDOL",
+        "precioTexto":  "$ 176.64",
+        "precio":  176.64
+    },
+    {
+        "item":  "164",
+        "nombre":  "HALOPERIDOL DECANOATO 150 MG.3 ML AMP.",
+        "precioTexto":  "$ 13,091.15",
+        "precio":  13091.15
+    },
+    {
+        "item":  "167",
+        "nombre":  "HIDROCLOROTIAZIDA 25 MG COMP.",
+        "precioTexto":  "$ 601.48",
+        "precio":  601.48
+    },
+    {
+        "item":  "168",
+        "nombre":  "HIDROCLOROTIAZIDA 50 MG COMP.",
+        "precioTexto":  "$ 197.80",
+        "precio":  197.8
+    },
+    {
+        "item":  "171",
+        "nombre":  "HIDROXICLOROQUINA 200 MG COMP.",
+        "precioTexto":  "$ 322.00",
+        "precio":  322
+    },
+    {
+        "item":  "172",
+        "nombre":  "HIERRO SACARATO 100 MG/5 ML AMP. EV.",
+        "precioTexto":  "$ 7,337.00",
+        "precio":  7337
+    },
+    {
+        "item":  "177",
+        "nombre":  "IBUPROFENO 4 G/100 ML JBE.",
+        "precioTexto":  "$ 1,702.00",
+        "precio":  1702
+    },
+    {
+        "item":  "178",
+        "nombre":  "IBUPROFENO 400 MG COMP",
+        "precioTexto":  "$ 63.25",
+        "precio":  63.25
+    },
+    {
+        "item":  "180",
+        "nombre":  "IBUPROFENO 600 COMP.",
+        "precioTexto":  "$ 128.80",
+        "precio":  128.8
+    },
+    {
+        "item":  "189",
+        "nombre":  "INSULINA ASPARTICA LAPICERA/JER. PRELL.",
+        "precioTexto":  "$ 55,388.08",
+        "precio":  55388.08
+    },
+    {
+        "item":  "190",
+        "nombre":  "INSULINA DEGLUDEC LAPICERA/JER. PRELL.",
+        "precioTexto":  "$ 158,767.19",
+        "precio":  158767.19
+    },
+    {
+        "item":  "191",
+        "nombre":  "INSULINA GLARGINA 100 UI/ML LAPICERA/JER. PRELL.",
+        "precioTexto":  "$ 30,820.00",
+        "precio":  30820
+    },
+    {
+        "item":  "192",
+        "nombre":  "INSULINA GLULISINA LAPICERA/JER. PRELL.",
+        "precioTexto":  "$ 92,104.63",
+        "precio":  92104.63
+    },
+    {
+        "item":  "193",
+        "nombre":  "INSULINA HUMANA CORRIENTE 100 FCO. AMP.",
+        "precioTexto":  "$ 58,615.50",
+        "precio":  58615.5
+    },
+    {
+        "item":  "194",
+        "nombre":  "INSULINA HUMANA NPH 100 FCO.AMP.",
+        "precioTexto":  "$ 58,615.50",
+        "precio":  58615.5
+    },
+    {
+        "item":  "195",
+        "nombre":  "INSULINA HUMANA NPH 100 UI/ML LAPICERA/JER. PRELL.",
+        "precioTexto":  "$ 33,419.77",
+        "precio":  33419.77
+    },
+    {
+        "item":  "199",
+        "nombre":  "IPATROPIO AEROSOL",
+        "precioTexto":  "$ 20,938.09",
+        "precio":  20938.09
+    },
+    {
+        "item":  "200",
+        "nombre":  "IPATROPIO GTS. P/NEBULIZAR",
+        "precioTexto":  "$ 3,347.94",
+        "precio":  3347.94
+    },
+    {
+        "item":  "202",
+        "nombre":  "ISOSORBIDE MONONITRATO 20 MG. COMP",
+        "precioTexto":  "$ 346.33",
+        "precio":  346.33
+    },
+    {
+        "item":  "205",
+        "nombre":  "KETOROLAC 20 MG COMP.",
+        "precioTexto":  "$ 80.50",
+        "precio":  80.5
+    },
+    {
+        "item":  "208",
+        "nombre":  "LACTULOSA LIQUIDA 65 G/100 ML JBE.",
+        "precioTexto":  "$ 9,632.07",
+        "precio":  9632.07
+    },
+    {
+        "item":  "209",
+        "nombre":  "LAMOTRIGINA 100 MG COMP.",
+        "precioTexto":  "$ 266.52",
+        "precio":  266.52
+    },
+    {
+        "item":  "210",
+        "nombre":  "LAMOTRIGINA 50 MG COMP.",
+        "precioTexto":  "$ 279.84",
+        "precio":  279.84
+    },
+    {
+        "item":  "211",
+        "nombre":  "LECHE MATERNIZADA 0 A 6 ENVASE DE 800 A 1000 G",
+        "precioTexto":  "$ 23,526.70",
+        "precio":  23526.7
+    },
+    {
+        "item":  "213",
+        "nombre":  "LECHE PARA LACTANTES PREMATUROS X 400 G",
+        "precioTexto":  "$ 29,323.02",
+        "precio":  29323.02
+    },
+    {
+        "item":  "215",
+        "nombre":  "LEVETIRACETAM 1000 MG COMP.",
+        "precioTexto":  "$ 908.50",
+        "precio":  908.5
+    },
+    {
+        "item":  "216",
+        "nombre":  "LEVETIRACETAM 500 MG COMP.",
+        "precioTexto":  "$ 524.40",
+        "precio":  524.4
+    },
+    {
+        "item":  "217",
+        "nombre":  "LEVETIRACETAM 500 MG FCO AMP",
+        "precioTexto":  "$ 6,468.66",
+        "precio":  6468.66
+    },
+    {
+        "item":  "218",
+        "nombre":  "LEVODOPA+BENSERAZIDA 250 MG COMP.",
+        "precioTexto":  "$ 905.05",
+        "precio":  905.05
+    },
+    {
+        "item":  "221",
+        "nombre":  "LEVOMEPROMAZINA 25 MG COMP",
+        "precioTexto":  "$ 111.22",
+        "precio":  111.22
+    },
+    {
+        "item":  "223",
+        "nombre":  "LEVOTIROXINA 100 MCG COMP.",
+        "precioTexto":  "$ 368.00",
+        "precio":  368
+    },
+    {
+        "item":  "224",
+        "nombre":  "LEVOTIROXINA 125 MCG COMP.",
+        "precioTexto":  "$ 643.60",
+        "precio":  643.6
+    },
+    {
+        "item":  "225",
+        "nombre":  "LEVOTIROXINA 25 MCG COMP.",
+        "precioTexto":  "$ 119.16",
+        "precio":  119.16
+    },
+    {
+        "item":  "226",
+        "nombre":  "LEVOTIROXINA 50 MCG COMP.",
+        "precioTexto":  "$ 219.70",
+        "precio":  219.7
+    },
+    {
+        "item":  "227",
+        "nombre":  "LEVOTIROXINA 75 MCG COMP.",
+        "precioTexto":  "$ 263.47",
+        "precio":  263.47
+    },
+    {
+        "item":  "232",
+        "nombre":  "LOPERAMIDA 2 MG COMP.",
+        "precioTexto":  "$ 50.55",
+        "precio":  50.55
+    },
+    {
+        "item":  "233",
+        "nombre":  "LORATADINA 10 MG COMP.",
+        "precioTexto":  "$ 64.05",
+        "precio":  64.05
+    },
+    {
+        "item":  "234",
+        "nombre":  "LORAZEPAM 2,5 MG COMP.",
+        "precioTexto":  "$ 60.95",
+        "precio":  60.95
+    },
+    {
+        "item":  "236",
+        "nombre":  "LORAZEPAN 1 MG COMP. SUBLINGUAL",
+        "precioTexto":  "$ 82.34",
+        "precio":  82.34
+    },
+    {
+        "item":  "237",
+        "nombre":  "LOSARTAN 100 MG COMP.",
+        "precioTexto":  "$ 305.94",
+        "precio":  305.94
+    },
+    {
+        "item":  "238",
+        "nombre":  "LOSARTAN 50 MG COMP.",
+        "precioTexto":  "$ 62.60",
+        "precio":  62.6
+    },
+    {
+        "item":  "241",
+        "nombre":  "MEPREDNISONA 40 MG COMP.",
+        "precioTexto":  "$ 966.78",
+        "precio":  966.78
+    },
+    {
+        "item":  "242",
+        "nombre":  "MEPREDNISONA 8 MG COMP.",
+        "precioTexto":  "$ 250.88",
+        "precio":  250.88
+    },
+    {
+        "item":  "246",
+        "nombre":  "METFORMINA 1000 MG COMP",
+        "precioTexto":  "$ 160.37",
+        "precio":  160.37
+    },
+    {
+        "item":  "247",
+        "nombre":  "METFORMINA 500 MG COMP.",
+        "precioTexto":  "$ 103.27",
+        "precio":  103.27
+    },
+    {
+        "item":  "248",
+        "nombre":  "METFORMINA 850 COMP.",
+        "precioTexto":  "$ 112.63",
+        "precio":  112.63
+    },
+    {
+        "item":  "250",
+        "nombre":  "METOCLOPRAMIDA 500 MG/100 ML GOTAS ADULTO",
+        "precioTexto":  "$ 1,058.00",
+        "precio":  1058
+    },
+    {
+        "item":  "252",
+        "nombre":  "METRONIDAZOL 500 MG COMP.",
+        "precioTexto":  "$ 205.96",
+        "precio":  205.96
+    },
+    {
+        "item":  "254",
+        "nombre":  "MICOFENOLATO MOFETIL 500 MG COMP.",
+        "precioTexto":  "$ 2,115.74",
+        "precio":  2115.74
+    },
+    {
+        "item":  "260",
+        "nombre":  "NAPROXENO 500 MG COMP.",
+        "precioTexto":  "$ 286.00",
+        "precio":  286
+    },
+    {
+        "item":  "262",
+        "nombre":  "NITROFURANTOINA 100 MG CAPS.",
+        "precioTexto":  "$ 677.30",
+        "precio":  677.3
+    },
+    {
+        "item":  "269",
+        "nombre":  "OLANZAPINA 10 MG COMP.",
+        "precioTexto":  "$ 214.75",
+        "precio":  214.75
+    },
+    {
+        "item":  "271",
+        "nombre":  "OMEPRAZOL 20 MG CAPS.",
+        "precioTexto":  "$ 55.20",
+        "precio":  55.2
+    },
+    {
+        "item":  "277",
+        "nombre":  "PARACETAMOL 1 GR COMP.",
+        "precioTexto":  "$ 86.94",
+        "precio":  86.94
+    },
+    {
+        "item":  "278",
+        "nombre":  "PARACETAMOL 500 MG COMP",
+        "precioTexto":  "$ 48.30",
+        "precio":  48.3
+    },
+    {
+        "item":  "280",
+        "nombre":  "PAROXETINA 20 MG COMP.",
+        "precioTexto":  "$ 204.70",
+        "precio":  204.7
+    },
+    {
+        "item":  "287",
+        "nombre":  "POLIETILENGLICOL 3350 SOBRES 17 GRS (BAREX S)",
+        "precioTexto":  "$ 1,006.36",
+        "precio":  1006.36
+    },
+    {
+        "item":  "288",
+        "nombre":  "POTASIO CLORURO CAPS T/CONTROL K",
+        "precioTexto":  "$ 1,194.99",
+        "precio":  1194.99
+    },
+    {
+        "item":  "289",
+        "nombre":  "PREGABALINA 75 MG COMP./CAPS.",
+        "precioTexto":  "$ 227.70",
+        "precio":  227.7
+    },
+    {
+        "item":  "290",
+        "nombre":  "PROMETAZINA 25 MG COMP.",
+        "precioTexto":  "$ 128.52",
+        "precio":  128.52
+    },
+    {
+        "item":  "295",
+        "nombre":  "QUETIAPINA 100 MG COMP.",
+        "precioTexto":  "$ 177.05",
+        "precio":  177.05
+    },
+    {
+        "item":  "296",
+        "nombre":  "QUETIAPINA 200 MG COMP.",
+        "precioTexto":  "$ 308.66",
+        "precio":  308.66
+    },
+    {
+        "item":  "297",
+        "nombre":  "QUETIAPINA 25 MG COMP.",
+        "precioTexto":  "$ 103.43",
+        "precio":  103.43
+    },
+    {
+        "item":  "298",
+        "nombre":  "QUETIAPINA 50 MG COMP.",
+        "precioTexto":  "$ 3,260.71",
+        "precio":  3260.71
+    },
+    {
+        "item":  "302",
+        "nombre":  "RISPERIDONA 1 MG COMP.",
+        "precioTexto":  "$ 80.04",
+        "precio":  80.04
+    },
+    {
+        "item":  "303",
+        "nombre":  "RISPERIDONA 1 MG SUSP ORAL 100 ML",
+        "precioTexto":  "$ 133,165.20",
+        "precio":  133165.2
+    },
+    {
+        "item":  "305",
+        "nombre":  "RISPERIDONA 2 MG COMP.",
+        "precioTexto":  "$ 85.16",
+        "precio":  85.16
+    },
+    {
+        "item":  "306",
+        "nombre":  "RISPERIDONA 3 MG COMP.",
+        "precioTexto":  "$ 88.27",
+        "precio":  88.27
+    },
+    {
+        "item":  "309",
+        "nombre":  "ROSUVASTATINA 10 MG COMP.",
+        "precioTexto":  "$ 115.23",
+        "precio":  115.23
+    },
+    {
+        "item":  "310",
+        "nombre":  "ROSUVASTATINA 20 MG COMP.",
+        "precioTexto":  "$ 310.50",
+        "precio":  310.5
+    },
+    {
+        "item":  "311",
+        "nombre":  "SALBUTAMOL 0,5% GOTAS",
+        "precioTexto":  "$ 1,035.00",
+        "precio":  1035
+    },
+    {
+        "item":  "312",
+        "nombre":  "SALBUTAMOL 100 MCG/DOSIS AEROSOL",
+        "precioTexto":  "$ 7,429.00",
+        "precio":  7429
+    },
+    {
+        "item":  "313",
+        "nombre":  "SERTRALINA 50 MG COMP.",
+        "precioTexto":  "$ 114.54",
+        "precio":  114.54
+    },
+    {
+        "item":  "314",
+        "nombre":  "SERTRALINA 100 MG COMP.",
+        "precioTexto":  "$ 177.56",
+        "precio":  177.56
+    },
+    {
+        "item":  "342",
+        "nombre":  "TAMSULOSINA 0,4 MG CAPS.",
+        "precioTexto":  "$ 522.10",
+        "precio":  522.1
+    },
+    {
+        "item":  "346",
+        "nombre":  "TIRAS PARA CONTROL DE GLUCEMIA X UNID",
+        "precioTexto":  "$ 429.55",
+        "precio":  429.55
+    },
+    {
+        "item":  "348",
+        "nombre":  "TRAMADOL 50 MG COMP.",
+        "precioTexto":  "$ 173.02",
+        "precio":  173.02
+    }
+]

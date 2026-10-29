@@ -11,6 +11,7 @@
                 <button *ngIf="!_loginService.userLoggedIn()" class="nav-item login-button" routerLink="/login">Iniciar Sesión</button>
                 <button *ngIf="_loginService.userLoggedIn()" class="nav-item turno-button" routerLink="/especialidades">SACAR TURNO</button>
                 <button *ngIf="_loginService.userLoggedIn()" class="nav-item misturnos-button" routerLink="/mis-turnos">MIS TURNOS</button>
+                <button *ngIf="_loginService.userLoggedIn() && (_loginService.rolLogged() === 'recetario' || _loginService.rolLogged() === 'admin')" class="nav-item turno-button" routerLink="/recetario">RECETARIO</button>
                 <button *ngIf="_loginService.userLoggedIn()" class="nav-item logout-button" routerLink="/login" (click)="logout()">Cerrar Sesión</button>
               
                 
@@ -26,6 +27,7 @@
             <button *ngIf="!_loginService.userLoggedIn()" class="nav-item login-button" routerLink="/login">Iniciar Sesión</button>
             <button *ngIf="_loginService.userLoggedIn()" class="nav-item turno-button" routerLink="/especialidades">SACAR TURNO</button>
             <button *ngIf="_loginService.userLoggedIn()" class="nav-item misturnos-button" routerLink="/mis-turnos">MIS TURNOS</button>
+            <button *ngIf="_loginService.userLoggedIn() && (_loginService.rolLogged() === 'recetario' || _loginService.rolLogged() === 'admin')" class="nav-item turno-button" routerLink="/recetario">RECETARIO</button>
             <button *ngIf="_loginService.userLoggedIn()" class="nav-item logout-button" routerLink="/login" (click)="logout()">Cerrar Sesión</button>
                 
         </div>

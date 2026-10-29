@@ -87,6 +87,7 @@ app.use("/api/paciente", require("./routes/paciente"));
 app.use("/api/turno", checkToken, require("./routes/turno"));
 app.use("/api/obra", checkToken, require("./routes/obrasocial"));
 app.use("/api/whatsapp", whatsappRoutes);
+app.use("/api/recetario", require("./routes/recetario"));
 //Inicio
 // Iniciar servidor
 const PORT = process.env.PORT || 4000;

@@ -12,9 +12,10 @@ import { FormTurnoComponent } from './components/form-turno/form-turno.component
 import { RegistroComponent } from './components/registro/registro.component';
 import { FormNuevoTurnoComponent } from './components/secretaria-page/form-nuevo-turno/form-nuevo-turno.component';
 import { MisTurnosComponent } from './components/mis-turnos/mis-turnos.component';
-import { loginGuardAdmin, loginGuardTerminal } from './guards/login.guard';
+import { loginGuardAdmin, loginGuardTerminal, loginGuardRecetario } from './guards/login.guard';
 import { loginGuardSecretaria } from './guards/login.guard';
 import { loginGuardPaciente } from './guards/login.guard';
+import { RecetarioPageComponent } from './components/recetario-page/recetario-page.component';
 import { CambiarPasswordComponent } from './components/login/cambiar-password/cambiar-password.component';
 import { BanPageComponent } from './components/main-page/ban-page/ban-page.component';
 import { NewPasswordComponent } from './components/login/new-password/new-password.component';
@@ -28,6 +29,7 @@ import { EspecialidadesListComponent } from './components/admin-page/especialida
 import { EspecialidadesFormComponent } from './components/admin-page/especialidades-form/especialidades-form.component';
 import { MiPerfilComponent } from './components/main-page/mi-perfil/mi-perfil.component';
 import { UsuarioFormComponent } from './components/admin-page/usuario-form/usuario-form.component';
+import { MedicamentosAdminComponent } from './components/admin-page/medicamentos-admin/medicamentos-admin.component';
 
 export const routes: Routes = [
     {path: '', component:BodyComponent},
@@ -42,6 +44,7 @@ export const routes: Routes = [
     {path: 'admin/especialidades', component:EspecialidadesListComponent, canActivate:[loginGuardAdmin]},
     {path: 'admin/especialidades/nuevo', component:EspecialidadesFormComponent, canActivate:[loginGuardAdmin]},
     {path: 'admin/especialidades/editar/:id', component:EspecialidadesFormComponent, canActivate:[loginGuardAdmin]},
+    {path: 'admin/medicamentos', component:MedicamentosAdminComponent, canActivate:[loginGuardAdmin]},
     {path: 'especialidades', component:EsepcialidadesPageComponent,canActivate:[loginGuardPaciente]},
     {path: 'autogestion', component:AutogestionComponent,canActivate:[loginGuardPaciente]},
     {path: 'mi-perfil', component:MiPerfilComponent, canActivate:[loginGuardPaciente]},
@@ -66,5 +69,5 @@ export const routes: Routes = [
     { path: 'reset-password', component: NewPasswordComponent },
     { path: 'reset-password/:token', component: NewPasswordComponent },
     { path: 'terminal', component:TerminalComponent ,canActivate:[loginGuardTerminal]},
-   
+    { path: 'recetario', component: RecetarioPageComponent, canActivate: [loginGuardRecetario] }
 ];

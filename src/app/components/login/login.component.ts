@@ -78,6 +78,10 @@ export class LoginComponent implements OnInit, AfterViewInit{
             
             this.router.navigateByUrl('/terminal');
           }
+          if(data.rol=="recetario"){
+            
+            this.router.navigateByUrl('/recetario');
+          }
           
         }
         else{

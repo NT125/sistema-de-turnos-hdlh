@@ -1,0 +1,488 @@
+<app-admin-nav></app-admin-nav>
+
+<div class="recetario-container">
+
+  <!-- 1. Encabezado superior con título y barra de herramientas -->
+  <header class="top-header no-print">
+    <div class="header-info">
+      <span class="institucion-badge">HOSPITAL DISTRITAL LAS HERAS · SERVICIO DE FARMACIA</span>
+      <h1 class="header-title">Sistema de Cobro de Medicación</h1>
+      <p class="header-desc">
+        Cálculo automático de importes de medicación entregada según porcentaje de cobertura del carnet hospitalario.
+      </p>
+    </div>
+
+    <div class="header-toolbar">
+      <button type="button" class="tool-btn btn-catalogo" (click)="toggleCatalogoModal()" title="Ver catálogo de 138 medicamentos">
+        <span class="tool-icon">📋</span>
+        <span class="tool-text">Catálogo Precios (138)</span>
+      </button>
+
+      <button type="button" class="tool-btn btn-historial" (click)="toggleHistorial()" title="Ver historial de comprobantes">
+        <span class="tool-icon">📁</span>
+        <span class="tool-text">Historial de Cobros</span>
+      </button>
+
+      <button type="button" class="tool-btn btn-nuevo" (click)="nuevoComprobante()" title="Iniciar comprobante en blanco">
+        <span class="tool-icon">🔄</span>
+        <span class="tool-text">Nuevo</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- 2. Selector de Carnet en tarjetas visuales interactivas -->
+  <section class="carnet-selection-section no-print">
+    <div class="section-label">
+      <span>TIPO DE CARNET HOSPITALARIO:</span>
+      <small>(Haga clic en cualquiera para aplicar el porcentaje al comprobante)</small>
+    </div>
+
+    <div class="carnet-cards-grid">
+      <!-- Carnet 1 -->
+      <div 
+        class="carnet-card carnet-card-1" 
+        [class.selected]="tipoCarnet === 'Carnet 1'"
+        (click)="seleccionarCarnet('Carnet 1')">
+        <div class="card-radio-indicator">
+          <span class="radio-dot" *ngIf="tipoCarnet === 'Carnet 1'">✓</span>
+        </div>
+        <div class="card-details">
+          <span class="card-title">Carnet 1</span>
+          <span class="card-percent">0%</span>
+          <span class="card-desc">Sin cargo</span>
+        </div>
+      </div>
+
+      <!-- Carnet 2 -->
+      <div 
+        class="carnet-card carnet-card-2" 
+        [class.selected]="tipoCarnet === 'Carnet 2'"
+        (click)="seleccionarCarnet('Carnet 2')">
+        <div class="card-radio-indicator">
+          <span class="radio-dot" *ngIf="tipoCarnet === 'Carnet 2'">✓</span>
+        </div>
+        <div class="card-details">
+          <span class="card-title">Carnet 2</span>
+          <span class="card-percent">30%</span>
+          <span class="card-desc">Se cobra el 30% del subtotal</span>
+        </div>
+      </div>
+
+      <!-- Carnet 3 -->
+      <div 
+        class="carnet-card carnet-card-3" 
+        [class.selected]="tipoCarnet === 'Carnet 3'"
+        (click)="seleccionarCarnet('Carnet 3')">
+        <div class="card-radio-indicator">
+          <span class="radio-dot" *ngIf="tipoCarnet === 'Carnet 3'">✓</span>
+        </div>
+        <div class="card-details">
+          <span class="card-title">Carnet 3</span>
+          <span class="card-percent">50%</span>
+          <span class="card-desc">Se cobra el 50% del subtotal</span>
+        </div>
+      </div>
+
+      <!-- Particular / Sin Carnet -->
+      <div 
+        class="carnet-card carnet-card-particular" 
+        [class.selected]="tipoCarnet === 'Sin carnet / Particular'"
+        (click)="seleccionarCarnet('Sin carnet / Particular')">
+        <div class="card-radio-indicator">
+          <span class="radio-dot" *ngIf="tipoCarnet === 'Sin carnet / Particular'">✓</span>
+        </div>
+        <div class="card-details">
+          <span class="card-title">Particular</span>
+          <span class="card-percent">100%</span>
+          <span class="card-desc">Sin beneficio de carnet</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Hoja del Comprobante Interno -->
+  <main class="comprobante-card">
+
+    <!-- Membrete institucional -->
+    <div class="comprobante-header">
+      <div class="header-logo-container">
+        <img src="logos/logo-lg-transp.png" alt="Hospital Distrital Las Heras" class="hospital-logo">
+      </div>
+      <div class="header-text-container">
+        <h2 class="comprobante-titulo">COMPROBANTE INTERNO – COBRO DE MEDICACIÓN</h2>
+        <span class="comprobante-subtitulo">HOSPITAL DISTRITAL LAS HERAS · SERVICIO DE FARMACIA</span>
+      </div>
+      <div class="header-comprobante-id">
+        <span class="id-etiqueta">COMPROBANTE</span>
+        <span class="id-numero">{{ numeroComprobanteActual || 'NUEVO' }}</span>
+      </div>
+    </div>
+
+    <!-- Formulario de Cabecera -->
+    <div class="cabecera-form-grid">
+      <!-- Fila 1: Fecha, DNI con búsqueda, Paciente -->
+      <div class="form-group col-fecha">
+        <label for="inputFecha">Fecha:</label>
+        <input 
+          id="inputFecha" 
+          type="date" 
+          [(ngModel)]="fecha" 
+          class="form-control">
+      </div>
+
+      <div class="form-group col-dni">
+        <label for="inputDni">DNI / N.° HC:</label>
+        <div class="input-con-accion">
+          <input 
+            id="inputDni" 
+            type="text" 
+            [(ngModel)]="dni" 
+            (keyup.enter)="buscarPacientePorDni()" 
+            placeholder="Ej: 43890377" 
+            class="form-control">
+          <button 
+            type="button" 
+            class="btn-buscar no-print" 
+            (click)="buscarPacientePorDni()" 
+            [disabled]="buscandoPaciente"
+            title="Buscar paciente por DNI en el sistema">
+            {{ buscandoPaciente ? '...' : 'Buscar' }}
+          </button>
+        </div>
+      </div>
+
+      <div class="form-group col-paciente">
+        <label for="inputPaciente">Paciente (Nombre y Apellido):</label>
+        <input 
+          id="inputPaciente" 
+          type="text" 
+          [(ngModel)]="paciente" 
+          placeholder="Nombre y Apellido del paciente" 
+          class="form-control">
+      </div>
+
+      <!-- Fila 2: N.° Carnet, Tipo de Carnet, % Aplicado, Observaciones -->
+      <div class="form-group col-carnet-num">
+        <label for="inputCarnetNum">N.° Carnet:</label>
+        <input 
+          id="inputCarnetNum" 
+          type="text" 
+          [(ngModel)]="numeroCarnet" 
+          placeholder="Ej: C-1024" 
+          class="form-control">
+      </div>
+
+      <div class="form-group col-carnet-tipo">
+        <label for="selectCarnet">Tipo de Carnet:</label>
+        <select 
+          id="selectCarnet" 
+          [(ngModel)]="tipoCarnet" 
+          (change)="onCarnetChange()" 
+          class="form-control select-control">
+          <option value="Carnet 1">Carnet 1 (0% - Sin cargo)</option>
+          <option value="Carnet 2">Carnet 2 (30% - Se cobra el 30%)</option>
+          <option value="Carnet 3">Carnet 3 (50% - Se cobra el 50%)</option>
+          <option value="Sin carnet / Particular">Sin carnet / Particular (100%)</option>
+        </select>
+      </div>
+
+      <div class="form-group col-porcentaje">
+        <label>Porcentaje aplicado:</label>
+        <div class="porcentaje-indicator" [ngClass]="'p-badge-' + porcentajeAplicado">
+          {{ porcentajeAplicado }}%
+        </div>
+      </div>
+
+      <div class="form-group col-obs">
+        <label for="inputObs">Observaciones:</label>
+        <input 
+          id="inputObs" 
+          type="text" 
+          [(ngModel)]="observaciones" 
+          placeholder="Indicaciones o notas del comprobante" 
+          class="form-control">
+      </div>
+    </div>
+
+    <!-- Datalist para autocomplete de medicamentos -->
+    <datalist id="listaMedicamentos">
+      <option *ngFor="let med of medicamentosCatalogo" [value]="med.nombre">
+        #{{ med.item }} · {{ med.nombre }} (${{ med.precio | number:'1.2-2' }})
+      </option>
+    </datalist>
+
+    <!-- Grilla de Medicamentos -->
+    <div class="table-responsive">
+      <table class="items-table">
+        <thead>
+          <tr>
+            <th class="th-item">N.°</th>
+            <th class="th-desc">Medicamento Descripción</th>
+            <th class="th-cant">Cantidad</th>
+            <th class="th-unit">Precio unitario ($)</th>
+            <th class="th-sub">Subtotal ($)</th>
+            <th class="th-porc">% cobro</th>
+            <th class="th-cobro">Importe a cobrar ($)</th>
+            <th class="th-accion no-print">Acción</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of items; let idx = index">
+            <!-- Columna N.° -->
+            <td class="td-item">
+              <span class="num-badge">{{ idx + 1 }}</span>
+            </td>
+
+            <!-- Columna Medicamento -->
+            <td class="td-desc">
+              <input 
+                type="text" 
+                [(ngModel)]="row.medicamento" 
+                list="listaMedicamentos" 
+                (change)="onMedicamentoSeleccionado(idx, row.medicamento)" 
+                placeholder="Seleccione o escriba medicamento..." 
+                class="table-input med-input">
+            </td>
+
+            <!-- Columna Cantidad -->
+            <td class="td-cant">
+              <input 
+                type="number" 
+                min="1" 
+                [(ngModel)]="row.cantidad" 
+                (ngModelChange)="onCantidadChange(idx)" 
+                class="table-input cant-input">
+            </td>
+
+            <!-- Columna Precio Unitario -->
+            <td class="td-unit">
+              <span class="price-text">${{ row.precioUnitario | number:'1.2-2' }}</span>
+            </td>
+
+            <!-- Columna Subtotal -->
+            <td class="td-sub">
+              <span class="price-text">${{ row.subtotal | number:'1.2-2' }}</span>
+            </td>
+
+            <!-- Columna % Cobro -->
+            <td class="td-porc">
+              <span class="porc-pill">{{ row.porcentajeCobro }}%</span>
+            </td>
+
+            <!-- Columna Importe a Cobrar -->
+            <td class="td-cobro">
+              <span class="price-highlight">${{ row.importeCobrar | number:'1.2-2' }}</span>
+            </td>
+
+            <!-- Columna Eliminar Fila -->
+            <td class="td-accion no-print">
+              <button 
+                type="button" 
+                class="btn-delete-row" 
+                (click)="eliminarItem(idx)" 
+                title="Eliminar fila">
+                ✕
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Botones de acción de la tabla -->
+    <div class="table-actions-bar no-print">
+      <div class="table-actions-left">
+        <button type="button" class="btn-action btn-add-row" (click)="agregarItem()">
+          <span class="btn-icon">➕</span> Agregar Medicamento
+        </button>
+        <button type="button" class="btn-action btn-open-cat" (click)="toggleCatalogoModal()">
+          <span class="btn-icon">🔍</span> Buscar en Catálogo Oficial
+        </button>
+      </div>
+
+      <div class="table-summary-count">
+        Total de medicamentos: <b>{{ items.length }}</b> ítems ({{ totalCantidadMedicamentos }} unidades)
+      </div>
+    </div>
+
+    <!-- Sección de Resumen y Totales -->
+    <div class="totales-wrapper">
+      <div class="totales-observaciones-print print-only">
+        <p><b>Observaciones:</b> {{ observaciones || 'Sin observaciones' }}</p>
+        <p><b>Emitido por:</b> {{ _loginService.userLogged() || 'Servicio de Farmacia' }}</p>
+      </div>
+
+      <div class="totales-card">
+        <div class="total-row">
+          <span class="total-label">Subtotal General:</span>
+          <span class="total-amount">${{ subtotalGeneral | number:'1.2-2' }}</span>
+        </div>
+
+        <div class="total-row discount-row" *ngIf="porcentajeAplicado < 100">
+          <span class="total-label">Cobertura Carnet ({{ 100 - porcentajeAplicado }}%):</span>
+          <span class="total-amount">- ${{ totalDescuento | number:'1.2-2' }}</span>
+        </div>
+
+        <div class="total-row grand-total-row">
+          <span class="grand-total-label">TOTAL A COBRAR:</span>
+          <span class="grand-total-amount">${{ totalACobrar | number:'1.2-2' }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bloque de Firmas para Impresión -->
+    <div class="firmas-section print-only">
+      <div class="firma-block">
+        <div class="firma-line"></div>
+        <span>Firma y Sello Farmacéutico</span>
+      </div>
+      <div class="firma-block">
+        <div class="firma-line"></div>
+        <span>Firma y Aclaración Paciente / Receptor</span>
+      </div>
+    </div>
+
+    <!-- Barra de Acciones del Comprobante -->
+    <div class="comprobante-footer-actions no-print">
+      <div class="footer-actions-left">
+        <button type="button" class="btn-action-lg btn-clear" (click)="nuevoComprobante()">
+          <span class="btn-icon">🔄</span> Limpiar / Nuevo
+        </button>
+      </div>
+
+      <div class="footer-actions-right">
+        <button type="button" class="btn-action-lg btn-print" (click)="imprimirComprobante()">
+          <span class="btn-icon">🖨️</span> Imprimir Comprobante
+        </button>
+        <button type="button" class="btn-action-lg btn-save" (click)="guardarComprobante()" [disabled]="guardando">
+          <span class="btn-icon">💾</span> {{ guardando ? 'Guardando...' : 'Guardar Comprobante' }}
+        </button>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Modal del Catálogo Completo (138 medicamentos) -->
+  <div class="modal-backdrop" *ngIf="mostrarCatalogoModal" (click)="toggleCatalogoModal()">
+    <div class="modal-box" (click)="$event.stopPropagation()">
+      <div class="modal-head">
+        <div>
+          <h2 class="modal-title">Planilla de Precios Verdaderos - Farmacia</h2>
+          <span class="modal-subtitle">Listado oficial de medicamentos y precios unitarios del Hospital</span>
+        </div>
+        <button type="button" class="btn-close-modal" (click)="toggleCatalogoModal()">✕</button>
+      </div>
+
+      <div class="modal-filter-bar">
+        <input 
+          type="text" 
+          [(ngModel)]="filtroCatalogo" 
+          placeholder="Buscar medicamento por nombre o número (ej: Ibuprofeno, Paracetamol, 178)..." 
+          class="form-control">
+        <span class="filter-count">Mostrando {{ medicamentosFiltrados.length }} de {{ medicamentosCatalogo.length }} medicamentos</span>
+      </div>
+
+      <div class="modal-table-container">
+        <table class="modal-table">
+          <thead>
+            <tr>
+              <th style="width: 70px; text-align: center;">Ítem</th>
+              <th>Medicamento</th>
+              <th style="width: 140px; text-align: right;">Precio Unitario</th>
+              <th style="width: 110px; text-align: center;">Acción</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let med of medicamentosFiltrados">
+              <td style="text-align: center;"><b>#{{ med.item }}</b></td>
+              <td>{{ med.nombre }}</td>
+              <td style="text-align: right; font-weight: 700;">${{ med.precio | number:'1.2-2' }}</td>
+              <td style="text-align: center;">
+                <button type="button" class="btn-mini-add" (click)="agregarDesdeCatalogo(med)">
+                  + Agregar
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="modal-foot">
+        <button type="button" class="btn-action btn-open-cat" (click)="toggleCatalogoModal()">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Historial de Comprobantes -->
+  <div class="modal-backdrop" *ngIf="mostrarHistorial" (click)="toggleHistorial()">
+    <div class="modal-box modal-box-lg" (click)="$event.stopPropagation()">
+      <div class="modal-head">
+        <div>
+          <h2 class="modal-title">Historial de Comprobantes Emitidos</h2>
+          <span class="modal-subtitle">Consulta y recarga comprobantes anteriores de farmacia</span>
+        </div>
+        <button type="button" class="btn-close-modal" (click)="toggleHistorial()">✕</button>
+      </div>
+
+      <div class="modal-filter-bar modal-filter-grid">
+        <input 
+          type="text" 
+          [(ngModel)]="filtroHistorial" 
+          (keyup.enter)="cargarHistorial()" 
+          placeholder="Buscar por paciente, DNI o N.° comprobante..." 
+          class="form-control">
+        <input 
+          type="date" 
+          [(ngModel)]="fechaFiltroHistorial" 
+          (change)="cargarHistorial()" 
+          class="form-control" 
+          style="max-width: 180px;">
+        <button type="button" class="btn-action btn-open-cat" (click)="cargarHistorial()">Buscar</button>
+      </div>
+
+      <div class="modal-table-container">
+        <div *ngIf="comprobantesHistorial.length === 0" class="empty-state">
+          No se encontraron comprobantes registrados para este criterio de búsqueda.
+        </div>
+
+        <table class="modal-table" *ngIf="comprobantesHistorial.length > 0">
+          <thead>
+            <tr>
+              <th>N.° Comp.</th>
+              <th>Fecha</th>
+              <th>Paciente</th>
+              <th>DNI</th>
+              <th>Carnet</th>
+              <th style="text-align: right;">Total ($)</th>
+              <th style="text-align: center;">Acción</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let comp of comprobantesHistorial">
+              <td><b>{{ comp.numeroComprobante || 'S/N' }}</b></td>
+              <td>{{ comp.fecha | date:'dd/MM/yyyy' }}</td>
+              <td>{{ comp.paciente }}</td>
+              <td>{{ comp.dni }}</td>
+              <td>
+                <span class="badge-mini">{{ comp.tipoCarnet }} ({{ comp.porcentajeCobro }}%)</span>
+              </td>
+              <td style="text-align: right; font-weight: 800; color: var(--azul);">
+                ${{ comp.totalACobrar | number:'1.2-2' }}
+              </td>
+              <td style="text-align: center;">
+                <button type="button" class="btn-mini-add" (click)="cargarComprobanteEnPantalla(comp)">
+                  Cargar / Ver
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="modal-foot">
+        <button type="button" class="btn-action btn-open-cat" (click)="toggleHistorial()">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+</div>

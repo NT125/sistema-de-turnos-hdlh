@@ -1,5 +1,3 @@
-# See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
-
 # Compiled output
 /dist
 /tmp
@@ -20,7 +18,6 @@ yarn-error.log
 *.launch
 .settings/
 *.sublime-workspace
-.cache
 
 # Visual Studio Code
 .vscode/*
@@ -31,7 +28,7 @@ yarn-error.log
 .history/*
 
 # Miscellaneous
-/.angular/cache
+/.angular
 .sass-cache/
 /connect.lock
 /coverage
@@ -43,9 +40,9 @@ testem.log
 .DS_Store
 Thumbs.db
 
-
 .wwebjs_cache
 .wwebjs_auth
- * . e n v 
- v a r i a b l e s . e n v  
- 
+.cache/
+sistema-back/.cache/
+*.env
+variables.env
