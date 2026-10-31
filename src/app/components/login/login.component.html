@@ -8,7 +8,7 @@
     <form action="#" class="form" [formGroup]="pacienteForm" (ngSubmit)="login()">
         
         <label for="user-dni">DNI</label>
-        <input type="number" name="user-dni" id="user-dni" formControlName="dni" required #dniInput>
+        <input type="text" inputmode="numeric" pattern="[0-9]*" name="user-dni" id="user-dni" formControlName="dni" required #dniInput placeholder="Ingrese su DNI sin puntos">
 
         <label for="user-pass">Contraseña</label>        
         <div class="flex-row">
@@ -22,7 +22,9 @@
         </div>
 
         <div class="flex-row">
-            <button class="option-pill-access blue-button-access">Ingresar</button>
+            <button type="submit" [disabled]="cargando" class="option-pill-access blue-button-access">
+                {{ cargando ? 'Iniciando sesión...' : 'Ingresar' }}
+            </button>
         </div>
 
     </form>
