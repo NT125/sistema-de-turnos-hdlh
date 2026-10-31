@@ -1,41 +1,97 @@
 nav {
     background-color: var(--azul);
-    padding: 10px;
+    padding: 0.6rem 1.25rem;
+    width: 100%;
+    box-sizing: border-box;
+    position: relative;
+    z-index: 100;
 }
 
-.logo{
-    max-height: 70px;
+.logo {
+    max-height: 55px;
     width: auto;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
 }
 
-.nav-items-list {
+.logo img {
+    max-height: 55px;
+    width: auto;
+    display: block;
+}
+
+/* Widescreen Nav */
+.widescreen-nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
     width: 100%;
-    gap: 10px;
+    max-width: 100%;
+    gap: 1rem;
+    box-sizing: border-box;
 }
 
+.widescreen-nav .nav-items-list {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.6rem;
+    width: auto;
+    flex: 1 1 auto;
+    max-width: 100%;
+    flex-wrap: nowrap;
+    box-sizing: border-box;
+}
+
+/* Nav Items (botones en general) */
 .nav-item {
-    padding: 1.5rem;
-    width: 100%;
-
+    width: auto !important;
+    padding: 0.55rem 0.95rem !important;
     background-color: var(--azulO);
     color: var(--gris);
-
-    font-size: 20px;
-    font-weight: 600;
+    font-size: 13.5px !important;
+    font-weight: 700;
+    border-radius: 20px;
+    white-space: nowrap !important;
+    text-align: center;
+    line-height: 1.2;
+    flex-shrink: 0;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    box-sizing: border-box;
 }
 
-.nav-item:hover{
+.nav-item:hover {
     background-color: var(--celesteO);
     color: #fff;
+    transform: translateY(-1px);
 }
 
+/* Botón Iniciar Sesión (largo y prominente cuando no está logueado como en el diseño original) */
 .login-button {
-    color: var(--verde);
+    color: var(--verde) !important;
+    width: 320px !important;
+    max-width: 100% !important;
+    padding: 1rem 2rem !important;
+    font-size: 18px !important;
+    font-weight: 700 !important;
+    border-radius: 25px !important;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
 }
 
 .login-button:hover {
-    background-color: var(--verde);
-    color: var(--blanco);
+    background-color: var(--verde) !important;
+    color: var(--blanco) !important;
 }
 
 .logout-button {
@@ -57,112 +113,149 @@ nav {
     background-color: var(--cianC);
     color: var(--cianO);
 }
+
 .misturnos-button {
-    background-color:#5bc0de;
+    background-color: #5bc0de;
     color: white;
 }
 
 .misturnos-button:hover {
-    background-color: rgba(44, 252, 241, 0.795);
-    color:white;
+    background-color: #31b0d5;
+    color: white;
 }
-/* Estilos exclusivos para el nav en pantallas chicas */
 
+.panel-button {
+    background-color: #ffc107 !important;
+    color: #212529 !important;
+    font-weight: 800;
+}
+
+.panel-button:hover {
+    background-color: #e0a800 !important;
+    color: #000 !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(255, 193, 7, 0.35);
+}
+
+/* Estilos exclusivos para el nav en pantallas móviles / tablets */
 .mobile-nav {
-    position: sticky;
-}
-
-.hidden {
     display: none;
+    width: 100%;
+    flex-direction: column;
 }
 
 .nav-header {
     width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .menu-button {
-    margin: 5px;
-    padding: 0.8rem 1.3rem;
+    margin: 0;
+    padding: 0.5rem 1rem;
     width: auto;
-
-    border: solid 2px var(negro);
-
+    border: none;
+    border-radius: 8px;
     background-color: var(--verde);
     color: #fff;
-
     text-align: center;
-    font-size: 1.5rem;
+    font-size: 1.1rem;
     font-weight: 800;
+    cursor: pointer;
+    transition: all 0.2s ease;
 }
 
 .menu-button:active {
-    background-color: #3584;
+    background-color: #0e8d5e;
 }
 
-/* Estilos exclusivos para el nav en pantallas medianas y grandes */
-.widescreen-nav {
-    gap: 5%;
+.mobile-menu {
+    width: 100%;
+    margin-top: 0.75rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid rgba(255,255,255,0.15);
 }
 
-@media (max-width: 768px) {
+.mobile-menu.hidden {
+    display: none;
+}
+
+.mobile-menu .nav-items-list {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.mobile-menu .nav-item {
+    width: 100% !important;
+    padding: 0.8rem 1rem !important;
+    font-size: 15px !important;
+    border-radius: 10px;
+    justify-content: center;
+}
+
+/* Breakpoints Responsivos */
+@media (max-width: 991px) {
     .widescreen-nav {
-        display: none;
+        display: none !important;
     }
 
     .mobile-nav {
-        display: flex;
-    }
-
-    .nav-item{
-        outline: none;
+        display: flex !important;
     }
 
     nav {
-        padding: 5px;        
-        font-size: 18px;
+        padding: 0.5rem 1rem;
     }
 }
 
-@media(min-width: 769px) {
+@media (min-width: 992px) {
     .widescreen-nav {
-        display: flex;
+        display: flex !important;
     }
 
     .mobile-nav {
-        display: none;
+        display: none !important;
     }
 
-    .nav-items-list {
-        width: 60%;
-        gap: 1.4rem;
+    .widescreen-nav .nav-item {
+        font-size: 13px !important;
+        padding: 0.5rem 0.8rem !important;
     }
 
-    .nav-item{
-        border-radius: 20px;
-        font-size: 16px;
-    }
-}
-
-
-@media(min-width: 1280px) {
-    .nav-items-list {
-        width: 40%;
-        gap: 1.4rem;
-    }
-
-    .nav-item {
-        font-size: 18px;
+    .widescreen-nav .login-button {
+        width: 320px !important;
+        font-size: 18px !important;
+        padding: 1rem 2rem !important;
     }
 }
 
-@media(min-width: 1600px) {
-    .nav-items-list {
-        width: 30%;
-        gap: 1.4rem;
+@media (min-width: 1200px) {
+    .widescreen-nav .nav-item {
+        font-size: 14px !important;
+        padding: 0.55rem 0.95rem !important;
     }
 
-    .nav-item {
+    .widescreen-nav .login-button {
+        width: 360px !important;
+        font-size: 19px !important;
+        padding: 1.1rem 2.2rem !important;
+    }
 
-        font-size: 18px;
+    .widescreen-nav .nav-items-list {
+        gap: 0.75rem;
+    }
+}
+
+@media (min-width: 1440px) {
+    .widescreen-nav .nav-item {
+        font-size: 15px !important;
+        padding: 0.6rem 1.1rem !important;
+    }
+
+    .widescreen-nav .nav-items-list {
+        gap: 0.9rem;
     }
 }

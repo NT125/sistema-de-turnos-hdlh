@@ -48,6 +48,48 @@
         </div>
       </div>
 
+      <!-- Sección de Contraseña para Roles Especiales -->
+      <div *ngIf="loginService.rolLogged() === 'admin' && isRolEspecial()" 
+           style="background: #f8f9fa; border: 2px dashed #0056b3; border-radius: 8px; padding: 1.2rem; margin-bottom: 1.5rem;">
+        <div class="flex-row" style="align-items: center; justify-content: space-between; margin-bottom: 0.8rem;">
+          <h3 style="margin: 0; color: #0056b3; font-size: 18px; font-weight: bold; display: flex; align-items: center; gap: 0.4rem;">
+            🔐 Modificar Contraseña (Usuario con Rol Especial)
+          </h3>
+          <button type="button" (click)="toggleMostrarPass()" 
+                  style="background: none; border: 1px solid #ced4da; border-radius: 5px; padding: 0.3rem 0.6rem; cursor: pointer; font-size: 13px;">
+            {{ mostrarPass ? '🙈 Ocultar' : '👁️ Mostrar' }}
+          </button>
+        </div>
+        <p style="font-size: 13px; color: #6c757d; margin-top: 0; margin-bottom: 1rem;">
+          Como Administrador, puede establecer una nueva contraseña para este usuario especial (Admin, Secretaría, Recetario, Terminal). Deje estos campos vacíos si no desea cambiarla.
+        </p>
+
+        <div class="flex-row" style="gap: 1rem; margin-bottom: 1rem;">
+          <div style="flex: 1;">
+            <label style="font-weight: 600; color: #333; display: block; margin-bottom: 0.4rem; font-size: 14px;">Nueva Contraseña</label>
+            <input [type]="mostrarPass ? 'text' : 'password'" 
+                   [(ngModel)]="nuevaPassword" 
+                   [ngModelOptions]="{standalone: true}" 
+                   placeholder="Mínimo 4 caracteres..."
+                   style="width: 100%; padding: 0.7rem; border-radius: 5px; border: 1px solid var(--gris);">
+          </div>
+          <div style="flex: 1;">
+            <label style="font-weight: 600; color: #333; display: block; margin-bottom: 0.4rem; font-size: 14px;">Confirmar Nueva Contraseña</label>
+            <input [type]="mostrarPass ? 'text' : 'password'" 
+                   [(ngModel)]="confirmarPassword" 
+                   [ngModelOptions]="{standalone: true}" 
+                   placeholder="Repita la nueva contraseña..."
+                   style="width: 100%; padding: 0.7rem; border-radius: 5px; border: 1px solid var(--gris);">
+          </div>
+        </div>
+
+        <button *ngIf="nuevaPassword" type="button" (click)="cambiarSoloPassword()" 
+                class="option-pill small-button" 
+                style="background-color: var(--azul); color: white; border: none; cursor: pointer; font-size: 13px; padding: 0.5rem 1rem;">
+          Actualizar solo contraseña ahora
+        </button>
+      </div>
+
       <button type="submit" [disabled]="usuarioForm.invalid" class="option-pill small-button" style="color: white; background-color: var(--verde); border: none; cursor: pointer; width: 100%;">
         Guardar Cambios
       </button>

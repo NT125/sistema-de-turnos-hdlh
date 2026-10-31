@@ -63,6 +63,9 @@ export class PacienteService {
   resetPasswordSinToken(cPassword: string, newPassword:string, idPac:any){
     return this.http.post<any>(`${this.url}reset-sintoken`, {cPassword, newPassword,idPac},this.createHeader())
   }
+  cambiarPasswordAdmin(id: string, newPassword: string){
+    return this.http.put<any>(`${this.url}admin-password/${id}`, { newPassword }, this.createHeader());
+  }
   createHeader(){
     return {
       headers: new HttpHeaders({

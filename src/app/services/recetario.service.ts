@@ -66,6 +66,33 @@ export class RecetarioService {
     return this.http.get<ComprobanteFarmacia>(`${this.url}/comprobantes/${id}`, this.createHeader());
   }
 
+  eliminarComprobante(id: string, password: string): Observable<any> {
+    const token = sessionStorage.getItem('token') || '';
+    const options = {
+      headers: new HttpHeaders({
+        'Authorization': token,
+        'Content-Type': 'application/json'
+      }),
+      body: { password }
+    };
+    return this.http.delete<any>(`${this.url}/comprobantes/${id}`, options);
+  }
+
+  getMedicamentosMasSolicitados(fechaInicio?: string, fechaFin?: string): Observable<any[]> {
+    let params: string[] = [];
+    if (fechaInicio) params.push(`fechaInicio=${encodeURIComponent(fechaInicio)}`);
+    if (fechaFin) params.push(`fechaFin=${encodeURIComponent(fechaFin)}`);
+    const query = params.length > 0 ? `?${params.join('&')}` : '';
+
+    return this.http.get<any[]>(`${this.url}/informes/mas-solicitados${query}`, this.createHeader())
+      .pipe(
+        catchError((err) => {
+          console.warn('Error al obtener medicamentos más solicitados:', err);
+          return of([]);
+        })
+      );
+  }
+
   buscarPacientePorDni(dni: string | number): Observable<any> {
     const cleanDni = `${dni}`.trim();
     return this.http.get<any>(`${this.url}/paciente/${cleanDni}`, this.createHeader())

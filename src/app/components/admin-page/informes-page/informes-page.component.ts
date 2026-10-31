@@ -14,8 +14,17 @@ import { FormsModule } from '@angular/forms';
 })
 export class InformesPageComponent implements OnInit {
   estadisticas: any = null;
+  medicamentosMasSolicitados: any[] = [];
   fechaInicio: string = '';
   fechaFin: string = '';
+
+  get totalUnidadesMedicamentos(): number {
+    return this.medicamentosMasSolicitados.reduce((acc, m) => acc + (Number(m.totalCantidad) || 0), 0);
+  }
+
+  get totalRecaudadoMedicamentos(): number {
+    return this.medicamentosMasSolicitados.reduce((acc, m) => acc + (Number(m.totalRecaudado) || 0), 0);
+  }
 
   constructor(private http: HttpClient) {}
 
@@ -36,6 +45,16 @@ export class InformesPageComponent implements OnInit {
       error: (err) => {
         console.error('Error fetching statistics', err);
         this.estadisticas = { totales: {}, porEspecialidad: [], pacientesStrikes: [], turnosPorMedico: [] };
+      }
+    });
+
+    this.http.get<any[]>(`${baseUrl}/api/recetario/informes/mas-solicitados`, { headers, params }).subscribe({
+      next: (data) => {
+        this.medicamentosMasSolicitados = data || [];
+      },
+      error: (err) => {
+        console.error('Error fetching medicamentos más solicitados', err);
+        this.medicamentosMasSolicitados = [];
       }
     });
   }

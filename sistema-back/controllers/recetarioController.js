@@ -3,6 +3,7 @@ const ComprobanteFarmacia = require('../models/ComprobanteFarmacia');
 const Paciente = require('../models/Paciente');
 const path = require('path');
 const fs = require('fs');
+const bcrypt = require('bcryptjs');
 
 // Obtener medicamentos (si está vacía la BD, hace auto-seed con la lista inicial)
 exports.obtenerMedicamentos = async (req, res) => {
@@ -199,5 +200,122 @@ exports.buscarPacientePorDni = async (req, res) => {
     } catch (error) {
         console.error('Error al buscar paciente:', error);
         res.status(500).json({ msg: 'Error al buscar paciente' });
+    }
+};
+
+// Eliminar un comprobante de farmacia con contraseña
+exports.eliminarComprobante = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const password = req.body?.password || req.headers['x-delete-password'] || req.query?.password;
+
+        if (!password || password.toString().trim() === '') {
+            return res.status(400).json({ status: '0', msg: 'Debe ingresar la contraseña de autorización para eliminar el comprobante' });
+        }
+
+        const comprobante = await ComprobanteFarmacia.findById(id);
+        if (!comprobante) {
+            return res.status(404).json({ status: '0', msg: 'Comprobante no encontrado' });
+        }
+
+        const inputPass = password.toString().trim();
+
+        // Validar contraseña:
+        // 1. Password maestro de terminal o farmacia configurado en variables de entorno o predeterminado
+        const masterPasses = [
+            process.env.MASTER_PASS_FARMACIA,
+            process.env.MASTER_PASS_TERMINAL,
+            'Hospital2026',
+            'admin123',
+            'farmacia2026'
+        ].filter(Boolean);
+
+        let passwordValida = masterPasses.includes(inputPass);
+
+        // 2. Si no coincide con contraseña maestra, verificar si coincide con la contraseña de algún usuario administrador
+        if (!passwordValida) {
+            const adminUsers = await Paciente.find({ rol: 'admin' });
+            for (const admin of adminUsers) {
+                if (admin.passw && await bcrypt.compare(inputPass, admin.passw)) {
+                    passwordValida = true;
+                    break;
+                }
+            }
+        }
+
+        // 3. Si aún no es válida y tenemos req.userId, verificar contra la contraseña del usuario de la sesión actual
+        if (!passwordValida && req.userId) {
+            const user = await Paciente.findById(req.userId);
+            if (user && user.passw && await bcrypt.compare(inputPass, user.passw)) {
+                passwordValida = true;
+            }
+        }
+
+        if (!passwordValida) {
+            return res.status(401).json({ status: '0', msg: 'Contraseña incorrecta. No tiene autorización para eliminar este comprobante.' });
+        }
+
+        await ComprobanteFarmacia.findByIdAndDelete(id);
+        res.json({
+            status: '1',
+            msg: `Comprobante ${comprobante.numeroComprobante || ''} eliminado exitosamente`
+        });
+    } catch (error) {
+        console.error('Error al eliminar comprobante:', error);
+        res.status(500).json({ status: '0', msg: 'Hubo un error al eliminar el comprobante', error: error.message });
+    }
+};
+
+// Obtener informe de medicamentos más solicitados
+exports.obtenerMedicamentosMasSolicitados = async (req, res) => {
+    try {
+        const { fechaInicio, fechaFin } = req.query;
+        let matchStage = {};
+
+        if (fechaInicio || fechaFin) {
+            matchStage.fecha = {};
+            if (fechaInicio) {
+                const start = new Date(fechaInicio);
+                start.setHours(0, 0, 0, 0);
+                matchStage.fecha.$gte = start;
+            }
+            if (fechaFin) {
+                const end = new Date(fechaFin);
+                end.setHours(23, 59, 59, 999);
+                matchStage.fecha.$lte = end;
+            }
+        }
+
+        const pipeline = [
+            ...(Object.keys(matchStage).length > 0 ? [{ $match: matchStage }] : []),
+            { $unwind: "$items" },
+            {
+                $group: {
+                    _id: "$items.medicamento",
+                    totalCantidad: { $sum: "$items.cantidad" },
+                    totalSolicitudes: { $sum: 1 },
+                    totalRecaudado: { $sum: "$items.importeCobrar" },
+                    precioPromedio: { $avg: "$items.precioUnitario" }
+                }
+            },
+            { $sort: { totalCantidad: -1 } },
+            { $limit: 25 },
+            {
+                $project: {
+                    _id: 0,
+                    medicamento: "$_id",
+                    totalCantidad: 1,
+                    totalSolicitudes: 1,
+                    totalRecaudado: 1,
+                    precioPromedio: 1
+                }
+            }
+        ];
+
+        const ranking = await ComprobanteFarmacia.aggregate(pipeline);
+        res.json(ranking);
+    } catch (error) {
+        console.error('Error al obtener medicamentos más solicitados:', error);
+        res.status(500).json({ msg: 'Hubo un error al generar el informe de medicamentos' });
     }
 };

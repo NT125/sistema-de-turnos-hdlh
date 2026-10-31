@@ -21,4 +21,12 @@ export class NavComponent {
   public logout() {
     this._loginService.logout();
   }
+  public getPanelRoute(): string {
+    const rol = this._loginService.rolLogged();
+    if (rol === 'admin') return '/admin';
+    if (rol === 'secretaria') return '/secretaria';
+    if (rol === 'recetario') return '/recetario';
+    if (rol === 'terminal') return '/terminal';
+    return '/';
+  }
 }

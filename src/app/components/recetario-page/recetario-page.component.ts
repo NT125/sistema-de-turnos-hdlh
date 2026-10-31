@@ -49,6 +49,34 @@ export class RecetarioPageComponent implements OnInit {
   filtroHistorial: string = '';
   fechaFiltroHistorial: string = '';
 
+  // Vista activa de la pantalla de recetario
+  vistaActual: 'inicio' | 'comprobante' | 'medicamentos' = 'inicio';
+
+  // Informes de medicamentos más solicitados
+  medicamentosMasSolicitados: any[] = [];
+  fechaInicioSolicitados: string = '';
+  fechaFinSolicitados: string = '';
+  cargandoSolicitados: boolean = false;
+
+  // Modal para eliminar comprobante con contraseña
+  mostrarModalEliminar: boolean = false;
+  comprobanteAEliminar: ComprobanteFarmacia | null = null;
+  passwordEliminar: string = '';
+  mostrarPassEliminar: boolean = false;
+  eliminandoComprobante: boolean = false;
+
+  // Gestión de medicamentos
+  filtroGestionMed: string = '';
+  mostrarModalMed: boolean = false;
+  modoEdicionMed: boolean = false;
+  guardandoMed: boolean = false;
+  medSeleccionado: any = {
+    item: 1,
+    nombre: '',
+    precio: 0,
+    activo: true
+  };
+
   constructor(
     public _recetarioService: RecetarioService,
     public _loginService: LoginService,
@@ -63,6 +91,7 @@ export class RecetarioPageComponent implements OnInit {
 
     this.actualizarPorcentajeCarnet();
     this.cargarMedicamentos();
+    this.cargarMedicamentosMasSolicitados();
 
     // Iniciar con al menos una fila vacía
     this.agregarItem();
@@ -387,5 +416,242 @@ export class RecetarioPageComponent implements OnInit {
     return this.medicamentosCatalogo.filter(m =>
       m.nombre.toLowerCase().includes(q) || `${m.item}`.includes(q)
     );
+  }
+
+  // Cambio de vista en pantalla principal
+  cambiarVista(vista: 'inicio' | 'comprobante' | 'medicamentos'): void {
+    this.vistaActual = vista;
+    if (vista === 'medicamentos') {
+      this.cargarMedicamentos();
+    }
+    if (vista === 'inicio') {
+      this.cargarMedicamentosMasSolicitados();
+    }
+  }
+
+  // Informe de medicamentos más solicitados
+  cargarMedicamentosMasSolicitados(): void {
+    this.cargandoSolicitados = true;
+    this._recetarioService.getMedicamentosMasSolicitados(this.fechaInicioSolicitados, this.fechaFinSolicitados).subscribe({
+      next: (data) => {
+        this.medicamentosMasSolicitados = data || [];
+        this.cargandoSolicitados = false;
+      },
+      error: (err) => {
+        console.error('Error al cargar medicamentos solicitados:', err);
+        this.cargandoSolicitados = false;
+      }
+    });
+  }
+
+  reiniciarFiltroSolicitados(): void {
+    this.fechaInicioSolicitados = '';
+    this.fechaFinSolicitados = '';
+    this.cargarMedicamentosMasSolicitados();
+  }
+
+  get totalUnidadesSolicitadas(): number {
+    return this.medicamentosMasSolicitados.reduce((acc, m) => acc + (Number(m.totalCantidad) || 0), 0);
+  }
+
+  get totalRecaudadoSolicitados(): number {
+    return this.medicamentosMasSolicitados.reduce((acc, m) => acc + (Number(m.totalRecaudado) || 0), 0);
+  }
+
+  // Eliminación de comprobante con contraseña
+  solicitarEliminarComprobante(comp: ComprobanteFarmacia, event?: MouseEvent): void {
+    if (event) {
+      event.stopPropagation();
+    }
+    this.comprobanteAEliminar = comp;
+    this.passwordEliminar = '';
+    this.mostrarPassEliminar = false;
+    this.mostrarModalEliminar = true;
+  }
+
+  solicitarEliminarComprobanteActual(): void {
+    if (!this.numeroComprobanteActual || this.numeroComprobanteActual === 'NUEVO') {
+      this.toastr.info('No hay un comprobante guardado cargado en pantalla.');
+      return;
+    }
+    const comp = this.comprobantesHistorial.find(c => c.numeroComprobante === this.numeroComprobanteActual);
+    if (comp) {
+      this.solicitarEliminarComprobante(comp);
+    } else {
+      this.toggleHistorial();
+      this.toastr.info('Seleccione el comprobante que desea eliminar en el historial.');
+    }
+  }
+
+  cerrarModalEliminar(): void {
+    this.mostrarModalEliminar = false;
+    this.comprobanteAEliminar = null;
+    this.passwordEliminar = '';
+    this.mostrarPassEliminar = false;
+  }
+
+  toggleMostrarPassEliminar(): void {
+    this.mostrarPassEliminar = !this.mostrarPassEliminar;
+  }
+
+  confirmarEliminarComprobante(): void {
+    if (!this.comprobanteAEliminar || !this.comprobanteAEliminar._id) {
+      this.toastr.warning('Comprobante no válido');
+      return;
+    }
+    if (!this.passwordEliminar || this.passwordEliminar.trim() === '') {
+      this.toastr.warning('Por favor ingrese la contraseña de autorización');
+      return;
+    }
+
+    this.eliminandoComprobante = true;
+    this._recetarioService.eliminarComprobante(this.comprobanteAEliminar._id, this.passwordEliminar.trim()).subscribe({
+      next: (res) => {
+        this.eliminandoComprobante = false;
+        this.toastr.success(res.msg || 'Comprobante eliminado con éxito');
+        
+        // Si el comprobante eliminado estaba cargado en pantalla, resetear
+        if (this.numeroComprobanteActual === this.comprobanteAEliminar?.numeroComprobante) {
+          this.nuevoComprobanteSilencioso();
+        }
+
+        this.cerrarModalEliminar();
+        this.cargarHistorial();
+        this.cargarMedicamentosMasSolicitados();
+      },
+      error: (err) => {
+        this.eliminandoComprobante = false;
+        console.error(err);
+        this.toastr.error(err.error?.msg || 'Contraseña incorrecta. No se pudo eliminar el comprobante.');
+      }
+    });
+  }
+
+  nuevoComprobanteSilencioso(): void {
+    this.paciente = '';
+    this.dni = '';
+    this.numeroCarnet = '';
+    this.tipoCarnet = 'Carnet 1';
+    this.observaciones = '';
+    this.numeroComprobanteActual = '';
+    const hoy = new Date();
+    this.fecha = hoy.toISOString().split('T')[0];
+    this.actualizarPorcentajeCarnet();
+    this.items = [];
+    this.agregarItem();
+  }
+
+  // Gestión de catálogo de medicamentos
+  get medicamentosGestionFiltrados(): MedicamentoItem[] {
+    if (!this.filtroGestionMed || this.filtroGestionMed.trim() === '') {
+      return this.medicamentosCatalogo;
+    }
+    const q = this.filtroGestionMed.toLowerCase().trim();
+    return this.medicamentosCatalogo.filter(m =>
+      m.nombre.toLowerCase().includes(q) || `${m.item}`.includes(q)
+    );
+  }
+
+  abrirModalNuevoMed(): void {
+    this.modoEdicionMed = false;
+    const maxItem = this.medicamentosCatalogo.reduce((max, m) => {
+      const num = Number(m.item);
+      return !isNaN(num) && num > max ? num : max;
+    }, 0);
+
+    this.medSeleccionado = {
+      item: maxItem + 1,
+      nombre: '',
+      precio: 0,
+      activo: true
+    };
+    this.mostrarModalMed = true;
+  }
+
+  abrirModalEditarMed(med: MedicamentoItem): void {
+    this.modoEdicionMed = true;
+    this.medSeleccionado = {
+      _id: med._id,
+      item: med.item,
+      nombre: med.nombre,
+      precio: med.precio,
+      activo: true
+    };
+    this.mostrarModalMed = true;
+  }
+
+  cerrarModalMed(): void {
+    this.mostrarModalMed = false;
+  }
+
+  guardarMedicamento(): void {
+    if (!this.medSeleccionado.nombre || this.medSeleccionado.nombre.trim() === '') {
+      this.toastr.warning('El nombre del medicamento es requerido');
+      return;
+    }
+    if (this.medSeleccionado.precio === null || this.medSeleccionado.precio === undefined || this.medSeleccionado.precio < 0) {
+      this.toastr.warning('Ingrese un precio válido');
+      return;
+    }
+
+    this.guardandoMed = true;
+    if (this.modoEdicionMed && this.medSeleccionado._id) {
+      this._recetarioService.actualizarMedicamento(this.medSeleccionado._id, {
+        item: this.medSeleccionado.item,
+        nombre: this.medSeleccionado.nombre.trim(),
+        precio: Number(this.medSeleccionado.precio),
+        activo: this.medSeleccionado.activo
+      }).subscribe({
+        next: () => {
+          this.guardandoMed = false;
+          this.toastr.success('Medicamento y precio actualizados con éxito');
+          this.cerrarModalMed();
+          this.cargarMedicamentos();
+        },
+        error: (err) => {
+          this.guardandoMed = false;
+          console.error(err);
+          this.toastr.error('Error al actualizar medicamento');
+        }
+      });
+    } else {
+      this._recetarioService.crearMedicamento({
+        item: this.medSeleccionado.item,
+        nombre: this.medSeleccionado.nombre.trim(),
+        precio: Number(this.medSeleccionado.precio),
+        precioTexto: `$ ${Number(this.medSeleccionado.precio).toFixed(2)}`
+      }).subscribe({
+        next: () => {
+          this.guardandoMed = false;
+          this.toastr.success('Nuevo medicamento agregado a la base de datos');
+          this.cerrarModalMed();
+          this.cargarMedicamentos();
+        },
+        error: (err) => {
+          this.guardandoMed = false;
+          console.error(err);
+          this.toastr.error('Error al agregar medicamento');
+        }
+      });
+    }
+  }
+
+  eliminarMedicamento(med: MedicamentoItem): void {
+    if (!med._id) {
+      this.toastr.warning('No se puede eliminar un medicamento sin ID en la base de datos');
+      return;
+    }
+    if (confirm(`¿Está seguro de eliminar el medicamento "${med.nombre}" de la base de datos?`)) {
+      this._recetarioService.eliminarMedicamento(med._id).subscribe({
+        next: () => {
+          this.toastr.success('Medicamento eliminado de la base de datos');
+          this.cargarMedicamentos();
+        },
+        error: (err) => {
+          console.error(err);
+          this.toastr.error('Error al eliminar medicamento');
+        }
+      });
+    }
   }
 }

@@ -10,6 +10,8 @@ router.delete('/medicamentos/:id', recetarioController.eliminarMedicamento);
 router.post('/comprobantes', recetarioController.crearComprobante);
 router.get('/comprobantes', recetarioController.obtenerComprobantes);
 router.get('/comprobantes/:id', recetarioController.obtenerComprobantePorId);
+router.delete('/comprobantes/:id', recetarioController.eliminarComprobante);
+router.get('/informes/mas-solicitados', recetarioController.obtenerMedicamentosMasSolicitados);
 router.get('/paciente/:dni', recetarioController.buscarPacientePorDni);
 
 module.exports = router;

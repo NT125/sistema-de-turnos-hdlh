@@ -5,19 +5,28 @@ import { Router, RouterLink } from '@angular/router';
 import { PacienteService } from '../../../services/paciente.service';
 import { Paciente } from '../../../models/paciente';
 import { Toast, ToastrService } from 'ngx-toastr';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { LoginService } from '../../../services/login.service';
 
 @Component({
   selector: 'app-usuarios-list',
   standalone: true,
-  imports: [CommonModule, AdminNavComponent, RouterLink, ReactiveFormsModule],
+  imports: [CommonModule, AdminNavComponent, RouterLink, ReactiveFormsModule, FormsModule],
   templateUrl: './usuarios-list.component.html',
   styleUrl: './usuarios-list.component.css'
 })
 export class UsuariosListComponent implements OnInit{
   busquedaForm:FormGroup;
   pacienteActu:Paciente;
+
+  // Modal para cambio de contraseña de roles especiales
+  mostrarModalPassword: boolean = false;
+  usuarioParaPassword: any = null;
+  nuevaPassAdmin: string = '';
+  confirmarPassAdmin: string = '';
+  mostrarPassAdmin: boolean = false;
+  guardandoPassAdmin: boolean = false;
+
   ngOnInit(): void {
     if(sessionStorage.getItem("rol")=='admin'){
       this.getUsuarios();
@@ -186,5 +195,52 @@ export class UsuariosListComponent implements OnInit{
       },
       
     })
+  }
+
+  abrirModalPassword(usuario: any): void {
+    this.usuarioParaPassword = usuario;
+    this.nuevaPassAdmin = '';
+    this.confirmarPassAdmin = '';
+    this.mostrarPassAdmin = false;
+    this.mostrarModalPassword = true;
+  }
+
+  cerrarModalPassword(): void {
+    this.mostrarModalPassword = false;
+    this.usuarioParaPassword = null;
+  }
+
+  toggleMostrarPassAdmin(): void {
+    this.mostrarPassAdmin = !this.mostrarPassAdmin;
+  }
+
+  guardarPasswordAdmin(): void {
+    if (!this.usuarioParaPassword || !this.usuarioParaPassword._id) return;
+    if (!this.nuevaPassAdmin || this.nuevaPassAdmin.trim() === '') {
+      this.toastr.warning('Por favor ingrese una contraseña');
+      return;
+    }
+    if (this.nuevaPassAdmin !== this.confirmarPassAdmin) {
+      this.toastr.error('Las contraseñas no coinciden');
+      return;
+    }
+    if (this.nuevaPassAdmin.trim().length < 4) {
+      this.toastr.warning('La contraseña debe tener al menos 4 caracteres');
+      return;
+    }
+
+    this.guardandoPassAdmin = true;
+    this._pacienteService.cambiarPasswordAdmin(this.usuarioParaPassword._id, this.nuevaPassAdmin.trim()).subscribe({
+      next: (res: any) => {
+        this.guardandoPassAdmin = false;
+        this.toastr.success(res.msg || 'Contraseña actualizada exitosamente');
+        this.cerrarModalPassword();
+      },
+      error: (err: any) => {
+        this.guardandoPassAdmin = false;
+        console.error(err);
+        this.toastr.error(err.error?.msg || 'Error al actualizar contraseña');
+      }
+    });
   }
 }

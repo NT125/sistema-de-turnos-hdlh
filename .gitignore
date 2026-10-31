@@ -1,3 +1,5 @@
+# See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
+
 # Compiled output
 /dist
 /tmp
@@ -40,9 +42,14 @@ testem.log
 .DS_Store
 Thumbs.db
 
+# Cache and Puppeteer
+.cache
+.cache/
+sistema-back/.cache
+sistema-back/.cache/
+**/.cache/**
+
 .wwebjs_cache
 .wwebjs_auth
-.cache/
-sistema-back/.cache/
 *.env
 variables.env

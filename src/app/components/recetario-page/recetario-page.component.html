@@ -2,8 +2,180 @@
 
 <div class="recetario-container">
 
-  <!-- 1. Encabezado superior con título y barra de herramientas -->
-  <header class="top-header no-print">
+  <!-- Pestañas de navegación de Recetario (Comprobante / Medicamentos / Inicio y Reportes) -->
+  <div class="recetario-nav-tabs no-print">
+    <button type="button" class="tab-btn" [class.active]="vistaActual === 'inicio'" (click)="cambiarVista('inicio')">
+      🏠 Menú Principal y Estadísticas
+    </button>
+    <button type="button" class="tab-btn" [class.active]="vistaActual === 'comprobante'" (click)="cambiarVista('comprobante')">
+      🧾 Hacer Comprobante de Pago
+    </button>
+    <button type="button" class="tab-btn" [class.active]="vistaActual === 'medicamentos'" (click)="cambiarVista('medicamentos')">
+      💊 Gestionar Medicamentos ({{ medicamentosCatalogo.length }})
+    </button>
+    <button type="button" class="tab-btn btn-modo-paciente-tab" routerLink="/" title="Pasar a Modo Paciente para sacar turnos o ver mis turnos">
+      👤 Modo Paciente
+    </button>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- VISTA 1: PANTALLA PRINCIPAL (Opciones e Informes) -->
+  <!-- ======================================================== -->
+  <section class="inicio-dashboard no-print" *ngIf="vistaActual === 'inicio'">
+    
+    <!-- Hero / Encabezado -->
+    <div class="hero-card">
+      <div class="hero-header-row">
+        <div>
+          <span class="institucion-badge">HOSPITAL DISTRITAL LAS HERAS · SERVICIO DE FARMACIA</span>
+          <h1 class="hero-title">Sistema de Gestión de Recetario y Farmacia</h1>
+          <p class="hero-subtitle">
+            Seleccione una de las opciones principales para comenzar: emisión de comprobantes de medicación hospitalaria, administración del catálogo de fármacos y precios, o consulta de informes estadísticos.
+          </p>
+        </div>
+        <div class="hero-actions">
+          <button type="button" class="btn-paciente-hero" routerLink="/" title="Acceder al sistema como paciente">
+            👤 Modo Paciente
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 1. Tarjetas de Opciones Principales -->
+    <div class="dashboard-options-grid">
+      <!-- Opción 1: Hacer Comprobante de Pago -->
+      <div class="option-card-hub opt-comprobante" (click)="cambiarVista('comprobante')">
+        <div class="option-icon-bubble">🧾</div>
+        <div class="option-content">
+          <h2 class="opt-title">Hacer Comprobante de Pago</h2>
+          <p class="opt-desc">
+            Emisión de comprobantes internos de cobro de medicación según cobertura del carnet hospitalario: <b>Carnet 1 (0% sin cargo)</b>, <b>Carnet 2 (30%)</b>, <b>Carnet 3 (50%)</b> o <b>Particular (100%)</b>. Búsqueda por DNI e impresión.
+          </p>
+          <div class="opt-footer">
+            <span class="btn-opt-action">Iniciar Comprobante →</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Opción 2: Gestionar los Medicamentos -->
+      <div class="option-card-hub opt-medicamentos" (click)="cambiarVista('medicamentos')">
+        <div class="option-icon-bubble">💊</div>
+        <div class="option-content">
+          <h2 class="opt-title">Gestionar los Medicamentos</h2>
+          <p class="opt-desc">
+            Administrar el catálogo oficial de medicamentos: dar de alta nuevos medicamentos, actualizar precios unitarios en tiempo real, filtrar el catálogo y dar de baja fármacos.
+          </p>
+          <div class="opt-footer">
+            <span class="btn-opt-action">Gestionar Catálogo y Precios →</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Opción 3: Historial de Comprobantes -->
+      <div class="option-card-hub opt-historial" (click)="toggleHistorial()">
+        <div class="option-icon-bubble">📁</div>
+        <div class="option-content">
+          <h2 class="opt-title">Historial de Comprobantes</h2>
+          <p class="opt-desc">
+            Consultar comprobantes anteriores emitidos, filtrar por paciente o fecha, recargar comprobantes para reimpresión y <b>eliminar comprobantes de forma segura mediante contraseña</b>.
+          </p>
+          <div class="opt-footer">
+            <span class="btn-opt-action">Consultar Historial →</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. Sección de Informes: Medicamentos Más Solicitados -->
+    <div class="informe-section-card">
+      <div class="section-header-row">
+        <div>
+          <h2 class="section-h2">📊 Informe de Medicamentos Más Solicitados</h2>
+          <span class="section-sub">Ranking estadístico de fármacos con mayor demanda en comprobantes emitidos</span>
+        </div>
+        
+        <div class="filter-dates-row">
+          <div class="date-input-group">
+            <label>Desde:</label>
+            <input type="date" [(ngModel)]="fechaInicioSolicitados" (change)="cargarMedicamentosMasSolicitados()" class="form-control-sm">
+          </div>
+          <div class="date-input-group">
+            <label>Hasta:</label>
+            <input type="date" [(ngModel)]="fechaFinSolicitados" (change)="cargarMedicamentosMasSolicitados()" class="form-control-sm">
+          </div>
+          <button type="button" class="btn-sm-filter" (click)="cargarMedicamentosMasSolicitados()">Filtrar</button>
+          <button type="button" class="btn-sm-clear" (click)="reiniciarFiltroSolicitados()" *ngIf="fechaInicioSolicitados || fechaFinSolicitados">Ver Todo</button>
+        </div>
+      </div>
+
+      <!-- Métricas Resumen -->
+      <div class="metric-chips-grid">
+        <div class="metric-chip">
+          <span class="chip-label">Total Unidades Solicitadas</span>
+          <span class="chip-val">{{ totalUnidadesSolicitadas }} un.</span>
+        </div>
+        <div class="metric-chip">
+          <span class="chip-label">Variedad de Medicamentos</span>
+          <span class="chip-val">{{ medicamentosMasSolicitados.length }} fármacos</span>
+        </div>
+        <div class="metric-chip">
+          <span class="chip-label">Total Recaudado en Fármacos</span>
+          <span class="chip-val chip-green">${{ totalRecaudadoSolicitados | number:'1.2-2' }}</span>
+        </div>
+      </div>
+
+      <!-- Tabla del ranking -->
+      <div class="table-responsive-box">
+        <div *ngIf="cargandoSolicitados" class="loading-state">
+          Cargando informe de medicamentos...
+        </div>
+
+        <div *ngIf="!cargandoSolicitados && medicamentosMasSolicitados.length === 0" class="empty-solicitados">
+          <p>No hay registros de medicamentos solicitados para el período seleccionado.</p>
+          <small>Los datos se registran y actualizan automáticamente cada vez que se emite un comprobante de cobro.</small>
+        </div>
+
+        <table class="report-table" *ngIf="!cargandoSolicitados && medicamentosMasSolicitados.length > 0">
+          <thead>
+            <tr>
+              <th style="width: 70px; text-align: center;">Ranking</th>
+              <th>Medicamento</th>
+              <th style="text-align: center; width: 150px;">Unidades Entregadas</th>
+              <th style="text-align: center; width: 140px;">Comprobantes</th>
+              <th style="text-align: right; width: 160px;">Total Recaudado ($)</th>
+              <th style="text-align: right; width: 140px;">Precio Prom. ($)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let m of medicamentosMasSolicitados; let idx = index">
+              <td style="text-align: center;">
+                <span class="rank-badge" [class.rank-top]="idx < 3">#{{ idx + 1 }}</span>
+              </td>
+              <td><b>{{ m.medicamento }}</b></td>
+              <td style="text-align: center;">
+                <span class="units-badge">{{ m.totalCantidad }} un.</span>
+              </td>
+              <td style="text-align: center;">{{ m.totalSolicitudes }}</td>
+              <td style="text-align: right; font-weight: 700; color: #28a745;">
+                ${{ m.totalRecaudado | number:'1.2-2' }}
+              </td>
+              <td style="text-align: right; color: #555;">
+                ${{ (m.precioPromedio || 0) | number:'1.2-2' }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================== -->
+
+  <!-- ======================================================== -->
+  <!-- VISTA 2: HACER COMPROBANTE DE PAGO (DISEÑO ORIGINAL) -->
+  <!-- ======================================================== -->
+  <div *ngIf="vistaActual === 'comprobante'">
+    <header class="top-header no-print">
     <div class="header-info">
       <span class="institucion-badge">HOSPITAL DISTRITAL LAS HERAS · SERVICIO DE FARMACIA</span>
       <h1 class="header-title">Sistema de Cobro de Medicación</h1>
@@ -348,6 +520,14 @@
         <button type="button" class="btn-action-lg btn-clear" (click)="nuevoComprobante()">
           <span class="btn-icon">🔄</span> Limpiar / Nuevo
         </button>
+          <button *ngIf="numeroComprobanteActual && numeroComprobanteActual !== 'NUEVO'" 
+                  type="button" 
+                  class="btn-action-lg btn-delete-current" 
+                  (click)="solicitarEliminarComprobanteActual()" 
+                  title="Eliminar este comprobante con contraseña"
+                  style="background:#dc3545; color:#fff; border:none; margin-left:0.5rem;">
+            <span class="btn-icon">🗑️</span> Eliminar Comprobante
+          </button>
       </div>
 
       <div class="footer-actions-right">
@@ -361,7 +541,93 @@
     </div>
 
   </main>
+  </div>
 
+  <!-- ======================================================== -->
+  <!-- VISTA 3: GESTIÓN DE MEDICAMENTOS Y PRECIOS -->
+  <!-- ======================================================== -->
+  <section class="gestion-medicamentos-section no-print" *ngIf="vistaActual === 'medicamentos'">
+    <div class="view-header-bar">
+      <button type="button" class="btn-back-menu" (click)="cambiarVista('inicio')">
+        ← Volver al Menú Principal de Recetario
+      </button>
+      <div class="view-header-actions">
+        <button type="button" class="btn-sub-action" (click)="cambiarVista('comprobante')">
+          🧾 Hacer Comprobante de Pago
+        </button>
+      </div>
+    </div>
+
+    <div class="med-mgmt-card">
+      <div class="med-mgmt-header">
+        <div>
+          <h2 class="section-h2">💊 Gestión de Medicamentos y Precios</h2>
+          <span class="section-sub">Administración completa del catálogo farmacéutico oficial</span>
+        </div>
+        <div>
+          <button type="button" class="btn-add-med-main" (click)="abrirModalNuevoMed()">
+            ➕ Dar de Alta Nuevo Medicamento
+          </button>
+        </div>
+      </div>
+
+      <!-- Barra de Filtros y Búsqueda -->
+      <div class="med-search-toolbar">
+        <input 
+          type="text" 
+          [(ngModel)]="filtroGestionMed" 
+          placeholder="Buscar por nombre de medicamento o número de ítem..." 
+          class="form-control med-search-input">
+        <span class="med-count-pill">
+          Mostrando {{ medicamentosGestionFiltrados.length }} de {{ medicamentosCatalogo.length }} fármacos
+        </span>
+      </div>
+
+      <!-- Tabla de Medicamentos -->
+      <div class="table-responsive-box">
+        <table class="report-table">
+          <thead>
+            <tr>
+              <th style="width: 80px; text-align: center;">Ítem #</th>
+              <th>Nombre del Medicamento / Presentación</th>
+              <th style="width: 180px; text-align: right;">Precio Unitario ($)</th>
+              <th style="width: 180px; text-align: center;">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let med of medicamentosGestionFiltrados">
+              <td style="text-align: center; font-weight: bold; color: var(--azul);">
+                #{{ med.item }}
+              </td>
+              <td><b>{{ med.nombre }}</b></td>
+              <td style="text-align: right; font-weight: 700; color: #28a745;">
+                ${{ med.precio | number:'1.2-2' }}
+              </td>
+              <td style="text-align: center; white-space: nowrap;">
+                <button type="button" class="btn-mini-edit" (click)="abrirModalEditarMed(med)" title="Editar precio y nombre">
+                  ✏️ Editar
+                </button>
+                <button type="button" class="btn-mini-delete" (click)="eliminarMedicamento(med)" title="Eliminar medicamento" style="margin-left: 0.4rem;">
+                  🗑️ Eliminar
+                </button>
+              </td>
+            </tr>
+            <tr *ngIf="medicamentosGestionFiltrados.length === 0">
+              <td colspan="4" class="text-center" style="padding: 2rem; color: #777;">
+                No se encontraron medicamentos con ese criterio de búsqueda.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================== -->
+
+  <!-- ======================================================== -->
+  <!-- MODALES GLOBALES -->
+  <!-- ======================================================== -->
   <!-- Modal del Catálogo Completo (138 medicamentos) -->
   <div class="modal-backdrop" *ngIf="mostrarCatalogoModal" (click)="toggleCatalogoModal()">
     <div class="modal-box" (click)="$event.stopPropagation()">
@@ -448,19 +714,19 @@
         <table class="modal-table" *ngIf="comprobantesHistorial.length > 0">
           <thead>
             <tr>
-              <th>N.° Comp.</th>
-              <th>Fecha</th>
+              <th style="min-width: 140px;">N.° Comp.</th>
+              <th style="min-width: 110px;">Fecha</th>
               <th>Paciente</th>
-              <th>DNI</th>
-              <th>Carnet</th>
-              <th style="text-align: right;">Total ($)</th>
-              <th style="text-align: center;">Acción</th>
+              <th style="min-width: 100px;">DNI</th>
+              <th style="min-width: 140px;">Carnet</th>
+              <th style="text-align: right; min-width: 100px;">Total ($)</th>
+              <th style="text-align: center; min-width: 200px;">Acciones</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let comp of comprobantesHistorial">
-              <td><b>{{ comp.numeroComprobante || 'S/N' }}</b></td>
-              <td>{{ comp.fecha | date:'dd/MM/yyyy' }}</td>
+              <td style="min-width: 140px;"><b>{{ comp.numeroComprobante || 'S/N' }}</b></td>
+              <td style="min-width: 110px;">{{ comp.fecha | date:'dd/MM/yyyy' }}</td>
               <td>{{ comp.paciente }}</td>
               <td>{{ comp.dni }}</td>
               <td>
@@ -472,6 +738,13 @@
               <td style="text-align: center;">
                 <button type="button" class="btn-mini-add" (click)="cargarComprobanteEnPantalla(comp)">
                   Cargar / Ver
+                </button>
+                <button type="button" 
+                        class="btn-mini-delete" 
+                        (click)="solicitarEliminarComprobante(comp, $event)" 
+                        title="Eliminar comprobante con contraseña" 
+                        style="margin-left: 0.4rem; background:#dc3545; color:#fff; border:none; padding:0.35rem 0.75rem; border-radius:6px; cursor:pointer; font-weight: 600;">
+                  🗑️ Eliminar
                 </button>
               </td>
             </tr>
@@ -485,4 +758,91 @@
     </div>
   </div>
 
-</div>
+  <!-- 1. Modal para Eliminar Comprobante con Contraseña -->
+  <div class="modal-backdrop modal-backdrop-eliminar" *ngIf="mostrarModalEliminar" (click)="cerrarModalEliminar()">
+    <div class="modal-box modal-box-sm" (click)="$event.stopPropagation()">
+      <div class="modal-head modal-head-danger">
+        <div>
+          <h2 class="modal-title" style="color: #dc3545;">🗑️ Eliminar Comprobante</h2>
+          <span class="modal-subtitle">Se requiere contraseña de autorización</span>
+        </div>
+        <button type="button" class="btn-close-modal" (click)="cerrarModalEliminar()">✕</button>
+      </div>
+
+      <div class="modal-body-content" *ngIf="comprobanteAEliminar">
+        <div class="delete-info-alert">
+          <div><b>Comprobante N.°:</b> {{ comprobanteAEliminar.numeroComprobante || 'S/N' }}</div>
+          <div><b>Paciente:</b> {{ comprobanteAEliminar.paciente }} (DNI: {{ comprobanteAEliminar.dni }})</div>
+          <div><b>Total a Cobrar:</b> ${{ comprobanteAEliminar.totalACobrar | number:'1.2-2' }}</div>
+          <small style="color: #dc3545; display: block; margin-top: 0.5rem; font-weight: 600;">
+            ⚠️ Esta acción es permanente. Para confirmar la eliminación, ingrese la contraseña de autorización:
+          </small>
+        </div>
+
+        <div style="margin-top: 1rem;">
+          <label style="font-weight: 700; color: #333; display: block; margin-bottom: 0.4rem; font-size: 14px;">
+            Contraseña de Autorización:
+          </label>
+          <div style="display: flex; gap: 0.5rem;">
+            <input 
+              [type]="mostrarPassEliminar ? 'text' : 'password'" 
+              [(ngModel)]="passwordEliminar" 
+              (keyup.enter)="confirmarEliminarComprobante()"
+              placeholder="Ingrese su contraseña o clave maestra..." 
+              class="form-control" 
+              style="flex: 1;"
+              autofocus>
+            <button type="button" class="btn-toggle-eye" (click)="toggleMostrarPassEliminar()" title="Mostrar u ocultar">
+              {{ mostrarPassEliminar ? '🙈' : '👁️' }}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-foot">
+        <button type="button" class="btn-action btn-cancel" (click)="cerrarModalEliminar()">
+          Cancelar
+        </button>
+        <button type="button" class="btn-action btn-confirm-delete" (click)="confirmarEliminarComprobante()" [disabled]="eliminandoComprobante">
+          {{ eliminandoComprobante ? 'Eliminando...' : 'Confirmar Eliminación' }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Modal para Agregar / Editar Medicamento -->
+  <div class="modal-backdrop modal-backdrop-med" *ngIf="mostrarModalMed" (click)="cerrarModalMed()">
+    <div class="modal-box modal-box-sm" (click)="$event.stopPropagation()">
+      <div class="modal-head">
+        <div>
+          <h2 class="modal-title">{{ modoEdicionMed ? '✏️ Modificar Medicamento' : '➕ Nuevo Medicamento' }}</h2>
+          <span class="modal-subtitle">Actualice los datos en el catálogo oficial de farmacia</span>
+        </div>
+        <button type="button" class="btn-close-modal" (click)="cerrarModalMed()">✕</button>
+      </div>
+
+      <div class="modal-body-content">
+        <div style="margin-bottom: 1rem;">
+          <label style="font-weight: 700; color: var(--azul); display: block; margin-bottom: 0.3rem;">Número de Ítem</label>
+          <input type="number" [(ngModel)]="medSeleccionado.item" class="form-control">
+        </div>
+        <div style="margin-bottom: 1rem;">
+          <label style="font-weight: 700; color: var(--azul); display: block; margin-bottom: 0.3rem;">Nombre del Medicamento / Presentación</label>
+          <input type="text" [(ngModel)]="medSeleccionado.nombre" placeholder="Ej: Amoxicilina 500mg" class="form-control">
+        </div>
+        <div style="margin-bottom: 1rem;">
+          <label style="font-weight: 700; color: var(--azul); display: block; margin-bottom: 0.3rem;">Precio Unitario ($)</label>
+          <input type="number" step="0.01" [(ngModel)]="medSeleccionado.precio" class="form-control">
+        </div>
+      </div>
+
+      <div class="modal-foot">
+        <button type="button" class="btn-action btn-cancel" (click)="cerrarModalMed()">Cancelar</button>
+        <button type="button" class="btn-action btn-save" (click)="guardarMedicamento()" [disabled]="guardandoMed">
+          {{ guardandoMed ? 'Guardando...' : (modoEdicionMed ? 'Actualizar Medicamento' : 'Crear Medicamento') }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  </div>

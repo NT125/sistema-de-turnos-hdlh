@@ -9,6 +9,9 @@
                 <span class="usertype">{{_loginService.rolLogged()}} </span>
                 <span class="username">{{_loginService.userLogged()}}</span>
             </div>
+            <button class="nav-item modo-paciente-button" routerLink="/" title="Acceder al sistema como paciente para sacar turnos o ver mis turnos">
+                👤 Modo Paciente
+            </button>
             <button class="nav-item logout-button" routerLink="/login" (click)="logout()">Cerrar Sesión</button>
                 
         </div>

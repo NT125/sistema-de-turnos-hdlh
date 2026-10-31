@@ -60,8 +60,15 @@
 							<td *ngIf="_loginService.rolLogged()=='admin'">{{ paciente.rol }}</td>
 							<td class="actions-cell">
 								<div class="flex-column buttons-container">
-									<button [routerLink]="['/usuario-form', paciente._id]" class="option-pill small-button action-element" style="background-color: var(--amarillo); border: none; cursor: pointer;">
+									<button [routerLink]="['/usuario-form', paciente._id]" class="option-pill small-button action-element" style="background-color: var(--amarillo); border: none; cursor: pointer;" title="Editar datos">
 										<span class="material-symbols-rounded">edit</span>
+									</button>
+									<button *ngIf="_loginService.rolLogged()=='admin' && paciente.rol!='paciente'"
+										class="option-pill small-button action-element"
+										style="background-color: var(--azul); color: white; border: none; cursor: pointer;"
+										title="Cambiar contraseña de usuario con rol especial"
+										(click)="abrirModalPassword(paciente)">
+										<span class="material-symbols-rounded">key</span>
 									</button>
 									<button *ngIf="paciente.rol=='paciente' && paciente.strikes>=3"
 										class="option-pill yellow-button action-element"
@@ -85,5 +92,57 @@
 			</div>
 		</div>
 
+	</div>
+
+	<!-- Modal para cambiar contraseña de usuario con rol especial desde admin -->
+	<div *ngIf="mostrarModalPassword" class="modal-admin-pass-backdrop" (click)="cerrarModalPassword()">
+	  <div class="modal-admin-pass-card" (click)="$event.stopPropagation()">
+	    <div class="modal-pass-header">
+	      <h2 class="modal-pass-title">
+	        🔐 Cambiar Contraseña
+	      </h2>
+	      <button type="button" class="btn-close-pass-modal" (click)="cerrarModalPassword()" title="Cerrar ventana">✕</button>
+	    </div>
+
+	    <div *ngIf="usuarioParaPassword" class="user-info-banner">
+	      <div><b>Usuario:</b> {{ usuarioParaPassword.nombre }}</div>
+	      <div><b>Rol:</b> <span style="text-transform: uppercase; font-weight: 700; color: var(--azul);">{{ usuarioParaPassword.rol }}</span> | <b>DNI:</b> {{ usuarioParaPassword.dni }}</div>
+	    </div>
+
+	    <div class="modal-form-group">
+	      <label>Nueva Contraseña</label>
+	      <div class="pass-input-wrapper">
+	        <input [type]="mostrarPassAdmin ? 'text' : 'password'" 
+	               [(ngModel)]="nuevaPassAdmin" 
+	               (keyup.enter)="guardarPasswordAdmin()"
+	               placeholder="Ingrese la nueva contraseña...">
+	        <button type="button" class="btn-eye-toggle" (click)="toggleMostrarPassAdmin()" title="Mostrar u ocultar contraseña">
+	          {{ mostrarPassAdmin ? '🙈' : '👁️' }}
+	        </button>
+	      </div>
+	    </div>
+
+	    <div class="modal-form-group">
+	      <label>Confirmar Nueva Contraseña</label>
+	      <div class="pass-input-wrapper">
+	        <input [type]="mostrarPassAdmin ? 'text' : 'password'" 
+	               [(ngModel)]="confirmarPassAdmin" 
+	               (keyup.enter)="guardarPasswordAdmin()"
+	               placeholder="Repita la nueva contraseña...">
+	        <button type="button" class="btn-eye-toggle" (click)="toggleMostrarPassAdmin()" title="Mostrar u ocultar contraseña">
+	          {{ mostrarPassAdmin ? '🙈' : '👁️' }}
+	        </button>
+	      </div>
+	    </div>
+
+	    <div class="modal-pass-actions">
+	      <button type="button" class="btn-cancel-pass" (click)="cerrarModalPassword()">
+	        Cancelar
+	      </button>
+	      <button type="button" class="btn-save-pass" (click)="guardarPasswordAdmin()" [disabled]="guardandoPassAdmin">
+	        {{ guardandoPassAdmin ? 'Guardando...' : 'Guardar Contraseña' }}
+	      </button>
+	    </div>
+	  </div>
 	</div>
 </div>

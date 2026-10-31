@@ -117,6 +117,85 @@
           </tbody>
       </table>
     </div>
+
+    <!-- Sección Medicamentos Más Solicitados (Farmacia / Recetario) -->
+    <div class="med-report-card">
+      <div class="med-report-header">
+        <div class="med-report-title-group">
+          <h3>💊 Medicamentos Más Solicitados (Farmacia / Recetario)</h3>
+          <p>Ranking de demanda y recaudación de medicamentos en comprobantes hospitalarios</p>
+        </div>
+      </div>
+
+      <!-- Resumen en métricas clave -->
+      <div class="med-metrics-grid" *ngIf="medicamentosMasSolicitados.length > 0">
+        <div class="med-metric-chip">
+          <div class="med-metric-icon">📦</div>
+          <div class="med-metric-info">
+            <span>Total Unidades Entregadas</span>
+            <strong>{{ totalUnidadesMedicamentos }} un.</strong>
+          </div>
+        </div>
+        <div class="med-metric-chip">
+          <div class="med-metric-icon">💰</div>
+          <div class="med-metric-info">
+            <span>Recaudación Total Farmacia</span>
+            <strong style="color: #28a745;">${{ totalRecaudadoMedicamentos | number:'1.2-2' }}</strong>
+          </div>
+        </div>
+        <div class="med-metric-chip">
+          <div class="med-metric-icon">💊</div>
+          <div class="med-metric-info">
+            <span>Medicamentos en Ranking</span>
+            <strong>{{ medicamentosMasSolicitados.length }} fármacos</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabla de Medicamentos -->
+      <div class="med-table-wrapper">
+        <table class="med-table">
+          <thead>
+            <tr>
+              <th style="width: 70px; text-align: center;">#</th>
+              <th>Medicamento / Presentación</th>
+              <th style="width: 190px; text-align: center;">Unidades Entregadas</th>
+              <th style="width: 150px; text-align: center;">Comprobantes</th>
+              <th style="width: 190px; text-align: right;">Total Recaudado ($)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of medicamentosMasSolicitados; let i = index">
+              <td style="text-align: center; width: 70px;">
+                <span class="rank-badge" 
+                      [class.rank-top-1]="i === 0" 
+                      [class.rank-top-2]="i === 1" 
+                      [class.rank-top-3]="i === 2">
+                  {{ i + 1 }}
+                </span>
+              </td>
+              <td>
+                <span style="font-weight: 700; color: #212529;">{{ item.medicamento }}</span>
+              </td>
+              <td style="text-align: center; width: 190px;">
+                <span class="units-pill">{{ item.totalCantidad }} un.</span>
+              </td>
+              <td style="text-align: center; width: 150px; font-weight: 600; color: #495057;">
+                {{ item.totalSolicitudes }}
+              </td>
+              <td style="text-align: right; width: 190px;">
+                <span class="amount-green">${{ item.totalRecaudado | number:'1.2-2' }}</span>
+              </td>
+            </tr>
+            <tr *ngIf="medicamentosMasSolicitados.length === 0">
+              <td colspan="5" style="text-align: center; padding: 2.5rem; color: #6c757d;">
+                No se registraron medicamentos solicitados para el rango de fechas seleccionado.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 </div>
 

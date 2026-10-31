@@ -108,7 +108,7 @@ h2 {
 }
 
 .table {
-  width: 100%;
+  width: 100% !important;
   border-collapse: collapse;
 }
 
@@ -116,6 +116,7 @@ h2 {
   padding: 0.75rem;
   text-align: left;
   border-bottom: 1px solid #eee;
+  width: auto !important;
 }
 
 .table th {
@@ -132,6 +133,7 @@ h2 {
   white-space: nowrap;
   vertical-align: baseline;
   border-radius: 0.25rem;
+  width: auto !important;
 }
 
 .badge-danger {
@@ -153,4 +155,175 @@ h2 {
   padding: 3rem;
   font-size: 1.2rem;
   color: #666;
+}
+
+/* ======================================================== */
+/* ESTILOS PARA LA SECCIÓN DE MEDICAMENTOS MÁS SOLICITADOS */
+/* ======================================================== */
+
+.med-report-card {
+  background: white;
+  border-radius: 14px;
+  padding: 2rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  grid-column: 1 / -1;
+  margin-top: 2rem;
+  border-top: 4px solid var(--azul);
+}
+
+.med-report-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.med-report-title-group h3 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: var(--azul);
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.med-report-title-group p {
+  margin: 0.3rem 0 0 0;
+  color: #6c757d;
+  font-size: 0.95rem;
+}
+
+.med-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.2rem;
+  margin-bottom: 1.8rem;
+}
+
+.med-metric-chip {
+  background: #f8fafd;
+  border: 1px solid #e1e8f2;
+  border-radius: 12px;
+  padding: 1.1rem 1.3rem;
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+}
+
+.med-metric-icon {
+  font-size: 2rem;
+  width: 52px;
+  height: 52px;
+  min-width: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #e9f2ff;
+  border-radius: 12px;
+  color: var(--azul);
+}
+
+.med-metric-info span {
+  display: block;
+  font-size: 0.82rem;
+  color: #6c757d;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.med-metric-info strong {
+  font-size: 1.45rem;
+  color: var(--azul);
+  font-weight: 800;
+}
+
+.med-table-wrapper {
+  overflow-x: auto;
+  border-radius: 10px;
+  border: 1px solid #e9ecef;
+}
+
+.med-table {
+  width: 100% !important;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.med-table th {
+  background-color: #f1f5fa;
+  color: var(--azul);
+  font-weight: 700;
+  font-size: 0.88rem;
+  padding: 1rem 1.1rem;
+  border-bottom: 2px solid #dee2e6;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  width: auto !important;
+}
+
+.med-table td {
+  padding: 0.9rem 1.1rem;
+  border-bottom: 1px solid #edf1f7;
+  vertical-align: middle;
+  font-size: 0.95rem;
+  width: auto !important;
+}
+
+.med-table tr:hover td {
+  background-color: #f8fafd;
+}
+
+.rank-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #eef2f7;
+  color: #495057;
+  font-weight: 800;
+  font-size: 0.9rem;
+}
+
+.rank-top-1 {
+  background: #ffd700;
+  color: #5c4300;
+  box-shadow: 0 2px 6px rgba(255, 215, 0, 0.45);
+}
+
+.rank-top-2 {
+  background: #e0e0e0;
+  color: #333;
+  box-shadow: 0 2px 6px rgba(180, 180, 180, 0.45);
+}
+
+.rank-top-3 {
+  background: #cd7f32;
+  color: #fff;
+  box-shadow: 0 2px 6px rgba(205, 127, 50, 0.45);
+}
+
+.units-pill {
+  display: inline-block;
+  background: #e0f7fa;
+  color: #00838f;
+  padding: 0.35rem 0.85rem;
+  border-radius: 20px;
+  font-weight: 800;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  width: auto !important;
+}
+
+.amount-green {
+  color: #28a745;
+  font-weight: 800;
+  font-size: 1.1rem;
+  white-space: nowrap;
 }

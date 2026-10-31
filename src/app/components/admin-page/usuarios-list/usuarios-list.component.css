@@ -1,1 +1,191 @@
 @import "../../secretaria-page/secretaria-page.component.css";
+
+/* Modal de Cambio de Contraseña de Admin */
+.modal-admin-pass-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99999;
+  padding: 1rem;
+}
+
+.modal-admin-pass-card {
+  background: #ffffff;
+  border-radius: 14px;
+  max-width: 480px;
+  width: 100% !important;
+  padding: 2rem;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.25);
+  animation: modalPopAdmin 0.22s ease-out;
+  box-sizing: border-box;
+}
+
+@keyframes modalPopAdmin {
+  from { transform: scale(0.92); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.modal-pass-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+  border-bottom: 1px solid #edf2f7;
+  padding-bottom: 0.85rem;
+}
+
+.modal-pass-title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--azul);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-close-pass-modal {
+  background: transparent !important;
+  border: none !important;
+  font-size: 22px;
+  cursor: pointer;
+  color: #a0aec0;
+  width: auto !important;
+  padding: 0.2rem 0.5rem;
+  line-height: 1;
+  transition: color 0.2s ease;
+}
+
+.btn-close-pass-modal:hover {
+  color: #e53e3e;
+}
+
+.user-info-banner {
+  background: #f0f7ff;
+  border-left: 4px solid var(--azul);
+  padding: 0.85rem 1rem;
+  border-radius: 6px;
+  margin-bottom: 1.4rem;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.modal-form-group {
+  margin-bottom: 1.25rem;
+  width: 100% !important;
+}
+
+.modal-form-group label {
+  display: block;
+  font-weight: 700;
+  color: #2d3748;
+  margin-bottom: 0.45rem;
+  font-size: 14px;
+}
+
+/* El contenedor del input con botón de ojo integrado */
+.pass-input-wrapper {
+  position: relative;
+  width: 100% !important;
+  display: flex;
+  align-items: center;
+}
+
+.pass-input-wrapper input {
+  width: 100% !important;
+  padding: 0.75rem 2.8rem 0.75rem 0.95rem !important;
+  border-radius: 8px !important;
+  border: 1.5px solid #cbd5e0 !important;
+  font-size: 15px !important;
+  margin: 0 !important;
+  background-color: #fff !important;
+  box-sizing: border-box !important;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.pass-input-wrapper input:focus {
+  border-color: var(--celeste) !important;
+  outline: none !important;
+  box-shadow: 0 0 0 3px rgba(124, 165, 220, 0.25) !important;
+}
+
+.pass-input-wrapper .btn-eye-toggle {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 34px !important;
+  height: 34px !important;
+  min-width: 34px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 17px;
+  color: #718096;
+  border-radius: 6px;
+  transition: background 0.2s ease;
+}
+
+.pass-input-wrapper .btn-eye-toggle:hover {
+  background: #edf2f7 !important;
+}
+
+.modal-pass-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.85rem;
+  margin-top: 1.75rem;
+  width: 100% !important;
+}
+
+.btn-cancel-pass {
+  width: auto !important;
+  padding: 0.65rem 1.3rem !important;
+  border-radius: 8px !important;
+  border: 1px solid #cbd5e0 !important;
+  background: #ffffff !important;
+  color: #4a5568 !important;
+  font-weight: 700 !important;
+  font-size: 14.5px !important;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-cancel-pass:hover {
+  background: #f7fafc !important;
+  border-color: #a0aec0 !important;
+}
+
+.btn-save-pass {
+  width: auto !important;
+  padding: 0.65rem 1.4rem !important;
+  border-radius: 8px !important;
+  border: none !important;
+  background: var(--verde, #28a745) !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  font-size: 14.5px !important;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(40, 167, 69, 0.3) !important;
+  transition: all 0.2s ease;
+}
+
+.btn-save-pass:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+}
+
+.btn-save-pass:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+}

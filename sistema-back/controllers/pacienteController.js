@@ -89,9 +89,10 @@ exports.obtenerPacientesStrikes = async(req,res) => {
 }
 exports.actualizarPaciente = async(req,res) => {
     try{
-        if(req.body.passw !=undefined){
-            console.log(req.body.passw)
-            req.body.passw = bcrypt.hashSync(req.body.passw,12);
+        if(req.body.passw && typeof req.body.passw === 'string' && req.body.passw.trim() !== ''){
+            req.body.passw = bcrypt.hashSync(req.body.passw.trim(), 12);
+        } else {
+            delete req.body.passw;
         }
         const paciente = await Paciente.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
        
@@ -505,6 +506,44 @@ exports.resetPasswordSinToken = async (req, res) => {
             'status': '500',
             'msg': 'Hubo un error al intentar cambiar la contraseña'
         });
+    }
+};
+
+// Cambiar contraseña de usuarios con roles especiales desde admin
+exports.cambiarPasswordAdmin = async (req, res) => {
+    try {
+        if (req.userRol !== 'admin') {
+            return res.status(403).json({ status: '0', msg: 'Solo el administrador puede realizar esta acción' });
+        }
+
+        const { id } = req.params;
+        const { newPassword } = req.body;
+
+        if (!newPassword || newPassword.toString().trim() === '') {
+            return res.status(400).json({ status: '0', msg: 'Debe ingresar una nueva contraseña válida' });
+        }
+
+        const paciente = await Paciente.findById(id);
+        if (!paciente) {
+            return res.status(404).json({ status: '0', msg: 'Usuario no encontrado' });
+        }
+
+        // Verificar que el usuario tenga un rol especial
+        const rolesEspeciales = ['admin', 'secretaria', 'recetario', 'terminal'];
+        if (!rolesEspeciales.includes(paciente.rol)) {
+            return res.status(400).json({ status: '0', msg: 'Solo se puede editar la contraseña de usuarios con roles especiales (admin, secretaria, recetario, terminal)' });
+        }
+
+        paciente.passw = await bcrypt.hash(newPassword.toString().trim(), 12);
+        await paciente.save();
+
+        res.json({
+            status: '1',
+            msg: `Contraseña de ${paciente.nombre} (${paciente.rol}) actualizada exitosamente`
+        });
+    } catch (error) {
+        console.error('Error al cambiar contraseña desde admin:', error);
+        res.status(500).json({ status: '0', msg: 'Hubo un error al actualizar la contraseña', error: error.message });
     }
 };
 

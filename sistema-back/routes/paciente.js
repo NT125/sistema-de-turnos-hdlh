@@ -25,6 +25,7 @@ router.post('/login',pacienteController.login);
 router.post('/request-password-reset', pacienteController.requestPasswordReset);
 router.post('/reset-password', pacienteController.resetPassword);
 router.post('/reset-sintoken', checkToken, pacienteController.resetPasswordSinToken);
+router.put('/admin-password/:id', checkToken, pacienteController.cambiarPasswordAdmin);
 
 
 module.exports = router;
