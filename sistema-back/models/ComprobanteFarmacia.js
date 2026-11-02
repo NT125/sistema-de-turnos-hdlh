@@ -13,7 +13,8 @@ const ItemCobroSchema = new mongoose.Schema({
 const ComprobanteFarmaciaSchema = new mongoose.Schema({
     numeroComprobante: {
         type: String,
-        unique: true
+        unique: true,
+        sparse: true
     },
     fecha: {
         type: Date,

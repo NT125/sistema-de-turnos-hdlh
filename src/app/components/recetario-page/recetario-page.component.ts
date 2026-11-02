@@ -333,8 +333,9 @@ export class RecetarioPageComponent implements OnInit {
       },
       error: (err) => {
         this.guardando = false;
-        console.error(err);
-        this.toastr.error('Error al guardar el comprobante');
+        console.error('Error al guardar comprobante:', err);
+        const errorMsg = err?.error?.msg || err?.error?.error || err?.message || 'Error al guardar el comprobante';
+        this.toastr.error(errorMsg);
       }
     });
   }

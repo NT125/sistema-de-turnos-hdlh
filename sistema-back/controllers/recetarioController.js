@@ -31,16 +31,54 @@ exports.obtenerMedicamentos = async (req, res) => {
     }
 };
 
+// Función auxiliar para obtener el próximo número correlativo único de comprobante
+const generarSiguienteNumeroComprobante = async () => {
+    try {
+        const comprobantes = await ComprobanteFarmacia.find({}, { numeroComprobante: 1 }).lean();
+        let maxNum = 0;
+        for (const comp of comprobantes) {
+            if (comp.numeroComprobante) {
+                const match = comp.numeroComprobante.match(/\d+/);
+                if (match) {
+                    const num = parseInt(match[0], 10);
+                    if (!isNaN(num) && num > maxNum) {
+                        maxNum = num;
+                    }
+                }
+            }
+        }
+
+        let nextNum = maxNum + 1;
+        let candidato = `REC-${nextNum.toString().padStart(6, '0')}`;
+        while (await ComprobanteFarmacia.exists({ numeroComprobante: candidato })) {
+            nextNum++;
+            candidato = `REC-${nextNum.toString().padStart(6, '0')}`;
+        }
+        return candidato;
+    } catch (err) {
+        console.error('Error al generar correlativo de comprobante:', err);
+        return `REC-${Date.now().toString().slice(-6)}`;
+    }
+};
+
 // Crear nuevo comprobante de cobro de medicación
 exports.crearComprobante = async (req, res) => {
     try {
-        const count = await ComprobanteFarmacia.countDocuments();
-        const nextNum = (count + 1).toString().padStart(6, '0');
-        const numeroComprobante = `REC-${nextNum}`;
+        let numeroComprobante = req.body.numeroComprobante && req.body.numeroComprobante.trim() !== ''
+            ? req.body.numeroComprobante.trim()
+            : null;
+
+        // Si no se proporcionó o si ya existe en la BD, generamos el correlativo seguro
+        if (!numeroComprobante || await ComprobanteFarmacia.exists({ numeroComprobante })) {
+            numeroComprobante = await generarSiguienteNumeroComprobante();
+        }
+
+        const datosComprobante = { ...req.body };
+        delete datosComprobante._id;
 
         const nuevoComprobante = new ComprobanteFarmacia({
-            ...req.body,
-            numeroComprobante: req.body.numeroComprobante || numeroComprobante,
+            ...datosComprobante,
+            numeroComprobante,
             usuarioEmisor: req.body.usuarioEmisor || (req.userRol ? `${req.userRol}` : 'Recetario')
         });
 
@@ -55,6 +93,7 @@ exports.crearComprobante = async (req, res) => {
         res.status(500).json({ status: '0', msg: 'Hubo un error al guardar el comprobante', error: error.message });
     }
 };
+
 
 // Obtener historial de comprobantes
 exports.obtenerComprobantes = async (req, res) => {
