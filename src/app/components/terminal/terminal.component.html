@@ -52,6 +52,11 @@
 				<div class="flex-column section">
 					<h3>M&Eacute;DICO</h3>
 					<div class="card-container" >
+						<div *ngIf="!_medicoService.medicos || _medicoService.medicos.length === 0" class="sin-turnos-container">
+							<span class="material-symbols-rounded sin-turnos-icon alerta">person_off</span>
+							<p class="sin-turnos-texto">No hay m&eacute;dicos disponibles</p>
+							<p class="sin-turnos-subtexto">No se encontraron m&eacute;dicos para esta especialidad.</p>
+						</div>
 						<div class="card" *ngFor="let medico of _medicoService.medicos" (click)="cargarTurnos(medico._id)" 
 						>
 							<label for="{{ medico._id }}">
@@ -73,6 +78,22 @@
 					<h3>TURNO</h3>
 					<div class="card-container" id="turnera">
 						
+						<!-- Estado de carga -->
+						<div *ngIf="cargandoTurnos" class="sin-turnos-container">
+							<span class="material-symbols-rounded sin-turnos-icon spinner">sync</span>
+							<p class="sin-turnos-texto">Cargando turnos...</p>
+						</div>
+
+						<!-- Sin turnos disponibles -->
+						<div *ngIf="!cargandoTurnos && (!_medicoService.turnos || _medicoService.turnos.length === 0)" class="sin-turnos-container">
+							<span class="material-symbols-rounded sin-turnos-icon" [ngClass]="{ 'alerta': medico_id }">
+								{{ medico_id ? 'event_busy' : 'info' }}
+							</span>
+							<p class="sin-turnos-texto">No hay turnos disponibles</p>
+							<p class="sin-turnos-subtexto" *ngIf="medico_id">No se encontraron turnos disponibles para este m&eacute;dico.</p>
+							<p class="sin-turnos-subtexto" *ngIf="!medico_id">Seleccione un m&eacute;dico para consultar los turnos disponibles.</p>
+						</div>
+
 						<div class="card"  *ngFor="let turno of _medicoService.turnos">
 							<label for="{{ turno._id }}" >
 								<input formControlName="turno" value="{{ turno._id }}" type="radio"  name="turno" id="{{ turno._id }}"
@@ -81,7 +102,7 @@
 									<ul>
 										<li class="turno-titulo-text">
 											{{ turno.fecha | date : "EEEE dd/MM" }}, a las
-               								 {{ turno.fecha | date : "shortTime" }}
+                								 {{ turno.fecha | date : "shortTime" }}
 										</li>
 										<li class="turno-text">Duraci&oacute;n: {{ turno.duracion }} min</li>
 										<li class="turno-text">Lugar: {{ turno.consultorio }} </li>

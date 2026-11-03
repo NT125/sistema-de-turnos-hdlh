@@ -26,7 +26,8 @@ export class TerminalComponent implements OnInit{
   turno: TurnoServ;
   obra1: boolean = false;
   obra2: boolean = false;
-  medico_id: any;
+  medico_id: any = null;
+  cargandoTurnos: boolean = false;
   obra1Array: ObraSocial[]=[];
   obra2Array: ObraSocial[]=[];
   fechaTurno:String = "";
@@ -143,17 +144,22 @@ keysEmail: string[] = '1234567890QWERTYUIOPASDFGHJKL-ZXCVBNM@._'.split('');
   }
   cargarTurnos = (id: any) => {
     this.medico_id = id;
+    this.turnoForm.get('turno')?.setValue('');
+    this._medicoService.turnos = [];
+    this.cargandoTurnos = true;
     let idEspecialidad = this.turnoForm.get('especialidad')?.value;
     
     this._medicoService
       .getTurnosMedicoEsp(this.medico_id, idEspecialidad)
       .subscribe({
         next: (data) => {
+          this.cargandoTurnos = false;
           this._medicoService.turnos = data;
         },
         error: (e) => {
+          this.cargandoTurnos = false;
           this._medicoService.turnos = [];
-         this.toastr.error("Sin turnos");
+          this.toastr.error("Sin turnos");
         },
       });
   };
@@ -291,6 +297,9 @@ keysEmail: string[] = '1234567890QWERTYUIOPASDFGHJKL-ZXCVBNM@._'.split('');
     }
     
     if(this.pasoActual == 2){
+      this.medico_id = null;
+      this.cargandoTurnos = false;
+      this.turnoForm.get('turno')?.setValue('');
       this._medicoService.turnos = [];
       this.cargarMedicos(this.turnoForm.get('especialidad')?.value);
     }
@@ -314,6 +323,8 @@ keysEmail: string[] = '1234567890QWERTYUIOPASDFGHJKL-ZXCVBNM@._'.split('');
       turno: ['', Validators.required],
     });
     this.turno = new TurnoServ('0', new Date(), '0', '0', '0', 0);
+    this.medico_id = null;
+    this.cargandoTurnos = false;
     this.pasoActual = 0;
   }
 
