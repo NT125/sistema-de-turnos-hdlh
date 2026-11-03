@@ -388,3 +388,36 @@ option {
   100% { transform: rotate(360deg); }
 }
 
+.sin-turnos-terminal-aviso {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin: 1.5rem auto;
+  max-width: 800px;
+  padding: 2.5rem 2rem;
+  background-color: #fff;
+  border-radius: 20px;
+  border: solid 2px var(--gris);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  width: 90%;
+}
+
+.aviso-desc {
+  font-size: 24px;
+  color: #555;
+  text-align: center;
+  margin-top: 1rem;
+  line-height: 1.4;
+  max-width: 650px;
+  width: 100%;
+}
+
+.button-disabled {
+  opacity: 0.45 !important;
+  cursor: not-allowed !important;
+  filter: grayscale(70%);
+  pointer-events: none;
+}
+

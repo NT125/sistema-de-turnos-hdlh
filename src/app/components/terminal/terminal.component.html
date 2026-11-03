@@ -2,8 +2,24 @@
 	<div *ngIf="pasoActual == 0" class="flex-column paso" id="bienvenida">
 		<img class="logo" src="logos/logo-transp.png" alt="">
 		<h1>Bienvenidos al Hospital Distrital de Las Heras</h1>
-		<h2>Desde aqu&iacute; puede tramitar un turno de manera inmediata.</h2>
-		<button class="option-pill-access lblue-button-access" (click)="avanzar()">Tramitar Turno</button>
+		
+		<!-- Si no hay especialidades con turnos -->
+		<div *ngIf="!cargandoEspecialidades && !hayEspecialidades" class="sin-turnos-terminal-aviso">
+			<span class="material-symbols-rounded" style="color: var(--rojo); font-size: 72px; margin-bottom: 0.5rem;">event_busy</span>
+			<h2 style="color: var(--rojo); font-weight: 700; font-size: 34px;">No hay turnos disponibles</h2>
+			<p class="aviso-desc">En este momento no hay especialidades con turnos disponibles en el sistema. Por favor, consulte en mesa de entradas o intente m&aacute;s tarde.</p>
+			<button class="option-pill-access button-disabled" disabled style="margin-top: 1.5rem;">
+				Tramitar Turno (No disponible)
+			</button>
+		</div>
+
+		<!-- Si hay especialidades o está cargando -->
+		<div *ngIf="cargandoEspecialidades || hayEspecialidades" class="flex-column" style="width: 100%; align-items: center;">
+			<h2>Desde aqu&iacute; puede tramitar un turno de manera inmediata.</h2>
+			<button class="option-pill-access lblue-button-access" (click)="avanzar()" [disabled]="cargandoEspecialidades">
+				{{ cargandoEspecialidades ? 'Cargando...' : 'Tramitar Turno' }}
+			</button>
+		</div>
 	</div>
 
 	<form action="#" [formGroup]="turnoForm" (ngSubmit)="finalizarTurno()">
@@ -36,11 +52,31 @@
 
 		<div *ngIf="pasoActual == 1" class="flex-column paso">
 			<h1>Paso 1: Especialidad</h1>
-			<h2>&iquest;Para qu&eacute; m&eacute;dico desea sacar turno?</h2>
-			<select formControlName="especialidad" name="especialidad" id="especialidad">
-				<option value="">Toque aqu&iacute;</option>
-				<option *ngFor="let especialidad of _especialidadService.especialidades" value={{especialidad._id}}>{{especialidad.nombreEsp}}</option>
-			</select>
+
+			<!-- Cuando hay especialidades con turnos -->
+			<div *ngIf="!cargandoEspecialidades && hayEspecialidades" class="flex-column" style="width: 100%; align-items: center;">
+				<h2>&iquest;Para qu&eacute; m&eacute;dico desea sacar turno?</h2>
+				<select formControlName="especialidad" name="especialidad" id="especialidad">
+					<option value="">Toque aqu&iacute;</option>
+					<option *ngFor="let especialidad of _especialidadService.especialidades" value={{especialidad._id}}>{{especialidad.nombreEsp}}</option>
+				</select>
+			</div>
+
+			<!-- Cuando NO hay especialidades con turnos -->
+			<div *ngIf="!cargandoEspecialidades && !hayEspecialidades" class="sin-turnos-terminal-aviso">
+				<span class="material-symbols-rounded" style="color: var(--rojo); font-size: 80px; margin-bottom: 0.8rem;">event_busy</span>
+				<h2 style="color: var(--rojo); font-size: 36px; font-weight: 700; text-align: center;">No hay turnos disponibles</h2>
+				<p class="aviso-desc">
+					Lo sentimos, no hay especialidades con turnos cargados en este momento.<br>
+					Por favor, consulte en mesa de entradas para recibir atenci&oacute;n.
+				</p>
+			</div>
+
+			<!-- Cargando -->
+			<div *ngIf="cargandoEspecialidades" class="flex-column" style="margin-top: 2rem; align-items: center;">
+				<span class="material-symbols-rounded spinner" style="font-size: 60px; color: var(--celesteO); margin-bottom: 0.8rem;">sync</span>
+				<h2>Consultando especialidades disponibles...</h2>
+			</div>
 		</div>
 
 		<div *ngIf="pasoActual == 2" class="flex-column paso">
@@ -192,7 +228,11 @@
 
 	<div *ngIf="pasoActual > 0 " class="botonera flex-row">
 		<button *ngIf="pasoActual > 0 && pasoActual < 7" class="option-pill-access" (click)="retroceder()">Paso Anterior</button>
-		<button *ngIf="pasoActual < 6" class="option-pill-access lblue-button-access" (click)="avanzar()">Paso Siguiente</button>
+		<button *ngIf="pasoActual < 6" 
+			class="option-pill-access lblue-button-access" 
+			[ngClass]="{ 'button-disabled': (pasoActual === 1 && (!hayEspecialidades || !turnoForm.get('especialidad')?.value)) || (pasoActual === 2 && !turnoForm.get('turno')?.value) }"
+			[disabled]="(pasoActual === 1 && (!hayEspecialidades || !turnoForm.get('especialidad')?.value)) || (pasoActual === 2 && !turnoForm.get('turno')?.value)"
+			(click)="avanzar()">Paso Siguiente</button>
 		<button *ngIf="pasoActual === 6" class="option-pill-access green-button-access" type="submit" (click)="finalizarTurno()">Confirmar Turno</button>
 		<button *ngIf="pasoActual === 7" class="option-pill-access green-button-access" type="submit" onclick="window.print()" (click)="irFinal()">Finalizar</button>
 	</div>

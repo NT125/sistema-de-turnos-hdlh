@@ -28,6 +28,8 @@ export class TerminalComponent implements OnInit{
   obra2: boolean = false;
   medico_id: any = null;
   cargandoTurnos: boolean = false;
+  cargandoEspecialidades: boolean = true;
+  hayEspecialidades: boolean = false;
   obra1Array: ObraSocial[]=[];
   obra2Array: ObraSocial[]=[];
   fechaTurno:String = "";
@@ -120,15 +122,20 @@ keysEmail: string[] = '1234567890QWERTYUIOPASDFGHJKL-ZXCVBNM@._'.split('');
     this.getEspecialidades();
   }
   getEspecialidades() {
+    this.cargandoEspecialidades = true;
     this._especialidadService.getEspecialidadesMedico().subscribe({
       next:(data) => {
-        this._especialidadService.especialidades=data;
+        this._especialidadService.especialidades = data || [];
+        this.hayEspecialidades = this._especialidadService.especialidades.length > 0;
+        this.cargandoEspecialidades = false;
       },
       error:(e) => {
         console.log(e);
+        this._especialidadService.especialidades = [];
+        this.hayEspecialidades = false;
+        this.cargandoEspecialidades = false;
       },
-      
-    })
+    });
   }
   cargarMedicos(id:any) {
     this._medicoService.getEspecialidades(this.turnoForm.get('especialidad')?.value).subscribe({
@@ -290,10 +297,34 @@ keysEmail: string[] = '1234567890QWERTYUIOPASDFGHJKL-ZXCVBNM@._'.split('');
   pasoActual: number = 0;
 
   avanzar = () => {
-    let paso4:Boolean=false;
+    // Si estamos en bienvenida (paso 0) y no hay especialidades con turnos, bloquear avance
+    if (this.pasoActual === 0 && (!this.hayEspecialidades || !this._especialidadService.especialidades || this._especialidadService.especialidades.length === 0)) {
+      this.toastr.warning("No hay especialidades con turnos disponibles en este momento.");
+      return;
+    }
+
+    // Si estamos en selección de especialidad (paso 1)
+    if (this.pasoActual === 1) {
+      if (!this.hayEspecialidades || !this._especialidadService.especialidades || this._especialidadService.especialidades.length === 0) {
+        this.toastr.warning("No hay especialidades con turnos disponibles.");
+        return;
+      }
+      if (!this.turnoForm.get('especialidad')?.value) {
+        this.toastr.info("Por favor, seleccione una especialidad para continuar.");
+        return;
+      }
+    }
+
+    // Si estamos en selección de médico y turno (paso 2)
+    if (this.pasoActual === 2) {
+      if (!this.turnoForm.get('turno')?.value) {
+        this.toastr.info("Por favor, seleccione un médico y un turno para continuar.");
+        return;
+      }
+    }
+
     if (this.pasoActual < 6){
       this.pasoActual++;
-      
     }
     
     if(this.pasoActual == 2){
@@ -326,6 +357,7 @@ keysEmail: string[] = '1234567890QWERTYUIOPASDFGHJKL-ZXCVBNM@._'.split('');
     this.medico_id = null;
     this.cargandoTurnos = false;
     this.pasoActual = 0;
+    this.getEspecialidades();
   }
 
 }
